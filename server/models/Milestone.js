@@ -13,7 +13,7 @@ const MilestoneSchema = new Schema({
         required: [true, 'Cím megadása kötelező!'],
         validate: {
             validator: function(titleValue) {
-                return titleValue && titleValue.length < 3;
+                return titleValue && titleValue.length > 3;
             },
             message: 'A cím hossza legalább 3 karakterből kell álljon!'
         }
@@ -23,7 +23,7 @@ const MilestoneSchema = new Schema({
         required: [true, 'Leírás megadása kötelező!'],
         validate: {
             validator: function(descriptionValue) {
-                return descriptionValue && descriptionValue.length < 5;
+                return descriptionValue && descriptionValue.length > 5;
             },
             message: 'A leírás legalább 5 karakterből kell álljon!'
         }
@@ -34,7 +34,7 @@ const MilestoneSchema = new Schema({
         validate: {
             validator: function(deadlineValue) {
                 let today = new Date();
-                return deadlineValue && deadlineValue < today;
+                return deadlineValue && deadlineValue > today;
             },
             message: 'A határidőnek a mai napnál későbbinek kell lennie!'
         }

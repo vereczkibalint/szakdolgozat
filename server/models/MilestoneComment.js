@@ -25,7 +25,7 @@ const MilestoneCommentSchema = new Schema({
         required: [true, 'Üzenet megadása kötelező!'],
         validate: {
             validator: function(messageValue) {
-                return messageValue && messageValue.length < 5;
+                return messageValue && messageValue.length > 5;
             },
             message: 'Az üzenet legalább 5 karakterből kell álljon!'
         }

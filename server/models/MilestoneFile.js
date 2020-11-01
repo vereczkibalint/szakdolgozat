@@ -8,7 +8,7 @@ const MilestoneFileSchema = new Schema({
         required: [true, 'Fájlnév megadása kötelező!'],
         validate: {
             validator: function(fileNameValue) {
-                return fileNameValue && fileNameValue.length < 3;
+                return fileNameValue && fileNameValue.length > 3;
             },
             message: 'A fájlnév legalább 3 karakterből kell álljon!'
         }

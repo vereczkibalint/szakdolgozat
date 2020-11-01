@@ -18,7 +18,7 @@ const ThesisSchema = new Schema({
         required: [true, 'Téma megadása kötelező!'],
         validate: {
             validator: function(topicValue) {
-                return topicValue && topicValue.length < 5;
+                return topicValue && topicValue.length > 5;
             },
             message: 'Téma legalább 5 karakterből kell álljon!'
         }
@@ -28,7 +28,7 @@ const ThesisSchema = new Schema({
         required: [true, 'Cím megadása kötelező!'],
         validate: {
             validator: function(titleValue) {
-                return titleValue && titleValue.length < 5;
+                return titleValue && titleValue.length > 5;
             },
             message: 'Cím legalább 5 karakterből kell álljon!'
         }
