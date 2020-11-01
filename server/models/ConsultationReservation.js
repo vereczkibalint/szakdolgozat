@@ -6,12 +6,12 @@ const ConsultationReservationSchema = new Schema({
     consultation: {
         type: Schema.Types.ObjectId,
         ref: 'consultation',
-        required: true
+        required: [true, 'Konzultáció megadása kötelező!']
     },
     student: {
         type: Schema.Types.ObjectId,
         ref: 'student',
-        required: true
+        required: [true, 'Hallgató megadása kötelező!']
     },
     reservedAt: {
         type: Date,

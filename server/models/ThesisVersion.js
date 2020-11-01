@@ -6,7 +6,7 @@ const ThesisVersionSchema = new Schema({
     thesis: {
         type: Schema.Types.ObjectId,
         ref: 'thesis',
-        required: true
+        required: [true, 'Szakdolgozat megadása kötelező!']
     }
 }, { timestamps: true });
 

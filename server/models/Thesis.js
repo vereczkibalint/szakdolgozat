@@ -6,20 +6,32 @@ const ThesisSchema = new Schema({
     lecturer: {
         type: Schema.Types.ObjectId,
         ref: 'lecturer',
-        required: true
+        required: [true, 'Oktató megadása kötelező!']
     },
     student: {
         type: Schema.Types.ObjectId,
         ref: 'student',
-        required: true
+        required: [true, 'Hallgató megadása kötelező!']
     },
     topic: {
         type: String,
-        required: true
+        required: [true, 'Téma megadása kötelező!'],
+        validate: {
+            validator: function(topicValue) {
+                return topicValue && topicValue.length < 5;
+            },
+            message: 'Téma legalább 5 karakterből kell álljon!'
+        }
     },
     title: {
         type: String,
-        required: true
+        required: [true, 'Cím megadása kötelező!'],
+        validate: {
+            validator: function(titleValue) {
+                return titleValue && titleValue.length < 5;
+            },
+            message: 'Cím legalább 5 karakterből kell álljon!'
+        }
     }
 });
 
