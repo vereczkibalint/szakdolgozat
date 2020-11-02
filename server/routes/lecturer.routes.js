@@ -7,6 +7,6 @@ router.get('/', lecturerController.fetchAll);
 router.get('/:lecturerId', lecturerController.fetchById);
 router.post('/', lecturerController.create);
 router.put('/:lecturerId', lecturerController.update);
-router.delete('/:lecturerIde', lecturerController.delete);
+router.delete('/:lecturerId', lecturerController.delete);
 
 module.exports = router;
