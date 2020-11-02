@@ -29,7 +29,7 @@ exports.create = async (thesis) => {
     try {
         const newThesis = await thesis.save();
         
-        return newThesis;
+        return newThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationError = validationErrorHelper.ProcessValidationError(error);
@@ -53,7 +53,7 @@ exports.update = async (thesisId, thesis) => {
             throw Error('Nincs szakdolgozat ilyen azonosítóval!');
         }
         
-        return updatedThesis.populate('lecturer').populate('student');
+        return updatedThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationError = validationErrorHelper.ProcessValidationError(error);
@@ -71,7 +71,7 @@ exports.delete = async (thesisId) => {
             throw Error('Nincs szakdolgozat ilyen azonosítóval!');
         }
 
-        return deletedThesis;
+        return deletedThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
     } catch (error) {
         throw Error(error.message);
     }
