@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const thesisValidator = require('./validators/thesis.validators');
+
 const Schema = mongoose.Schema;
 
 const ThesisSchema = new Schema({
@@ -17,9 +19,7 @@ const ThesisSchema = new Schema({
         type: String,
         required: [true, 'Téma megadása kötelező!'],
         validate: {
-            validator: function(topicValue) {
-                return topicValue && topicValue.length > 5;
-            },
+            validator: thesisValidator.topicLengthValidator,
             message: 'Téma legalább 5 karakterből kell álljon!'
         }
     },
@@ -27,12 +27,17 @@ const ThesisSchema = new Schema({
         type: String,
         required: [true, 'Cím megadása kötelező!'],
         validate: {
-            validator: function(titleValue) {
-                return titleValue && titleValue.length > 5;
-            },
+            validator: thesisValidator.titleLengthValidator,
             message: 'Cím legalább 5 karakterből kell álljon!'
         }
     }
 });
+
+const populateHook = function(next) {
+    this.populate('lecturer', { password: 0 }).populate('student', { password: 0 });
+    next();
+}
+
+ThesisSchema.pre('find', populateHook);
 
 module.exports = mongoose.model('thesis', ThesisSchema);
