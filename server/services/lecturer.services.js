@@ -67,8 +67,7 @@ exports.update = async (lecturerId, lecturer) => {
 
 exports.delete = async (lecturerId) => {
     try {
-        const deletedLecturer = Lecturer.findOneAndRemove({ _id: lecturerId });
-
+        const deletedLecturer = await Lecturer.findOneAndRemove({ _id: lecturerId });
         if(!deletedLecturer) {
             throw Error('Nincs oktató ilyen azonosítóval!');
         }
