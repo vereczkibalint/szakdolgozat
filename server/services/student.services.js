@@ -57,10 +57,8 @@ exports.update = async (studentId, student) => {
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationError = validationErrorHelper.ProcessValidationError(error);
-            console.log(('this'));
             throw validationError;
         } else {
-            console.log(error);
             throw new Error(error.message);
         }
     }
