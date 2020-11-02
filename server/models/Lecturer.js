@@ -1,26 +1,24 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+const lecturerValidators = require('./validators/lecturer.validators');
+
 const Schema = mongoose.Schema;
 
 const LecturerSchema = new Schema({
     neptun: {
         type: String,
         required: [true, 'NEPTUN kód megadása kötelező!'],
-        validate: {
-            validator: function(neptunValue) {
-                return neptunValue && neptunValue.length === 6;
-            },
-            message: 'Hibás NEPTUN kód!'
-        } 
+        validate: [
+            { validator: lecturerValidators.neptunLengthValidator, message: 'Hibás NEPTUN kód!'},
+            { validator: lecturerValidators.neptunAlreadyExists, message: 'Ezzel a NEPTUN kóddal már létezik felhasználó!'}
+        ]
     },
     firstName: {
         type: String,
         required: [true, 'Keresztnév megadása kötelező!'],
         validate: {
-            validator: function(firstNameValue) {
-                return firstNameValue && firstNameValue.length >= 4;
-            },
+            validator: lecturerValidators.firstNameLengthValidator,
             message: 'A keresztnév legalább 4 karakterből kell álljon!'
         }
     },
@@ -28,9 +26,7 @@ const LecturerSchema = new Schema({
         type: String,
         required: [true, 'Vezetéknév megadása kötelező!'],
         validate: {
-            validator: function(lastNameValue) {
-                return lastNameValue && lastNameValue.length >= 4;
-            },
+            validator: lecturerValidators.lastNameLengthValidator,
             message: 'A vezetéknév legalább 4 karakterből kell álljon!'
         }
     },
@@ -38,9 +34,7 @@ const LecturerSchema = new Schema({
         type: String,
         required: [true, 'Felhasználónév megadása kötelező!'],
         validate: {
-            validator: function(usernameValue) {
-                return usernameValue && usernameValue.length >= 4;
-            },
+            validator: lecturerValidators.usernameLengthValidator,
             message: 'A felhasználónév legalább 4 karakterből kell álljon!'
         }
     },
@@ -48,9 +42,7 @@ const LecturerSchema = new Schema({
         type: String,
         required: [true, 'Jelszó megadása kötelező!'],
         validate: {
-            validator: function(passwordValue) {
-                return passwordValue && passwordValue.length >= 8;
-            },
+            validator: lecturerValidators.passwordLengthValidator,
             message: 'A jelszó legalább 8 karakterből kell álljon!'
         }
     },
@@ -58,9 +50,7 @@ const LecturerSchema = new Schema({
         type: String,
         required: [true, 'Email cím megadása kötelező!'],
         validate: {
-            validator: function(emailValue) {
-                return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailValue));
-            },
+            validator: lecturerValidators.emailRegexValidator,
             message: 'Hibás email formátum!'
         }
     },
