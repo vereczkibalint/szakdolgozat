@@ -38,6 +38,6 @@ const populateHook = function(next) {
     next();
 }
 
-ThesisSchema.pre('find', populateHook);
+ThesisSchema.pre('find', populateHook).pre('findOne', populateHook);
 
 module.exports = mongoose.model('thesis', ThesisSchema);
