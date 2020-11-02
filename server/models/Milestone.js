@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+const milestoneValidator = require('./validators/milestone.validators');
 const Schema = mongoose.Schema;
 
 const MilestoneSchema = new Schema({
@@ -12,9 +13,7 @@ const MilestoneSchema = new Schema({
         type: String,
         required: [true, 'Cím megadása kötelező!'],
         validate: {
-            validator: function(titleValue) {
-                return titleValue && titleValue.length > 3;
-            },
+            validator: milestoneValidator.titleLengthValidator,
             message: 'A cím hossza legalább 3 karakterből kell álljon!'
         }
     },
@@ -22,9 +21,7 @@ const MilestoneSchema = new Schema({
         type: String,
         required: [true, 'Leírás megadása kötelező!'],
         validate: {
-            validator: function(descriptionValue) {
-                return descriptionValue && descriptionValue.length > 5;
-            },
+            validator: milestoneValidator.descriptionLengthValidator,
             message: 'A leírás legalább 5 karakterből kell álljon!'
         }
     },
@@ -32,17 +29,24 @@ const MilestoneSchema = new Schema({
         type: Date,
         required: [true, 'Határidő megadása kötelező!'],
         validate: {
-            validator: function(deadlineValue) {
-                let today = new Date();
-                return deadlineValue && deadlineValue > today;
-            },
+            validator: milestoneValidator.deadlineDateValidator,
             message: 'A határidőnek a mai napnál későbbinek kell lennie!'
         }
     },
     status: {
         type: String,
-        enum: ['accepted', 'rejected', 'pending']
+        enum: {
+            values: ['accepted', 'rejected', 'pending'],
+            message: 'Hibás státusz!'
+        }
     }
 });
+
+const populateHook = function(next) {
+    this.populate('thesis');
+    next();
+}
+
+MilestoneSchema.pre('find', populateHook).pre('findOne', populateHook);
 
 module.exports = mongoose.model('milestone', MilestoneSchema);
