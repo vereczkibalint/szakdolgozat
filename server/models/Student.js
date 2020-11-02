@@ -1,26 +1,26 @@
 const mongoose = require('mongoose');
 
+const bcrypt = require('bcryptjs');
+
+const userValidators = require('./validators/users.validators');
+
 const Schema = mongoose.Schema;
 
 const StudentSchema = new Schema({
     neptun: {
         type: String,
         required: [true, 'NEPTUN kód megadása kötelező!'],
-        validate: {
-            validator: function(neptunValue) {
-                return neptunValue && neptunValue.length === 6;
-            },
-            message: 'Hibás NEPTUN kód!'
-        }
+        validate: [
+            { validator: userValidators.neptunLengthValidator, message: 'Hibás NEPTUN kód!' },
+            { validator: userValidators.neptunAlreadyExists, message: 'Ezzel a NEPTUN kóddal már létezik felhasználó!'}
+        ]
         
     },
     firstName: {
         type: String,
         required: [true, 'Keresztnév megadása kötelező!'],
         validate: {
-            validator: function(firstNameValue) {
-                return firstNameValue && firstNameValue.length > 4;
-            },
+            validator: userValidators.firstNameLengthValidator,
             message: 'A keresztnév legalább 4 karakterből kell álljon!'
         }
     },
@@ -28,9 +28,7 @@ const StudentSchema = new Schema({
         type: String,
         required: [true, 'Vezetéknév megadása kötelező!'],
         validate: {
-            validator: function(lastNameValue) {
-                return lastNameValue && lastNameValue.length > 4;
-            },
+            validator: userValidators.lastNameLengthValidator,
             message: 'A vezetéknév legalább 4 karakterből kell álljon!'
         }
     },
@@ -38,9 +36,7 @@ const StudentSchema = new Schema({
         type: String,
         required: [true, 'Felhasználónév megadása kötelező!'],
         validate: {
-            validator: function(usernameValue) {
-                return usernameValue && usernameValue.length > 4;
-            },
+            validator: userValidators.usernameLengthValidator,
             message: 'A felhasználónév legalább 4 karakterből kell álljon!'
         }
     },
@@ -48,9 +44,7 @@ const StudentSchema = new Schema({
         type: String,
         required: [true, 'Jelszó megadása kötelező!'],
         validate: {
-            validator: function(passwordValue) {
-                return passwordValue && passwordValue.length > 8;
-            },
+            validator: userValidators.passwordLengthValidator,
             message: 'A jelszó legalább 8 karakterből kell álljon!'
         }
     },
@@ -58,9 +52,7 @@ const StudentSchema = new Schema({
         type: String,
         required: [true, 'Email cím megadása kötelező!'],
         validate: {
-            validator: function(emailValue) {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailValue);
-            },
+            validator: userValidators.emailRegexValidator,
             message: 'Hibás email formátum!'
         }
     },
@@ -73,7 +65,16 @@ StudentSchema.methods.comparePassword = (passwordText, callback) => {
     return callback(null, bcrypt.compareSync(passwordText, this.password));
 }
 
-StudentSchema.pre('save', (next) => {
+StudentSchema.pre('findOneAndUpdate', function(next) {
+    if(!this._update.password) {
+        return next();
+    }
+
+    this._update.password = bcrypt.hashSync(this._update.password, 10);
+    next();
+});
+
+StudentSchema.pre('save', function(next) {
     if(!this.isModified('password')) {
         return next();
     }
