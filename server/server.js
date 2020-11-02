@@ -4,7 +4,9 @@ const helmet = require('helmet');
 const app = express();
 
 const connectToMongoDB = require('./config/db');
+
 const lecturerRouter = require('./routes/lecturer.routes');
+const studentRouter = require('./routes/student.routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -17,6 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/lecturers', lecturerRouter);
+app.use('/api/students', studentRouter);
 
 const PORT = process.env.PORT || 3001;
 
