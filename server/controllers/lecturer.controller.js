@@ -1,6 +1,5 @@
 const lecturerService = require('../services/lecturer.services');
 const lecturerHelper = require('../helpers/lecturer.helper');
-const Lecturer = require('../models/Lecturer');
 
 exports.fetchAll = async (req, res) => {
     try {
@@ -54,6 +53,6 @@ exports.delete = async (req, res) => {
 
         return res.json(deletedLecturer);
     } catch (error) {
-        return res.status(400).json(error);
+        return res.status(400).json(error.message);
     }
 }
