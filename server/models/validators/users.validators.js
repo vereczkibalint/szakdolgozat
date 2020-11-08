@@ -4,12 +4,6 @@ exports.neptunLengthValidator = (neptunValue) => {
     return neptunValue && neptunValue.length === 6;
 }
 
-exports.neptunAlreadyExists = (neptunValue) => {
-    mongoose.models['lecturer'].find({ neptun: neptunValue }, (err, result) => {
-        return !result;
-    });
-}
-
 exports.firstNameLengthValidator = (firstNameValue) => {
     return firstNameValue && firstNameValue.length >= 4;
 }

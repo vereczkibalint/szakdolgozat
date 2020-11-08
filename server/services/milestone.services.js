@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const validationErrorHelper = require('../helpers/validation_errors.helper');
 const Milestone = require('../models/Milestone');
+const {ApiError} = require('./errors/ApiError');
 
 exports.fetchAll = async () => {
     try {
         const milestones = await Milestone.find();
         return milestones;
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, 'Hiba a mérföldkövek lekérdezése közben!');
     }
 }
 
@@ -16,12 +17,12 @@ exports.fetchById = async (milestoneId) => {
         const milestone = await Milestone.findById(milestoneId);
 
         if(!milestone) {
-            throw Error('Nincs mérföldkő ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs mérföldkő ilyen azonosítóval!');
         }
 
         return milestone;
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, 'Hiba a mérföldkő lekérése közben!');
     }
 }
 
@@ -32,10 +33,10 @@ exports.create = async (milestone) => {
         return newMilestone.populate('thesis').execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
-            let validationError = validationErrorHelper.ProcessValidationError(error);
-            throw validationError;
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a mérföldkő létrehozása közben!', validationErrors);
         } else {
-            throw new Error(error.message);
+            throw new ApiError(400, 'Hiba a mérföldkő létrehozása közben!');
         }
     }
 }
@@ -50,16 +51,16 @@ exports.update = async (milestoneId, milestone) => {
         const milestoneNotFound = !updatedMilestone;
 
         if(milestoneNotFound) {
-            throw Error('Nincs mérföldkő ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs mérföldkő ilyen azonosítóval!');
         }
         
         return updatedMilestone.populate('thesis').execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
-            let validationError = validationErrorHelper.ProcessValidationError(error);
-            throw validationError;
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a mérföldkő frissítése közben!', validationErrors);
         } else {
-            throw new Error(error.message);
+            throw new ApiError(400, 'Hiba a mérföldkő frissítése közben!');
         }
     }
 }
@@ -68,11 +69,11 @@ exports.delete = async (milestoneId) => {
     try {
         const deletedMilestone = await Milestone.findOneAndRemove({ _id: milestoneId });
         if(!deletedMilestone) {
-            throw Error('Nincs mérföldkő ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs mérföldkő ilyen azonosítóval!');
         }
 
         return deletedMilestone.populate('thesis').execPopulate();
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, 'Hiba a mérföldkő törlése közben!');
     }
 }

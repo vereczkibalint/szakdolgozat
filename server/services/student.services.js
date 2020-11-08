@@ -1,27 +1,28 @@
 const mongoose = require('mongoose');
 const validationErrorHelper = require('../helpers/validation_errors.helper');
 const Student = require('../models/Student');
+const {ApiError} = require('./errors/ApiError');
 
 exports.fetchAll = async () => {
     try {
-        const students = await Student.find();
+        const students = await Student.find().select('-password');
         return students;
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, 'Hiba a hallgatók lekérése közben!');
     }
 }
 
 exports.fetchById = async (studentId) => {
     try {
-        const student = await Student.findById(studentId);
+        const student = await Student.findById(studentId).select('-password');
 
         if(!student) {
-            throw Error('Nincs hallgató ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs hallgató ilyen azonosítóval!');
         }
 
         return student;
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, 'Hiba a hallgatók lekérése közben!');
     }
 }
 
@@ -32,10 +33,10 @@ exports.create = async (student) => {
         return newStudent;
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
-            let validationError = validationErrorHelper.ProcessValidationError(error);
-            throw validationError;
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a hallgató létrehozása közben!', validationErrors);
         } else {
-            throw new Error(error.message);
+            throw new ApiError(400, 'Hiba a hallgató létrehozása közben!');
         }
     }
 }
@@ -45,21 +46,21 @@ exports.update = async (studentId, student) => {
         const updatedStudent = await Student.findOneAndUpdate(
             { _id: studentId },
             student,
-            { new: true, runValidators: true });
+            { new: true, runValidators: true, context: 'query' });
 
         const studentNotFound = !updatedStudent;
 
         if(studentNotFound) {
-            throw Error('Nincs hallgató ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs hallgató ilyen azonosítóval!');
         }
         
         return updatedStudent;
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
-            let validationError = validationErrorHelper.ProcessValidationError(error);
-            throw validationError;
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a hallgató frissítése közben!', validationErrors);
         } else {
-            throw new Error(error.message);
+            throw new ApiError(400, error.message);
         }
     }
 }
@@ -68,11 +69,11 @@ exports.delete = async (studentId) => {
     try {
         const deletedStudent = await Student.findOneAndRemove({ _id: studentId });
         if(!deletedStudent) {
-            throw Error('Nincs hallgató ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs hallgató ilyen azonosítóval!');
         }
 
         return deletedStudent;
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, error.message);
     }
 }

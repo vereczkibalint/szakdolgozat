@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+const uniqueValidator = require('mongoose-unique-validator');
 const userValidators = require('./validators/users.validators');
 
 const Schema = mongoose.Schema;
@@ -10,9 +11,9 @@ const LecturerSchema = new Schema({
         type: String,
         required: [true, 'NEPTUN kód megadása kötelező!'],
         validate: [
-            { validator: userValidators.neptunLengthValidator, message: 'Hibás NEPTUN kód!'},
-            { validator: userValidators.neptunAlreadyExists, message: 'Ezzel a NEPTUN kóddal már létezik felhasználó!'}
-        ]
+            { validator: userValidators.neptunLengthValidator, message: 'Hibás NEPTUN kód!'}
+        ],
+        unique: true
     },
     firstName: {
         type: String,
@@ -36,7 +37,8 @@ const LecturerSchema = new Schema({
         validate: {
             validator: userValidators.usernameLengthValidator,
             message: 'A felhasználónév legalább 4 karakterből kell álljon!'
-        }
+        },
+        unique: true
     },
     password: {
         type: String,
@@ -52,7 +54,8 @@ const LecturerSchema = new Schema({
         validate: {
             validator: userValidators.emailRegexValidator,
             message: 'Hibás email formátum!'
-        }
+        },
+        unique: true
     },
     lastLogin: {
         type: Date
@@ -80,5 +83,7 @@ LecturerSchema.pre('save', function(next) {
     this.password = bcrypt.hashSync(this.password, 10);
     next();
 });
+
+LecturerSchema.plugin(uniqueValidator, { message: 'A(z) {VALUE} már használatban van!' });
 
 module.exports = mongoose.model('lecturer', LecturerSchema);

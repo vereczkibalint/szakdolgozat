@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const validationErrorHelper = require('../helpers/validation_errors.helper');
 const Thesis = require('../models/Thesis');
+const { ApiError } = require('./errors/ApiError');
 
 exports.fetchAll = async () => {
     try {
         const theses = await Thesis.find();
         return theses;
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, 'Hiba az szakdolgozatok lekérése során!');
     }
 }
 
@@ -16,12 +17,12 @@ exports.fetchById = async (thesisId) => {
         const thesis = await Thesis.findById(thesisId);
 
         if(!thesis) {
-            throw Error('Nincs szakdolgozat ilyen azonosítóval!');
+            throw ApiError(400, 'Nincs szakdolgozat ilyen azonosítóval!');
         }
 
         return thesis;
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, 'Hiba a szakdolgozat lekérése közben!');
     }
 }
 
@@ -32,10 +33,10 @@ exports.create = async (thesis) => {
         return newThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
-            let validationError = validationErrorHelper.ProcessValidationError(error);
-            throw validationError;
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a szakdolgozat létrehozása közben!', validationErrors);
         } else {
-            throw new Error(error.message);
+            throw new ApiError(400, 'Hiba a szakdolgozat létrehozása közben!');
         }
     }
 }
@@ -50,16 +51,16 @@ exports.update = async (thesisId, thesis) => {
         const thesisNotFound = !updatedThesis;
 
         if(thesisNotFound) {
-            throw Error('Nincs szakdolgozat ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs szakdolgozat ilyen azonosítóval!');
         }
         
         return updatedThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
-            let validationError = validationErrorHelper.ProcessValidationError(error);
-            throw validationError;
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a szakdolgozat frissítése közben!', validationErrors);
         } else {
-            throw new Error(error.message);
+            throw new ApiError(400, error.message);
         }
     }
 }
@@ -68,11 +69,11 @@ exports.delete = async (thesisId) => {
     try {
         const deletedThesis = await Thesis.findOneAndRemove({ _id: thesisId });
         if(!deletedThesis) {
-            throw Error('Nincs szakdolgozat ilyen azonosítóval!');
+            throw new ApiError(400, 'Nincs szakdolgozat ilyen azonosítóval!');
         }
 
         return deletedThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
     } catch (error) {
-        throw Error(error.message);
+        throw new ApiError(400, error.message);
     }
 }

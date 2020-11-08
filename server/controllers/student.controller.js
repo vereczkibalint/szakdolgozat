@@ -1,5 +1,6 @@
 const studentService = require('../services/student.services');
 const studentHelper = require('../helpers/student.helper');
+const { handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
     try {
@@ -7,7 +8,7 @@ exports.fetchAll = async (req, res) => {
 
         return res.json(students);
     } catch(error) {
-        return res.status(400).json(error.message);
+        return handleApiError(error, res);
     }
 }
 
@@ -17,7 +18,7 @@ exports.fetchById = async (req, res) => {
 
         return res.json(student);
     } catch(error) {
-        return res.status(400).json(error.message);
+        return handleApiError(error, res);
     }
 }
 
@@ -28,7 +29,7 @@ exports.create = async (req, res) => {
 
         return res.json(newStudent);
     } catch (error) {
-        return res.status(400).json(error);
+        return handleApiError(error, res);
     }
 }
 
@@ -42,7 +43,7 @@ exports.update = async (req, res) => {
 
         return res.json(updatedStudent);
     } catch (error) {
-        return res.status(400).json(error);
+        return handleApiError(error, res);
     }
 }
 
@@ -53,6 +54,6 @@ exports.delete = async (req, res) => {
 
         return res.json(deletedStudent);
     } catch (error) {
-        return res.status(400).json(error.message);
+        return handleApiError(error, res);
     }
 }

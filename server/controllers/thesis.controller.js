@@ -2,6 +2,7 @@ const commonValidator = require('../models/validators/common.validators');
 
 const thesisService = require('../services/thesis.services');
 const thesisHelper = require('../helpers/thesis.helper');
+const { ApiError, handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
     try {
@@ -9,7 +10,7 @@ exports.fetchAll = async (req, res) => {
 
         return res.json(theses);
     } catch(error) {
-        return res.status(400).json(error.message);
+        return handleApiError(error, res);
     }
 }
 
@@ -17,7 +18,8 @@ exports.fetchById = async (req, res) => {
     const thesisId = req.params.thesisId;
 
     if(!commonValidator.isValidObjectId(thesisId)) {
-        return res.status(400).json('Hibás azonosító!');
+        let err = new ApiError(400, 'Hibás azonosító formátum!');
+        return handleApiError(err, res);
     }
     
     try{
@@ -25,7 +27,7 @@ exports.fetchById = async (req, res) => {
 
         return res.json(thesis);
     } catch(error) {
-        return res.status(400).json(error.message);
+        return handleApiError(error, res);
     }
 }
 
@@ -36,7 +38,7 @@ exports.create = async (req, res) => {
 
         return res.json(newThesis);
     } catch (error) {
-        return res.status(400).json(error);
+        return handleApiError(error, res);
     }
 }
 
@@ -50,7 +52,7 @@ exports.update = async (req, res) => {
 
         return res.json(updatedThesis);
     } catch (error) {
-        return res.status(400).json(error);
+        return handleApiError(error, res);
     }
 }
 
@@ -61,6 +63,6 @@ exports.delete = async (req, res) => {
 
         return res.json(deletedThesis);
     } catch (error) {
-        return res.status(400).json(error.message);
+        return handleApiError(error, res);
     }
 }
