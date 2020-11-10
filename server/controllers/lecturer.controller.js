@@ -1,9 +1,11 @@
 const lecturerService = require('../services/lecturer.services');
-const lecturerHelper = require('../helpers/lecturer.helper');
+const { createLecturerFromRequest } = require('../helpers/req2model.helper');
+
+const commonValidator = require('../models/validators/common.validators');
 
 const { handleApiError } = require('../services/errors/ApiError');
 
-exports.fetchAll = async (req, res, next) => {
+exports.fetchAll = async (req, res) => {
     try {
         const lecturers = await lecturerService.fetchAll();
 
@@ -13,9 +15,16 @@ exports.fetchAll = async (req, res, next) => {
     }
 }
 
-exports.fetchById = async (req, res, next) => {
+exports.fetchById = async (req, res) => {
     try{
-        const lecturer = await lecturerService.fetchById(req.params.lecturerId);
+        const {lecturerId} = req.params;
+
+        if(!commonValidator.isValidObjectId(lecturerId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
+        const lecturer = await lecturerService.fetchById(lecturerId);
 
         return res.json(lecturer);
     } catch(error) {
@@ -23,9 +32,9 @@ exports.fetchById = async (req, res, next) => {
     }
 }
 
-exports.create = async (req, res, next) => {
+exports.create = async (req, res) => {
     try {
-        const lecturer = lecturerHelper.createLecturerFromRequest(req);
+        const lecturer = createLecturerFromRequest(req);
         const newLecturer = await lecturerService.create(lecturer);
 
         return res.json(newLecturer);
@@ -34,9 +43,14 @@ exports.create = async (req, res, next) => {
     }
 }
 
-exports.update = async (req, res, next) => {
+exports.update = async (req, res) => {
     try {
         const { lecturerId } = req.params;
+
+        if(!commonValidator.isValidObjectId(lecturerId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
 
         const lecturer = req.body;
 
@@ -48,9 +62,15 @@ exports.update = async (req, res, next) => {
     }
 }
 
-exports.delete = async (req, res, next) => {
+exports.delete = async (req, res) => {
     try {
         const { lecturerId } = req.params;
+
+        if(!commonValidator.isValidObjectId(lecturerId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+        
         const deletedLecturer = await lecturerService.delete(lecturerId);
 
         return res.json(deletedLecturer);

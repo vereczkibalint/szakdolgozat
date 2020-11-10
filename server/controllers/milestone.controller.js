@@ -1,8 +1,8 @@
 const commonValidator = require('../models/validators/common.validators');
 
 const milestoneService = require('../services/milestone.services');
-const milestoneHelper = require('../helpers/milestone.helper');
-const {ApiError, handleApiError} = require('../services/errors/ApiError');
+const { createMilestoneFromRequest } = require('../helpers/req2model.helper');
+const { ApiError, handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
     try {
@@ -15,14 +15,15 @@ exports.fetchAll = async (req, res) => {
 }
 
 exports.fetchById = async (req, res) => {
-    const milestoneId = req.params.milestoneId;
-
-    if(!commonValidator.isValidObjectId(milestoneId)) {
-        let err = new ApiError(400, 'Hibás azonosító!');
-        return handleApiError(err, res);
-    }
-    
     try{
+        
+        const milestoneId = req.params.milestoneId;
+
+        if(!commonValidator.isValidObjectId(milestoneId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
         const milestone = await milestoneService.fetchById(milestoneId);
 
         return res.json(milestone);
@@ -33,7 +34,7 @@ exports.fetchById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        const milestone = milestoneHelper.createMilestoneFromRequest(req);
+        const milestone = createMilestoneFromRequest(req);
         const newMilestone = await milestoneService.create(milestone);
 
         return res.json(newMilestone);
@@ -45,6 +46,11 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const { milestoneId } = req.params;
+
+        if(!commonValidator.isValidObjectId(milestoneId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
 
         const milestone = req.body;
 
@@ -59,6 +65,12 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const { milestoneId } = req.params;
+
+        if(!commonValidator.isValidObjectId(milestoneId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
         const deletedMilestone = await milestoneService.delete(milestoneId);
 
         return res.json(deletedMilestone);

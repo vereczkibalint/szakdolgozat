@@ -1,7 +1,7 @@
 const commonValidator = require('../models/validators/common.validators');
 
 const thesisService = require('../services/thesis.services');
-const thesisHelper = require('../helpers/thesis.helper');
+const { createThesisFromRequest } = require('../helpers/req2model.helper');
 const { ApiError, handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
@@ -15,14 +15,14 @@ exports.fetchAll = async (req, res) => {
 }
 
 exports.fetchById = async (req, res) => {
-    const thesisId = req.params.thesisId;
-
-    if(!commonValidator.isValidObjectId(thesisId)) {
-        let err = new ApiError(400, 'Hibás azonosító formátum!');
-        return handleApiError(err, res);
-    }
-    
     try{
+        const {thesisId} = req.params;
+
+        if(!commonValidator.isValidObjectId(thesisId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
         const thesis = await thesisService.fetchById(thesisId);
 
         return res.json(thesis);
@@ -33,7 +33,7 @@ exports.fetchById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        const thesis = thesisHelper.createThesisFromRequest(req);
+        const thesis = createThesisFromRequest(req);
         const newThesis = await thesisService.create(thesis);
 
         return res.json(newThesis);
@@ -45,6 +45,11 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const { thesisId } = req.params;
+
+        if(!commonValidator.isValidObjectId(thesisId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
 
         const thesis = req.body;
 
@@ -59,6 +64,12 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const { thesisId } = req.params;
+
+        if(!commonValidator.isValidObjectId(thesisId)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
         const deletedThesis = await thesisService.delete(thesisId);
 
         return res.json(deletedThesis);
