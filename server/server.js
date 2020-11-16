@@ -9,6 +9,7 @@ const lecturerRouter = require('./routes/lecturer.routes');
 const studentRouter = require('./routes/student.routes');
 const thesisRouter = require('./routes/thesis.routes');
 const milestoneRouter = require('./routes/milestone.routes');
+const consultationRouter = require('./routes/consultation.routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,7 +25,10 @@ app.use('/api/lecturers', lecturerRouter);
 app.use('/api/students', studentRouter);
 app.use('/api/theses', thesisRouter);
 app.use('/api/milestones', milestoneRouter);
+app.use('/api/consultations', consultationRouter);
 
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => console.log(`A szerver elindult a(z) ${PORT} porton!`));
+
+module.exports = app;
