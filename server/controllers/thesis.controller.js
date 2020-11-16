@@ -1,5 +1,5 @@
 const commonValidator = require('../models/validators/common.validators');
-
+const mongoose = require('mongoose');
 const thesisService = require('../services/thesis.services');
 const { createThesisFromRequest } = require('../helpers/req2model.helper');
 const { ApiError, handleApiError } = require('../services/errors/ApiError');
@@ -16,7 +16,7 @@ exports.fetchAll = async (req, res) => {
 
 exports.fetchById = async (req, res) => {
     try{
-        const {thesisId} = req.params;
+        const { thesisId } = req.params;
 
         if(!commonValidator.isValidObjectId(thesisId)) {
             let err = new ApiError(400, 'Hibás azonosító!');
@@ -33,7 +33,15 @@ exports.fetchById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
+        const { lecturer, student } = req.body;
+
+        if(!commonValidator.isValidObjectId(lecturer) || !commonValidator.isValidObjectId(student)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
         const thesis = createThesisFromRequest(req);
+
         const newThesis = await thesisService.create(thesis);
 
         return res.json(newThesis);

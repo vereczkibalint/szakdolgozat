@@ -34,6 +34,12 @@ exports.fetchById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
+        const { thesis } = req.body;
+
+        if(!commonValidator.isValidObjectId(thesis)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
         const milestone = createMilestoneFromRequest(req);
         const newMilestone = await milestoneService.create(milestone);
 
