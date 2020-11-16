@@ -17,7 +17,7 @@ exports.fetchAll = async (req, res) => {
 
 exports.fetchById = async (req, res) => {
     try{
-        const {lecturerId} = req.params;
+        const { lecturerId } = req.params;
 
         if(!commonValidator.isValidObjectId(lecturerId)) {
             let err = new ApiError(400, 'Hibás azonosító!');

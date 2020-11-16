@@ -16,7 +16,7 @@ exports.fetchAll = async (req, res) => {
 
 exports.fetchById = async (req, res) => {
     try{
-        const {consultationId} = req.params;
+        const { consultationId } = req.params;
 
         if(!commonValidator.isValidObjectId(consultationId)) {
             let err = new ApiError(400, 'Hibás azonosító!');
@@ -33,6 +33,13 @@ exports.fetchById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
+        const { lecturer } = req.body;
+
+        if(!commonValidator.isValidObjectId(lecturer)) {
+            let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
         const consultation = createConsultationFromRequest(req);
         const newConsultation = await consultationService.create(consultation);
 
