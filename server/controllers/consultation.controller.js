@@ -2,7 +2,7 @@ const commonValidator = require('../models/validators/common.validators');
 const consultationService = require('../services/consultation.services');
 const { createConsultationFromRequest } = require('../helpers/req2model.helper');
 
-const { handleApiError } = require('../services/errors/ApiError');
+const { ApiError, handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
     try {

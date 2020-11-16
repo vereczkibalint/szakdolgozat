@@ -31,7 +31,7 @@ exports.create = async (consultation) => {
     try {
         const newConsultation = await consultation.save();
         
-        return newConsultation;
+        return await newConsultation.populate('lecturer', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);
@@ -44,19 +44,19 @@ exports.create = async (consultation) => {
 
 exports.update = async (consultationId, consultation) => {
     try {
-        let updatedConsultation = await Consultation.findOneAndUpdate(
-            { _id: consultationId },
-            consultation,
-            { new: true, runValidators: true, context: 'query' }
-        );
+        let consultationResult = await Consultation.findById(consultationId);
 
-        const consultationNotFound = !updatedConsultation;
-
-        if(consultationNotFound) {
+        if(!consultationResult) {
             throw new ApiError(400, 'Nincs konzultáció ilyen azonosítóval!');
         }
 
-        return updatedConsultation;
+        consultationResult.lecturer = consultation.lecturer;
+        consultationResult.startTime = consultation.startTime;
+        consultationResult.endTime = consultation.endTime;
+
+        await consultationResult.save();
+
+        return consultationResult.populate('lecturer', { password: 0 }).execPopulate();
         
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
@@ -75,7 +75,7 @@ exports.delete = async (consultationId) => {
             throw new ApiError(400, 'Nincs konzultáció ilyen azonosítóval!');
         }
 
-        return deletedConsultation;
+        return deletedConsultation.populate('lecturer', { password: 0 }).execPopulate();
     } catch (error) {
         throw new ApiError(400, error.message);
     }
