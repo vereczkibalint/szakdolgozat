@@ -1,4 +1,4 @@
-const Student = require('../../models/Student');
+const Lecturer = require('../../models/Lecturer');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -7,11 +7,11 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Students', () => {
+describe('Lecturers', () => {
 
-    const API_ENDPOINT = '/api/students';
+    const API_ENDPOINT = '/api/lecturers';
 
-    const validStudentObject = {
+    const validLecturerObject = {
         neptun: 'POOOOO',
         firstName: 'John',
         lastName: 'Doee',
@@ -21,8 +21,8 @@ describe('Students', () => {
     };
 
     describe(`/GET ${API_ENDPOINT}`, () => {
-        it('it should GET all the students without password hashes', (done) => {
-            Student.countDocuments({}, (err, count) => {
+        it('it should GET all the lecturers without password hashes', (done) => {
+            Lecturer.countDocuments({}, (err, count) => {
                 chai.request(server)
                 .get(API_ENDPOINT)
                 .end((err, res) => {
@@ -35,16 +35,16 @@ describe('Students', () => {
         });
     });
 
-    Object.keys(validStudentObject).forEach(key => {
+    Object.keys(validLecturerObject).forEach(key => {
         describe(`/POST ${API_ENDPOINT}`, () => {
-            it(`it should not create a student without ${key}`, (done) => {
-                let invalidStudentObject = {
-                    ...validStudentObject,
+            it(`it should not create a lecturer without ${key}`, (done) => {
+                let invalidLecturerObject = {
+                    ...validLecturerObject,
                 };
-                invalidStudentObject[key] = "";
+                invalidLecturerObject[key] = "";
                 chai.request(server)
                 .post(API_ENDPOINT)
-                .send(invalidStudentObject)
+                .send(invalidLecturerObject)
                 .end((err, res) => {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
@@ -60,8 +60,8 @@ describe('Students', () => {
     });
 
     describe(`/POST ${API_ENDPOINT}`, () => {
-        it('it should create a student because all data is valid', (done) => {
-            let student = {
+        it('it should create a lecturer because all data is valid', (done) => {
+            let lecturer = {
                 neptun: 'POOOOO',
                 firstName: 'John',
                 lastName: 'Doee',
@@ -69,10 +69,10 @@ describe('Students', () => {
                 password: 'itsmejohndoe',
                 email: 'john@doe.com'
             };
-            Student.deleteOne({ neptun: student.neptun }, (err) => {
+            Lecturer.deleteOne({ neptun: lecturer.neptun }, (err) => {
                 chai.request(server)
                 .post(API_ENDPOINT)
-                .send(student)
+                .send(lecturer)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -91,9 +91,9 @@ describe('Students', () => {
 
     describe(`PUT ${API_ENDPOINT}`, () => {
         it('it should update the first document of the collection', (done) => {
-            Student.findOne({}, (err, student) => {
-                let validUpdatedStudent = {
-                    _id: student._id,
+            Lecturer.findOne({}, (err, lecturer) => {
+                let validUpdatedLecturerObject = {
+                    _id: lecturer._id,
                     username: 'Updated username',
                     firstName: 'Updated firstName',
                     lastName: 'Updated lastName',
@@ -102,8 +102,8 @@ describe('Students', () => {
                 };
 
                 chai.request(server)
-                    .put(API_ENDPOINT + '/' + validUpdatedStudent._id)
-                    .send(validUpdatedStudent)
+                    .put(API_ENDPOINT + '/' + validUpdatedLecturerObject._id)
+                    .send(validUpdatedLecturerObject)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -122,9 +122,9 @@ describe('Students', () => {
 
     // describe(`DELETE ${API_ENDPOINT}`, () => {
     //     it('it should delete the first document of the collection', (done) => {
-    //         Student.findOne({}, (err, student) => {
+    //         Lecturer.findOne({}, (err, lecturer) => {
     //             chai.request(server)
-    //                 .delete(API_ENDPOINT + '/' + student._id)
+    //                 .delete(API_ENDPOINT + '/' + lecturer._id)
     //                 .end((err, res) => {
     //                     res.should.have.status(200);
     //                     res.body.should.be.a('object');
