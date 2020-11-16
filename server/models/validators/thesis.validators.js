@@ -3,5 +3,5 @@ exports.topicLengthValidator = (topicValue) => {
 }
 
 exports.titleLengthValidator = (titleValue) => {
-    return titleValue && titleValue.length > 5;
+    return titleValue && titleValue.length >= 5;
 }
