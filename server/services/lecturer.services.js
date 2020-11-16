@@ -37,7 +37,6 @@ exports.create = async (lecturer) => {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);
             throw new ApiError(400, 'Hiba az oktató létrehozása közben!', validationErrors);
         } else {
-            console.log(error);
             throw new ApiError(400, 'Hiba az oktató létrehozása közben!');
         }
     }

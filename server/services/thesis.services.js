@@ -30,7 +30,7 @@ exports.create = async (thesis) => {
     try {
         const newThesis = await thesis.save();
         
-        return newThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
+        return await newThesis.populate('lecturer', { password: 0 }).populate('student', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);
