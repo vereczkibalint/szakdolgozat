@@ -6,10 +6,10 @@ const userValidators = require('./validators/users.validators');
 
 const Schema = mongoose.Schema;
 
-const LecturerSchema = new Schema({
+const UserSchema = new Schema({
     neptun: {
         type: String,
-        required: [true, 'NEPTUN kód megadása kötelező!'],
+        required: [isNeptunRequired, 'NEPTUN kód megadása kötelező!'],
         validate: [
             { validator: userValidators.neptunLengthValidator, message: 'Hibás NEPTUN kód!'}
         ],
@@ -31,15 +31,6 @@ const LecturerSchema = new Schema({
             message: 'A vezetéknév legalább 4 karakterből kell álljon!'
         }
     },
-    username: {
-        type: String,
-        required: [true, 'Felhasználónév megadása kötelező!'],
-        validate: {
-            validator: userValidators.usernameLengthValidator,
-            message: 'A felhasználónév legalább 4 karakterből kell álljon!'
-        },
-        unique: true
-    },
     password: {
         type: String,
         required: [true, 'Jelszó megadása kötelező!'],
@@ -57,16 +48,26 @@ const LecturerSchema = new Schema({
         },
         unique: true
     },
+    role: {
+        type: String,
+        enum: ['STUDENT','LECTURER','ADMIN'],
+        required: [true, 'Jogosultság megadása kötelező!'],
+        default: 'STUDENT'
+    },
     lastLogin: {
         type: Date
     }
 });
 
-LecturerSchema.methods.comparePassword = (passwordText, callback) => {
+function isNeptunRequired() {
+    return this.role != "ADMIN";
+}
+
+UserSchema.methods.comparePassword = (passwordText, callback) => {
     return callback(null, bcrypt.compareSync(passwordText, this.password));
 }
 
-LecturerSchema.pre('findOneAndUpdate', function(next) {
+UserSchema.pre('findOneAndUpdate', function(next) {
     if(!this._update.password) {
         return next();
     }
@@ -75,7 +76,7 @@ LecturerSchema.pre('findOneAndUpdate', function(next) {
     next();
 });
 
-LecturerSchema.pre('save', function(next) {
+UserSchema.pre('save', function(next) {
     if(!this.isModified('password')) {
         return next();
     }
@@ -84,6 +85,6 @@ LecturerSchema.pre('save', function(next) {
     next();
 });
 
-LecturerSchema.plugin(uniqueValidator, { message: 'A(z) {VALUE} már használatban van!' });
+UserSchema.plugin(uniqueValidator, { message: 'A(z) {VALUE} már használatban van!' });
 
-module.exports = mongoose.model('lecturer', LecturerSchema);
+module.exports = mongoose.model('user', UserSchema);

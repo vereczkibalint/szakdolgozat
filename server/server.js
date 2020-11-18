@@ -5,8 +5,7 @@ const app = express();
 
 const connectToMongoDB = require('./config/db');
 
-const lecturerRouter = require('./routes/lecturer.routes');
-const studentRouter = require('./routes/student.routes');
+const userRouter = require('./routes/user.routes');
 const thesisRouter = require('./routes/thesis.routes');
 const milestoneRouter = require('./routes/milestone.routes');
 const consultationRouter = require('./routes/consultation.routes');
@@ -21,8 +20,7 @@ app.get('/', (req, res) => {
     res.send('It works!');
 });
 
-app.use('/api/lecturers', lecturerRouter);
-app.use('/api/students', studentRouter);
+app.use('/api/users', userRouter);
 app.use('/api/theses', thesisRouter);
 app.use('/api/milestones', milestoneRouter);
 app.use('/api/consultations', consultationRouter);

@@ -32,7 +32,7 @@ exports.create = async (consultation) => {
     try {
         const newConsultation = await consultation.save();
         
-        return await newConsultation.populate('lecturer', { password: 0 }).execPopulate();
+        return await newConsultation.populate('user', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);
@@ -57,7 +57,7 @@ exports.update = async (consultationId, consultation) => {
 
         await consultationResult.save();
 
-        return consultationResult.populate('lecturer', { password: 0 }).execPopulate();
+        return consultationResult.populate('user', { password: 0 }).execPopulate();
         
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
@@ -76,7 +76,7 @@ exports.delete = async (consultationId) => {
             throw new ApiError(400, 'Nincs konzultáció ilyen azonosítóval!');
         }
 
-        return deletedConsultation.populate('lecturer', { password: 0 }).execPopulate();
+        return deletedConsultation.populate('user', { password: 0 }).execPopulate();
     } catch (error) {
         throw new ApiError(400, error.message);
     }
@@ -91,7 +91,7 @@ exports.reserve = async (reservation) => {
 
         const reservedConsultation = await reservation.save();
 
-        return reservedConsultation.populate('consultation').populate('student').execPopulate();
+        return reservedConsultation.populate('consultation').populate('user').execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);
@@ -109,9 +109,7 @@ exports.cancel = async (reservationId) => {
             throw new ApiError(400, 'Nincs foglalás ilyen azonosítóval!');
         }
 
-        console.log(deletedReservation);
-
-        return deletedReservation.populate('consultation').populate('student').execPopulate();
+        return deletedReservation.populate('consultation').populate('user').execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);

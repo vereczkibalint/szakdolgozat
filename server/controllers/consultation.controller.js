@@ -124,12 +124,10 @@ exports.cancel = async (req, res) => {
 
 exports.fetchReservations = async (req, res) => {
     try {
-        console.log('here');
         const reservations = await consultationService.fetchAllReservation();
 
         return res.json(reservations);
     } catch (error) {
-        console.log(error);
         return handleApiError(error, res);
     }
 }
@@ -147,7 +145,6 @@ exports.fetchReservationsById = async (req, res) => {
 
         return res.json(reservation);
     } catch(error) {
-        console.log(error);
         return handleApiError(error, res);
     }
 }

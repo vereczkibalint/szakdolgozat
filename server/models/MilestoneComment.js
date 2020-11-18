@@ -11,14 +11,7 @@ const MilestoneCommentSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         required: [true, 'Szerző megadása kötelező!'],
-        /*
-            nincs ref, mert nem tudni, hogy lecturer vagy student
-            így a populate() hívásnál manuálisan meg lehet mondani, hogy
-            honnan kerüljön az adat behúzásra
-                MilestoneCommentSchema.
-                find().
-                populate({ path: 'refnév', model: refModel }).
-                exec(function(error, docs) {  }); */
+        ref: 'user'
     },
     message: {
         type: String,

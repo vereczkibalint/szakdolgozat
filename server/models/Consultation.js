@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const ConsultationSchema = new Schema({
     lecturer: {
         type: Schema.Types.ObjectId,
-        ref: 'lecturer',
+        ref: 'user',
         required: [true, 'Oktató megadása kötelező!']
     },
     startTime: {
@@ -24,7 +24,6 @@ const ConsultationSchema = new Schema({
 });
 
 ConsultationSchema.pre('validate', function(next) {
-    console.log('inside validate');
     if(this.startTime > this.endTime) {
         this.invalidate('endTime', 'A befejezési időpontnak a kezdési időponttól későbbinek kell lennie!')
     }
@@ -33,7 +32,7 @@ ConsultationSchema.pre('validate', function(next) {
 });
 
 const populateHook = function(next) {
-    this.populate('lecturer', { password: 0 });
+    this.populate('user', { password: 0 });
     next();
 }
 

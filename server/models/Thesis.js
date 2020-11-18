@@ -7,12 +7,12 @@ const Schema = mongoose.Schema;
 const ThesisSchema = new Schema({
     lecturer: {
         type: Schema.Types.ObjectId,
-        ref: 'lecturer',
+        ref: 'user',
         required: [true, 'Oktató megadása kötelező!']
     },
     student: {
         type: Schema.Types.ObjectId,
-        ref: 'student',
+        ref: 'user',
         required: [true, 'Hallgató megadása kötelező!']
     },
     topic: {
@@ -34,7 +34,7 @@ const ThesisSchema = new Schema({
 });
 
 const populateHook = function(next) {
-    this.populate('lecturer', { password: 0 }).populate('student', { password: 0 });
+    this.populate('user', { password: 0 });
     next();
 }
 

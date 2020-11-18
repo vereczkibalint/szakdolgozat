@@ -10,7 +10,7 @@ const ConsultationReservationSchema = new Schema({
     },
     student: {
         type: Schema.Types.ObjectId,
-        ref: 'student',
+        ref: 'user',
         required: [true, 'Hallgató megadása kötelező!']
     },
     reservedAt: {
@@ -21,7 +21,7 @@ const ConsultationReservationSchema = new Schema({
 });
 
 const populateHook = function(next) {
-    this.populate('consultation').populate('student', { password: 0 });
+    this.populate('consultation').populate('user', { password: 0 });
     next();
 }
 

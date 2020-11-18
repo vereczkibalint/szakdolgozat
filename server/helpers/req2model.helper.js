@@ -1,6 +1,5 @@
-const Lecturer = require('../models/Lecturer');
+const User = require('../models/User');
 const Milestone = require('../models/Milestone');
-const Student = require('../models/Student');
 const Thesis = require('../models/Thesis');
 const Consultation = require('../models/Consultation');
 const ConsultationReservation = require('../models/ConsultationReservation');
@@ -10,16 +9,10 @@ exports.createThesisFromRequest = (request) => {
 
     return thesis;
 }
-exports.createStudentFromRequest = (request) => {
-    const student = new Student(request.body);
+exports.createUserFromRequest = (request) => {
+    const user = new User(request.body);
 
-    return student;
-}
-
-exports.createLecturerFromRequest = (request) => {
-    const lecturer = new Lecturer(request.body);
-
-    return lecturer;
+    return user;
 }
 
 exports.createMilestoneFromRequest = (request) => {
