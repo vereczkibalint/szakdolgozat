@@ -30,7 +30,7 @@ exports.create = async (thesis) => {
     try {
         const newThesis = await thesis.save();
         
-        return await newThesis.populate('user', { password: 0 }).execPopulate();
+        return await newThesis.populate('student', { password: 0 }).populate('lecturer', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);
@@ -54,7 +54,7 @@ exports.update = async (thesisId, thesis) => {
             throw new ApiError(400, 'Nincs szakdolgozat ilyen azonosítóval!');
         }
         
-        return updatedThesis.populate('user', { password: 0 }).execPopulate();
+        return updatedThesis.populate('student', { password: 0 }).populate('lecturer', { password: 0 }).execPopulate();
     } catch (error) {
         if(error instanceof mongoose.Error.ValidationError) {
             let validationErrors = validationErrorHelper.ProcessValidationError(error);
@@ -72,7 +72,7 @@ exports.delete = async (thesisId) => {
             throw new ApiError(400, 'Nincs szakdolgozat ilyen azonosítóval!');
         }
 
-        return deletedThesis.populate('user', { password: 0 }).execPopulate();
+        return deletedThesis.populate('student', { password: 0 }).populate('lecturer', { password: 0 }).execPopulate();
     } catch (error) {
         throw new ApiError(400, error.message);
     }

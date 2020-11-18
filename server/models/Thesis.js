@@ -34,7 +34,7 @@ const ThesisSchema = new Schema({
 });
 
 const populateHook = function(next) {
-    this.populate('user', { password: 0 });
+    this.populate('student', { password: 0 }).populate('lecturer', { password: 0 });
     next();
 }
 
