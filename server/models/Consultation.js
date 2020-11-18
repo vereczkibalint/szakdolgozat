@@ -32,7 +32,7 @@ ConsultationSchema.pre('validate', function(next) {
 });
 
 const populateHook = function(next) {
-    this.populate('user', { password: 0 });
+    this.populate('lecturer', { password: 0 });
     next();
 }
 

@@ -38,7 +38,8 @@ const MilestoneSchema = new Schema({
         enum: {
             values: ['accepted', 'rejected', 'pending'],
             message: 'Hibás státusz!'
-        }
+        },
+        default: 'pending'
     }
 });
 
