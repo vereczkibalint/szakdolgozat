@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validationErrorHelper = require('../helpers/validation_errors.helper');
 const Consultation = require('../models/Consultation');
+const ConsultationReservation = require('../models/ConsultationReservation');
 
 const {ApiError} = require('./errors/ApiError');
 
@@ -78,5 +79,68 @@ exports.delete = async (consultationId) => {
         return deletedConsultation.populate('lecturer', { password: 0 }).execPopulate();
     } catch (error) {
         throw new ApiError(400, error.message);
+    }
+}
+
+exports.reserve = async (reservation) => {
+    try {
+        const consultation = await Consultation.findById(reservation.consultation);
+        if(!consultation) {
+            throw new ApiError(400, 'Nincs konzultáció ilyen azonosítóval!');
+        }
+
+        const reservedConsultation = await reservation.save();
+
+        return reservedConsultation.populate('consultation').populate('student').execPopulate();
+    } catch (error) {
+        if(error instanceof mongoose.Error.ValidationError) {
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a foglalás létrehozása közben!', validationErrors);
+        } else {
+            throw new ApiError(400, 'Hiba a foglalás létrehozása közben!');
+        }
+    }
+}
+
+exports.cancel = async (reservationId) => {
+    try {
+        const deletedReservation = await ConsultationReservation.findOneAndRemove({ _id: reservationId });
+        if(!deletedReservation) {
+            throw new ApiError(400, 'Nincs foglalás ilyen azonosítóval!');
+        }
+
+        console.log(deletedReservation);
+
+        return deletedReservation.populate('consultation').populate('student').execPopulate();
+    } catch (error) {
+        if(error instanceof mongoose.Error.ValidationError) {
+            let validationErrors = validationErrorHelper.ProcessValidationError(error);
+            throw new ApiError(400, 'Hiba a foglalás visszavonása közben!', validationErrors);
+        } else {
+            throw new ApiError(400, 'Hiba a foglalás visszavonása közben!');
+        }
+    }
+}
+
+exports.fetchAllReservation = async () => {
+    try {
+        const reservations = await ConsultationReservation.find();
+        return reservations;
+    } catch (error) {
+        throw new ApiError(400, 'Hiba a foglalások lekérése során!');
+    }
+}
+
+exports.fetchReservationById = async (reservationId) => {
+    try {
+        const reservation = await ConsultationReservation.findById(reservationId);
+
+        if(!reservation) {
+            throw new ApiError(400, 'Nincs foglalás ilyen azonosítóval!');
+        }
+
+        return reservation;
+    } catch (error) {
+        throw new ApiError(400, 'Hiba a foglalás lekérése során!');
     }
 }

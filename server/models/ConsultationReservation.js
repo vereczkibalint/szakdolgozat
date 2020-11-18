@@ -20,4 +20,11 @@ const ConsultationReservationSchema = new Schema({
     }
 });
 
+const populateHook = function(next) {
+    this.populate('consultation').populate('student', { password: 0 });
+    next();
+}
+
+ConsultationReservationSchema.pre('find', populateHook).pre('findOne', populateHook);
+
 module.exports = mongoose.model('consultation_reservation', ConsultationReservationSchema);

@@ -3,6 +3,7 @@ const Milestone = require('../models/Milestone');
 const Student = require('../models/Student');
 const Thesis = require('../models/Thesis');
 const Consultation = require('../models/Consultation');
+const ConsultationReservation = require('../models/ConsultationReservation');
 
 exports.createThesisFromRequest = (request) => {
     const thesis = new Thesis(request.body);
@@ -31,4 +32,10 @@ exports.createConsultationFromRequest = (request) => {
     const consultation = new Consultation(request.body);
 
     return consultation;
+}
+
+exports.createConsultationReservationFromRequest = (request) => {
+    const reservation = new ConsultationReservation(request.body);
+
+    return reservation;
 }
