@@ -1,8 +1,13 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const uniqueValidator = require('mongoose-unique-validator');
 const userValidators = require('./validators/users.validators');
+
+const {ApiError} = require('../services/errors/ApiError');
 
 const Schema = mongoose.Schema;
 
@@ -63,8 +68,36 @@ function isNeptunRequired() {
     return this.role != "ADMIN";
 }
 
-UserSchema.methods.comparePassword = (passwordText, callback) => {
-    return callback(null, bcrypt.compareSync(passwordText, this.password));
+UserSchema.methods.comparePassword = async function(passwordText) {
+    try {
+        const match = await bcrypt.compare(passwordText, this.password);
+
+        return match;
+    } catch (error) {
+        throw new ApiError(500, 'Hiba a belépés közben!');
+    }
+}
+
+UserSchema.methods.generateJWT = async function() {
+    const payload = {
+        _id: this._id,
+        neptun: this.neptun,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        role: this.role,
+        lastname: this.lastLogin
+    };
+
+    try {
+        const token = jwt.sign(payload, 
+                        process.env.JWT_SECRET,
+                        { expiresIn: '1d'});
+
+        return token;
+    } catch (error) {
+        throw new ApiError(500, 'Hiba a token generálása közben!');
+    }
 }
 
 UserSchema.pre('findOneAndUpdate', function(next) {
