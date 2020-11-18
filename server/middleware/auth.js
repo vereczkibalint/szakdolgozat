@@ -11,12 +11,12 @@ module.exports = (req, res, next) => {
   }
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET, (error, token) => {
+    jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
       if (error) {
         let err = new ApiError(401, 'Hibás token!');
         return handleApiError(err, res);
       } else {
-        req.user = token.user;
+        req.user = decoded;
         next();
       }
     });
