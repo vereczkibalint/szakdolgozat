@@ -1,16 +1,19 @@
 const express = require('express');
 const consultationController = require('../controllers/consultation.controller');
 
+const auth = require('../middleware/auth');
+const { checkPermission } = require('../middleware/permission');
+
 const router = express.Router();
 
-router.get('/', consultationController.fetchAll);
-router.get('/reservations', consultationController.fetchReservations);
-router.get('/reservations/:reservationId', consultationController.fetchReservationsById);
-router.get('/:consultationId', consultationController.fetchById);
-router.post('/', consultationController.create);
-router.post('/reserve', consultationController.reserve);
-router.post('/cancel', consultationController.cancel);
-router.put('/:consultationId', consultationController.update);
-router.delete('/:consultationId', consultationController.delete);
+router.get('/', auth, consultationController.fetchAll);
+router.get('/reservations', auth, consultationController.fetchReservations);
+router.get('/reservations/:reservationId', auth, consultationController.fetchReservationsById);
+router.get('/:consultationId', auth, consultationController.fetchById); /* student egyezzen a req.user.id-vel */
+router.post('/', auth, checkPermission(['LECTURER','ADMIN']), consultationController.create);
+router.post('/reserve', auth, checkPermission(['STUDENT']), consultationController.reserve);
+router.post('/cancel', auth, checkPermission(['STUDENT']), consultationController.cancel);
+router.put('/:consultationId', auth, checkPermission(['LECTURER','ADMIN']),consultationController.update);
+router.delete('/:consultationId', checkPermission(['LECTURER','ADMIN']),consultationController.delete);
 
 module.exports = router;
