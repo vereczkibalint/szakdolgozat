@@ -6,7 +6,7 @@ const { ApiError, handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
     try {
-        const theses = await thesisService.fetchAll();
+        const theses = await thesisService.fetchAll(req.user);
 
         return res.json(theses);
     } catch(error) {
@@ -61,7 +61,7 @@ exports.update = async (req, res) => {
 
         const thesis = req.body;
 
-        const updatedThesis = await thesisService.update(thesisId, thesis);
+        const updatedThesis = await thesisService.update(req.user, thesis);
 
         return res.json(updatedThesis);
     } catch (error) {
@@ -78,7 +78,7 @@ exports.delete = async (req, res) => {
             return handleApiError(err, res);
         }
 
-        const deletedThesis = await thesisService.delete(thesisId);
+        const deletedThesis = await thesisService.delete(req.user, thesisId);
 
         return res.json(deletedThesis);
     } catch (error) {

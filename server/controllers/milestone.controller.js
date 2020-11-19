@@ -6,7 +6,7 @@ const { ApiError, handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
     try {
-        const milestones = await milestoneService.fetchAll();
+        const milestones = await milestoneService.fetchAll(req.user);
 
         return res.json(milestones);
     } catch(error) {
@@ -60,7 +60,7 @@ exports.update = async (req, res) => {
 
         const milestone = req.body;
 
-        const updatedMilestone = await milestoneService.update(milestoneId, milestone);
+        const updatedMilestone = await milestoneService.update(req.user, milestoneId, milestone);
 
         return res.json(updatedMilestone);
     } catch (error) {
@@ -77,8 +77,8 @@ exports.delete = async (req, res) => {
             return handleApiError(err, res);
         }
 
-        const deletedMilestone = await milestoneService.delete(milestoneId);
-
+        const deletedMilestone = await milestoneService.delete(req.user, milestoneId);
+        console.log(deletedMilestone);
         return res.json(deletedMilestone);
     } catch (error) {
         return handleApiError(error, res);

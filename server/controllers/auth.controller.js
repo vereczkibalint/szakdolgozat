@@ -1,4 +1,3 @@
-const commonValidator = require('../models/validators/common.validators');
 const authService = require('../services/auth.services');
 
 const { ApiError, handleApiError } = require('../services/errors/ApiError');
@@ -28,9 +27,9 @@ exports.login = async (req, res) => {
             email,
             password
         };
-        const token = await authService.login(credentials);
+        const response = await authService.login(credentials);
         
-        return res.json({ token });
+        return res.json(response);
     } catch(error) {
         return handleApiError(error, res);
     }

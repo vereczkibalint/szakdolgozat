@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.get('/', auth, milestoneController.fetchAll);
 router.get('/:milestoneId', auth, milestoneController.fetchById);
-router.post('/', auth, checkPermission(['LECTURER', 'ADMIN']), milestoneController.create);
-router.put('/:milestoneId', auth, checkPermission(['LECTURER', 'ADMIN']), milestoneController.update);
-router.delete('/:milestoneId', auth, checkPermission(['LECTURER', 'ADMIN']), milestoneController.delete);
+router.post('/', auth, checkPermission(['LECTURER']), milestoneController.create);
+router.put('/:milestoneId', auth, checkPermission(['LECTURER']), milestoneController.update);
+router.delete('/:milestoneId', auth, checkPermission(['LECTURER']), milestoneController.delete);
 
 module.exports = router;

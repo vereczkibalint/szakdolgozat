@@ -3,9 +3,19 @@ const validationErrorHelper = require('../helpers/validation_errors.helper');
 const Thesis = require('../models/Thesis');
 const { ApiError } = require('./errors/ApiError');
 
-exports.fetchAll = async () => {
+exports.fetchAll = async (user) => {
     try {
-        const theses = await Thesis.find();
+        let theses = [];
+
+        switch(user.role) {
+            case 'LECTURER':
+                theses = await Thesis.find({ lecturer: user._id });
+            break;
+            case 'STUDENT':
+                theses = await Thesis.find({ student: user._id });
+            break;
+        }
+        
         return theses;
     } catch (error) {
         throw new ApiError(400, 'Hiba az szakdolgozatok lekérése során!');
@@ -41,14 +51,14 @@ exports.create = async (thesis) => {
     }
 }
 
-exports.update = async (thesisId, thesis) => {
+exports.update = async (user, thesis) => {
     try {
         const updatedThesis = await Thesis.findOneAndUpdate(
-            { _id: thesisId },
-            thesis,
-            { new: true, runValidators: true });
+                    { _id: thesis._id, lecturer: user._id },
+                    thesis,
+                    { new: true, runValidators: true });
 
-        const thesisNotFound = !updatedThesis;
+        const thesisNotFound = !!updatedThesis;
 
         if(thesisNotFound) {
             throw new ApiError(400, 'Nincs szakdolgozat ilyen azonosítóval!');
@@ -65,10 +75,11 @@ exports.update = async (thesisId, thesis) => {
     }
 }
 
-exports.delete = async (thesisId) => {
+exports.delete = async (user, thesisId) => {
     try {
-        const deletedThesis = await Thesis.findOneAndRemove({ _id: thesisId });
-        if(!deletedThesis) {
+        const deletedThesis = await Thesis.findOneAndRemove({ _id: thesisId, lecturer: user._id });
+
+        if(!!deletedThesis) {
             throw new ApiError(400, 'Nincs szakdolgozat ilyen azonosítóval!');
         }
 

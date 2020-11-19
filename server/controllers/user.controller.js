@@ -3,7 +3,7 @@ const { createUserFromRequest } = require('../helpers/req2model.helper');
 
 const commonValidator = require('../models/validators/common.validators');
 
-const { handleApiError } = require('../services/errors/ApiError');
+const { ApiError, handleApiError } = require('../services/errors/ApiError');
 
 exports.fetchAll = async (req, res) => {
     try {
@@ -54,12 +54,22 @@ exports.create = async (req, res) => {
     }
 }
 
+exports.import = async (req, res) => {
+    // TODO
+}
+
 exports.update = async (req, res) => {
     try {
         const { userId } = req.params;
+        const { _id, role } = req.user;
 
         if(!commonValidator.isValidObjectId(userId)) {
             let err = new ApiError(400, 'Hibás azonosító!');
+            return handleApiError(err, res);
+        }
+
+        if(role !== 'ADMIN' && _id.toString() !== userId) {
+            let err = new ApiError(401, 'Hozzáférés megtagadva!');
             return handleApiError(err, res);
         }
 

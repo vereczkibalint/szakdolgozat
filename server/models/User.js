@@ -58,9 +58,6 @@ const UserSchema = new Schema({
         enum: ['STUDENT','LECTURER','ADMIN'],
         required: [true, 'Jogosultság megadása kötelező!'],
         default: 'STUDENT'
-    },
-    lastLogin: {
-        type: Date
     }
 });
 
@@ -85,8 +82,7 @@ UserSchema.methods.generateJWT = async function() {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        role: this.role,
-        lastname: this.lastLogin
+        role: this.role
     };
 
     try {

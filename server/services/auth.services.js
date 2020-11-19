@@ -32,7 +32,19 @@ exports.login = async (credentials) => {
             throw new ApiError(401, 'Hibás a tokengenerálás közben!');
         }
 
-        return token;
+        let response = {
+            token,
+            user: {
+                _id: user._id,
+                neptun: user.neptun,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role
+            }
+        };
+
+        return response;
 
     } catch (error) {
         throw new ApiError(400, error.message);
