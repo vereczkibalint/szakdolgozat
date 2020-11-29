@@ -4,6 +4,7 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/', auth, authController.fetchUser);
-router.post('/login', authController.login);
+router.post('/', authController.login);
+router.post('/admin', authController.adminLogin)
 
 module.exports = router;
