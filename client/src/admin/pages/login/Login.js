@@ -1,11 +1,27 @@
 import React from 'react';
+import './Login.css';
 
-const Login = () => {
-    return (
-        <div>
-           <h3>Login Page</h3>
-        </div>
-    )
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import LoginForm from '../../components/LoginForm';
+import { Redirect } from 'react-router-dom';
+
+const Login = ({ isAuthenticated }) => {
+
+    if(isAuthenticated) {
+        return <Redirect to='/admin/dashboard' />;
+    }
+
+    return <LoginForm />;
 }
 
-export default Login;
+Login.propTypes = {
+    isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = (state) => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, {})(Login);

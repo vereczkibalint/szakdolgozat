@@ -5,22 +5,36 @@ import {
     AUTH_LOGOUT
 } from '../constants/authConstants';
 
-const authLoginReducer = (state = {}, action) => {
+const initialState = {
+    loading: false,
+    isAuthenticated: false,
+    token: localStorage.getItem('token') || undefined,
+    user: JSON.parse(localStorage.getItem('user')) || undefined
+};
+
+const authLoginReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch(type) {
         case AUTH_REQUEST:
             return { 
+                ...state,
                 loading: true
             }
         case AUTH_SUCCESS:
-            return { 
-                loading: false, token: payload.token, user: payload.user
+            return {
+                ...state,
+                loading: false,
+                token: payload.token,
+                user: payload.user,
+                isAuthenticated: true
             }
         case AUTH_FAILED:
             return {
+                ...state,
                 loading: false,
-                error: payload
+                error: payload,
+                isAuthenticated: false
             }
         case AUTH_LOGOUT:
             return {}
