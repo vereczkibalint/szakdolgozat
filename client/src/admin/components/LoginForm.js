@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Alert from '../components/Alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { adminLogin } from '../actions/authActions';
+import { adminLogin } from '../services/authService';
 
 
 const LoginForm = ({ adminLogin, error }) => {

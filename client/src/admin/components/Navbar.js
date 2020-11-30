@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../actions/authActions';
+import { logout } from '../services/authService';
 
 const Navbar = ({ logout }) => {
     return (
@@ -21,7 +21,7 @@ const Navbar = ({ logout }) => {
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
-                    <Link style={{ cursor: "pointer" }} className="nav-link" onClick={() => logout()}>Kijelentkezés</Link>
+                    <Link to="" style={{ cursor: "pointer" }} className="nav-link" onClick={logout}>Kijelentkezés</Link>
                 </ul>
             </div>
         </nav>

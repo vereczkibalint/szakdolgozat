@@ -2,14 +2,16 @@ import {
     AUTH_REQUEST,
     AUTH_SUCCESS,
     AUTH_FAILED,
-    AUTH_LOGOUT
+    AUTH_LOGOUT,
+    AUTH_LOAD_USER,
+    AUTH_LOAD_USER_FAILED
 } from '../constants/authConstants';
 
 const initialState = {
     loading: false,
     isAuthenticated: false,
-    token: localStorage.getItem('token') || undefined,
-    user: JSON.parse(localStorage.getItem('user')) || undefined
+    token: null,
+    user: null
 };
 
 const authLoginReducer = (state = initialState, action) => {
@@ -28,6 +30,20 @@ const authLoginReducer = (state = initialState, action) => {
                 token: payload.token,
                 user: payload.user,
                 isAuthenticated: true
+            }
+        case AUTH_LOAD_USER:
+            return {
+                ...state,
+                loading: false,
+                user: payload.user,
+                token: localStorage.getItem('token'),
+                isAuthenticated: true
+            }
+        case AUTH_LOAD_USER_FAILED:
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated: false
             }
         case AUTH_FAILED:
             return {
