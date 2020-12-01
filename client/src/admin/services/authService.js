@@ -4,12 +4,10 @@ import { authRequested, successfulAuth, failedAuth, logoutAuth, userLoaded, user
 
 export const loadUser = () => {
     return async (dispatch) => {
-        console.log('loaded user');
         try {
             const { data } = await api.get('/auth');
             dispatch(userLoaded(data));
         } catch (error) {
-            console.log(error);
             const { data } = error.response;
             dispatch(userLoadFailed(data));
         }
@@ -45,7 +43,6 @@ export const logout = () => {
 }
 
 export const setAuthToken = (token) => {
-    console.log('set token');
     if (token) {
       api.defaults.headers.common = {'Authorization': `Bearer ${token}`}    
     } else {

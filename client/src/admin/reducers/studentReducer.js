@@ -1,0 +1,20 @@
+import {
+    STUDENT_LOAD_REQUEST,
+    STUDENT_LOAD_SUCCESS,
+    STUDENT_LOAD_FAILED,
+    STUDENT_INSERT_REQUEST,
+    STUDENT_INSERT_SUCCESS,
+    STUDENT_INSERT_FAILED,
+    STUDENT_UPDATE_REQUEST,
+    STUDENT_UPDATE_SUCCESS,
+    STUDENT_UPDATE_FAILED,
+    STUDENT_DELETE_REQUEST,
+    STUDENT_DELETE_SUCCESS,
+    STUDENT_DELETE_FAILED
+} from '../constants/studentConstants';
+
+const initialState = {
+    isLoading: false,
+    students: [],
+    errors: []
+};
