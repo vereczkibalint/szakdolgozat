@@ -36,7 +36,7 @@ const authLoginReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 user: payload.user,
-                token: localStorage.getItem('token'),
+                token: localStorage.token,
                 isAuthenticated: true
             }
         case AUTH_LOAD_USER_FAILED:
