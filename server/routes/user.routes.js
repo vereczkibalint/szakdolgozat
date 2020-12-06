@@ -5,7 +5,7 @@ const { checkPermission } = require('../middleware/permission');
 const router = express.Router();
 
 router.get('/', auth, checkPermission(['ADMIN']), userController.fetchAll);
-router.get('/:role', auth, checkPermission(['LECTURER']), userController.fetchByRole);
+router.get('/:role', auth, checkPermission(['LECTURER','ADMIN']), userController.fetchByRole);
 router.get('/:userId', auth, userController.fetchById);
 router.post('/', auth, checkPermission(['ADMIN']), userController.create);
 router.post('/import', auth, checkPermission(['LECTURER','ADMIN']), userController.import);
