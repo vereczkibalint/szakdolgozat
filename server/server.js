@@ -1,5 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors');
 
 const app = express();
 
@@ -13,6 +14,7 @@ const consultationRouter = require('./routes/consultation.routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 app.use(helmet());
 
 connectToMongoDB();
