@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
@@ -9,16 +9,11 @@ import LoginPage from './pages/login/Login';
 import Dashboard from './pages/dashboard/Dashboard';
 import ManageStudents from './pages/students/ManageStudents';
 import ManageLecturers from './pages/lecturers/ManageLecturers';
-import ProtectedRoute from '../components/ProtectedRoute';
 import Navbar from './components/Navbar';
+import store from './store';
+import ProtectedRoute from '../components/ProtectedRoute';
 
-import { loadUser, setAuthToken } from './services/authService';
-
-const AdminApp = ({ isAuthenticated, loadUser }) => {
-    useEffect(() => {
-        setAuthToken(localStorage.getItem('token'));
-        loadUser();
-    }, []);
+const AdminApp = ({ isAuthenticated }) => {
     return (
         <>
             { isAuthenticated ? <Navbar /> : '' }
@@ -38,7 +33,7 @@ const AdminApp = ({ isAuthenticated, loadUser }) => {
                         path="/admin/dashboard/lecturers"
                         exact
                         component={ManageLecturers}
-                        />       
+                        />
 
                 <Route component={NotFound} />
             </Switch>
@@ -47,12 +42,11 @@ const AdminApp = ({ isAuthenticated, loadUser }) => {
 }
 
 AdminApp.propTypes = {
-    isAuthenticated: PropTypes.bool,
-    loadUser: PropTypes.func.isRequired
+    isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { loadUser })(AdminApp);
+export default connect(mapStateToProps, {})(AdminApp);
