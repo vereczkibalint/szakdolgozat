@@ -1,12 +1,13 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {useSelector} from "react-redux";
 
 const ProtectedRoute = ({
     component: Component,
-    isAuthenticated,
     ...rest
 }) => {
+    let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
     if(!isAuthenticated) {
         return <Redirect to="/admin/login" />;
     }
@@ -20,8 +21,4 @@ const ProtectedRoute = ({
     );
 }
 
-const mapStateToProps = (state) => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps,{})(ProtectedRoute);
+export default ProtectedRoute;

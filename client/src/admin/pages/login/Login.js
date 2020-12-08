@@ -1,14 +1,13 @@
 import React from 'react';
 import './Login.css';
 
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import LoginForm from '../../components/LoginForm';
+import LoginForm from '../../components/Forms/LoginForm';
 import { Redirect } from 'react-router-dom';
 
-const Login = ({ isAuthenticated }) => {
-
+const Login = () => {
+    let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if(isAuthenticated) {
         return <Redirect to='/admin/dashboard' />;
     }
@@ -16,12 +15,4 @@ const Login = ({ isAuthenticated }) => {
     return <LoginForm />;
 }
 
-Login.propTypes = {
-    isAuthenticated: PropTypes.bool
-}
-
-const mapStateToProps = (state) => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, {})(Login);
+export default Login;
