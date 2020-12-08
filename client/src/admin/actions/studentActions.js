@@ -91,11 +91,11 @@ export const studentDeleteRequested = () => {
     }
 }
 
-export const studentDeleteSuccess = (student) => {
+export const studentDeleteSuccess = (studentId) => {
     return {
         type: STUDENT_DELETE_SUCCESS,
         payload: {
-            student
+            studentId
         }
     }
 }

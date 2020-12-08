@@ -29,6 +29,7 @@ const studentReducer = (state = initialState, action) => {
         case STUDENT_DELETE_REQUEST:
             return {
                 ...state,
+                errors: [],
                 isLoading: true
             }
         case STUDENT_LOAD_SUCCESS:
@@ -41,7 +42,9 @@ const studentReducer = (state = initialState, action) => {
         case STUDENT_INSERT_SUCCESS:
             return {
                 ...state,
-                students: [...state.students, payload.student]
+                students: [...state.students, payload.student],
+                errors: [],
+                isLoading: false
             }
         case STUDENT_UPDATE_SUCCESS:
             return {
@@ -52,12 +55,16 @@ const studentReducer = (state = initialState, action) => {
                     }
 
                     return student;
-                })
+                }),
+                isLoading: false,
+                errors: []
             }
-        case STUDENT_DELETE_SUCCESS: 
+        case STUDENT_DELETE_SUCCESS:
             return {
                 ...state,
-                students: state.students.filter(student => student._id !== payload.studentId)
+                isLoading: false,
+                students: state.students.filter(student => student._id !== payload.studentId),
+                errors: []
             }
         case STUDENT_LOAD_FAILED:
         case STUDENT_INSERT_FAILED:
@@ -66,8 +73,7 @@ const studentReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                students: [],
-                errors: payload.errors
+                errors: payload.errors,
             }
         default:
             return state;
