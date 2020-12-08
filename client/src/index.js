@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
 import 'jquery/dist/jquery.min';
 import 'popper.js/dist/popper.min';
+import 'react-bootstrap/dist/react-bootstrap.min';
 
 ReactDOM.render(
   <App />,
