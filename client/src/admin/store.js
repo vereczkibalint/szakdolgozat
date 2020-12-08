@@ -1,15 +1,25 @@
 import { createStore, applyMiddleware } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import adminAppRootReducer from './reducers/index';
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 const middleware = [thunk];
 
+const persistConfig = {
+    key: 'admin',
+    storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, adminAppRootReducer);
+
 const store = createStore(
-    adminAppRootReducer,
+    persistedReducer,
     composeWithDevTools(applyMiddleware(...middleware))
 );
 
 window.adminStore = store;
 
-export default store;
+const persistor = persistStore(store);
+export { store, persistor };
