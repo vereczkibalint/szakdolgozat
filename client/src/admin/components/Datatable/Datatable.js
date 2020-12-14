@@ -1,33 +1,77 @@
-import React from 'react';
-import { connect } from 'react-redux';
-
-import { deleteStudent } from "../../services/studentService";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteStudent, deleteLecturer } from '../../services/userService';
 
 import Table from 'react-bootstrap/Table';
-import Button from "react-bootstrap/Button";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-import Alert from "../Alert";
+import { faInfoCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Datatable = ({ headers, body, history, deleteStudent }) => {
+import Alert from '../Alert';
 
-    function handleDetailsClick(id) {
-        history.push(`/admin/dashboard/students/${id}`);
+const Datatable = ({ headers, body, history }) => {
+    const dispatch = useDispatch();
+
+    const [filterBy, setFilterBy] = useState('name');
+    const [filterInput, setFilterInput] = useState('');
+    const [filteredData, setFilteredData] = useState([...body]);
+
+    useEffect(() => {
+        const filterData = () => {
+            switch(filterBy){
+                case 'name':
+                    setFilteredData(body.filter(user => user.firstName.toLowerCase().includes(filterInput.toLowerCase()) || user.lastName.toLowerCase().includes(filterInput.toLowerCase())));
+                    break;
+                case 'neptun':
+                    setFilteredData(body.filter(user => user.neptun.toLowerCase().includes(filterInput.toLowerCase())));
+                    break;
+                case 'email':
+                    setFilteredData(body.filter(user => user.email.toLowerCase().includes(filterInput.toLowerCase())));
+                    break;
+                default:
+                    return;
+            }
+        }
+        filterData();
+    }, [body, filterBy, filterInput]);
+
+    function handleDetailsClick(user) {
+        history.push(`/admin/dashboard/details/${user._id}`);
     }
 
-    function handleDeleteClick(id) {
+    function handleDeleteClick(user) {
         if(window.confirm("Biztosan törli a felhasználót?")) {
-            deleteStudent(id);
+            if(user.role === 'STUDENT') {
+                dispatch(deleteStudent(user._id));
+            } else {
+                dispatch(deleteLecturer(user._id));
+            }
         }
     }
 
     if(body.length === 0) {
-        return <Alert type="danger" message="Nincsen hallgató az adatbázisban!" />;
+        return <Alert type="danger" message="Nincsen felhasználó az adatbázisban!" />;
     }
 
     return (
         <>
+            <div className="d-flex mb-3">
+                <Form.Control className="w-auto mr-3" as="select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+                    <option value="name">Név alapján</option>
+                    <option value="neptun">NEPTUN alapján</option>
+                    <option value="email">Email alapján</option>
+                </Form.Control>
+
+                <Form.Control
+                    type="text"
+                    className="w-auto mr-3"
+                    placeholder="Keresendő érték"
+                    value={filterInput}
+                    onChange={(e) => setFilterInput(e.target.value)}
+                />
+            </div>
             <Table hover bordered responsive>
                 <thead>
                     <tr>
@@ -37,16 +81,16 @@ const Datatable = ({ headers, body, history, deleteStudent }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    { body.map((row, rowIndex) => (
+                    { filteredData.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                             <td>{`${row.lastName} ${row.firstName}`}</td>
                             <td>{`${row.neptun}`}</td>
                             <td>{`${row.email}`}</td>
                             <td className='d-flex justify-content-around'>
-                                <Button variant='info' onClick={() => handleDetailsClick(row._id)}>
+                                <Button variant='info' onClick={() => handleDetailsClick(row)}>
                                     <FontAwesomeIcon icon={faInfoCircle}/>
                                 </Button>
-                                <Button variant='danger' onClick={() => handleDeleteClick(row._id)}>
+                                <Button variant='danger' onClick={() => handleDeleteClick(row)}>
                                     <FontAwesomeIcon icon={faTrash}/>
                                 </Button>
                             </td>
@@ -58,4 +102,4 @@ const Datatable = ({ headers, body, history, deleteStudent }) => {
     )
 }
 
-export default connect(null, { deleteStudent })(Datatable);
+export default Datatable;
