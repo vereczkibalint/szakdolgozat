@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import authReducer from './authReducer';
+import authReducer from '../../common/reducers/authReducer';
 import userReducer from "./userReducer";
 
 const adminAppRootReducer = combineReducers({

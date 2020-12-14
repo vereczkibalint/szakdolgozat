@@ -4,8 +4,8 @@ import { useParams, withRouter } from 'react-router-dom';
 
 import { Button, Form, FormGroup } from "react-bootstrap";
 
-import Alert from "../../components/Alert";
-import GoBackButton from "../../components/GoBackButton";
+import Alert from "../../../common/components/Alert";
+import GoBackButton from "../../../common/components/GoBackButton";
 
 import { insertStudent, insertLecturer } from "../../services/userService";
 

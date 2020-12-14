@@ -3,7 +3,7 @@ import {
     AUTH_SUCCESS,
     AUTH_FAILED,
     AUTH_LOGOUT
-} from '../constants/authConstants';
+} from '../../admin/constants/authConstants';
 
 export const authRequested = () => {
     return {

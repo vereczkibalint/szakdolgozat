@@ -3,16 +3,18 @@ import {useSelector} from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import './AdminApp.css';
 
-import { NotFound } from '../pages/error-pages/index';
+import api from "../utils/api";
+
+import { NotFound } from '../common/pages/error-pages/index';
 import LoginPage from './pages/login/Login';
 import Dashboard from './pages/dashboard/Dashboard';
+import UserDetailsPage from "./pages/users/UserDetailsPage";
 import ManageStudents from './pages/students/ManageStudents';
 import ManageLecturers from './pages/lecturers/ManageLecturers';
-import ProtectedRoute from '../components/ProtectedRoute';
-import Navbar from './components/Navbar';
+import ProtectedRoute from '../common/components/ProtectedRoute';
 import CreateUser from "./pages/users/CreateUser";
-import UserDetailsPage from "./pages/users/UserDetailsPage";
-import api from "../utils/api";
+
+import Navbar from './components/Navbar';
 
 const AdminApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);

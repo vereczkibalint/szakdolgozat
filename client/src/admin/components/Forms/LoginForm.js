@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import Alert from '../Alert';
+import Alert from '../../../common/components/Alert';
 import { adminLogin } from '../../services/authService';
 
 const LoginForm = () => {
@@ -25,12 +25,12 @@ const LoginForm = () => {
                 <hr className="colorgraph" />
                 { error && <Alert type="danger" message={error.message} />}
                 <input type="email" 
-                    className="form-control"
+                    className="form-control mb-4"
                     name="email"
                     placeholder="Email" 
                     onChange={(e) => setEmail(e.target.value)}
                     required 
-                    autoFocus /> <br />
+                    autoFocus />
                 <input 
                     type="password"
                     className="form-control"

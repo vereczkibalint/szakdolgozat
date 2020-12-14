@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import Alert from '../Alert';
+import Alert from '../../../common/components/Alert';
 
 const Datatable = ({ headers, body, history }) => {
     const dispatch = useDispatch();

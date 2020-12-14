@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import GoBackButton from '../GoBackButton';
-import Alert from '../Alert';
+import GoBackButton from '../../../common/components/GoBackButton';
+import Alert from '../../../common/components/Alert';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -99,7 +99,7 @@ const UserDetails = ({ history, type, user }) => {
                     <div className="card-body">
                         <div className="row">
                             <div className="col-sm-3">
-                                <h6 className="mb-0">Azonosító</h6>
+                                <h6 className="font-weight-bold">Azonosító</h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
                                 {user._id}
@@ -108,7 +108,7 @@ const UserDetails = ({ history, type, user }) => {
                         <hr />
                         <div className="row">
                             <div className="col-sm-3">
-                                <h6 className="mb-0"><Form.Label htmlFor="lastName">Vezetéknév</Form.Label></h6>
+                                <h6 className="font-weight-bold"><Form.Label htmlFor="lastName">Vezetéknév</Form.Label></h6>
                             </div>
                             <div className="col-sm-9 text-secondary">
                                 {editMode ?
@@ -133,7 +133,7 @@ const UserDetails = ({ history, type, user }) => {
                         <hr />
                             <div className="row">
                                 <div className="col-sm-3">
-                                    <h6 className="mb-0"><Form.Label htmlFor="firstName">Keresztnév</Form.Label></h6>
+                                    <h6 className="font-weight-bold"><Form.Label htmlFor="firstName">Keresztnév</Form.Label></h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
                                     {editMode ?
@@ -158,7 +158,7 @@ const UserDetails = ({ history, type, user }) => {
                         <hr />
                             <div className="row">
                                 <div className="col-sm-3">
-                                    <h6 className="mb-0"><Form.Label htmlFor="neptun">NEPTUN</Form.Label></h6>
+                                    <h6 className="font-weight-bold"><Form.Label htmlFor="neptun">NEPTUN</Form.Label></h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
                                     {editMode ?
@@ -183,7 +183,7 @@ const UserDetails = ({ history, type, user }) => {
                         <hr />
                             <div className="row">
                                 <div className="col-sm-3">
-                                    <h6 className="mb-0"><Form.Label htmlFor="email">Email</Form.Label></h6>
+                                    <h6 className="font-weight-bold"><Form.Label htmlFor="email">Email</Form.Label></h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
                                     {editMode ?
@@ -208,7 +208,7 @@ const UserDetails = ({ history, type, user }) => {
                             <hr />
                             <div className="row">
                                 <div className="col-sm-3">
-                                    <h6 className="mb-2">Jogosultság</h6>
+                                    <h6 className="font-weight-bold">Jogosultság</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
                                     {editMode && role !== 'ADMIN' ?
@@ -222,6 +222,24 @@ const UserDetails = ({ history, type, user }) => {
                                             'ADMIN': 'Admin'
                                           }[role]
                                     }
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="font-weight-bold">Létrehozás ideje</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {new Date(user.createdAt).toLocaleString("hu-HU")}
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="font-weight-bold">Utolsó frissítés ideje</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {new Date(user.updatedAt).toLocaleString("hu-HU")}
                                 </div>
                             </div>
                         </div>

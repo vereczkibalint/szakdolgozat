@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
-import LoadingSpinner from '../../../components/Loading/LoadingSpinner';
+import LoadingSpinner from '../../../common/components/Loading/LoadingSpinner';
 
 import Datatable from '../../components/Datatable/Datatable';
 import { fetchAllLecturer } from '../../services/userService';

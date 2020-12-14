@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import LoadingSpinner from '../../../components/Loading/LoadingSpinner';
+import LoadingSpinner from '../../../common/components/Loading/LoadingSpinner';
 import Datatable from '../../components/Datatable/Datatable';
 import Button from "react-bootstrap/Button";
 

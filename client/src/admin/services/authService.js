@@ -6,7 +6,7 @@ import {
     successfulAuth,
     failedAuth,
     logoutAuth
-} from '../actions/authActions';
+} from '../../common/actions/authActions';
 
 export const adminLogin = (email, password) => {
     return async (dispatch) => {
