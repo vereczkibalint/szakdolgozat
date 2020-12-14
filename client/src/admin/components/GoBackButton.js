@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import Button from "react-bootstrap/Button";
+import Button from 'react-bootstrap/Button';
 
 const GoBackButton = () => {
     const history = useHistory();
