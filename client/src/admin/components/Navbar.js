@@ -1,7 +1,8 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
+
 import { Link } from 'react-router-dom';
 import { logout } from '../services/authService';
-import {useDispatch} from "react-redux";
 
 const Navbar = () => {
     const dispatch = useDispatch();
