@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import authReducer from './authReducer';
-import studentReducer from './studentReducer';
+import userReducer from "./userReducer";
 
 const adminAppRootReducer = combineReducers({
     auth: authReducer,
-    student: studentReducer
+    user: userReducer
 });
 
 export default adminAppRootReducer;
