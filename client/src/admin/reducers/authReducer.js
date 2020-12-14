@@ -2,9 +2,7 @@ import {
     AUTH_REQUEST,
     AUTH_SUCCESS,
     AUTH_FAILED,
-    AUTH_LOGOUT,
-    AUTH_LOAD_USER,
-    AUTH_LOAD_USER_FAILED
+    AUTH_LOGOUT
 } from '../constants/authConstants';
 
 const initialState = {
@@ -30,20 +28,6 @@ const authLoginReducer = (state = initialState, action) => {
                 token: payload.token,
                 user: payload.user,
                 isAuthenticated: true
-            }
-        case AUTH_LOAD_USER:
-            return {
-                ...state,
-                loading: false,
-                user: payload.user,
-                token: localStorage.token,
-                isAuthenticated: true
-            }
-        case AUTH_LOAD_USER_FAILED:
-            return {
-                ...state,
-                loading: false,
-                isAuthenticated: false
             }
         case AUTH_FAILED:
             return {
