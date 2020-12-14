@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, withRouter } from 'react-router-dom';
+
 import { Button, Form, FormGroup } from "react-bootstrap";
-import { insertStudent } from "../../services/studentService";
+
 import Alert from "../../components/Alert";
 import GoBackButton from "../../components/GoBackButton";
 
-import { withRouter } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { insertStudent, insertLecturer } from "../../services/userService";
 
 const CreateUser = ({ history }) => {
+    const { type } = useParams();
+
+    if(!['student', 'lecturer'].includes(type)){
+        history.push('/admin/dashboard/lecturers');
+    }
+
     const dispatch = useDispatch();
 
-    let errorMessage = useSelector(state => state.student.errors.message);
-    let errors = useSelector(state => state.student.errors.errors);
+    let errorMessage = useSelector(state => state.user.errors.message);
+    let errors = useSelector(state => state.user.errors.errors);
 
-    const [userType, setUserType] = useState('student');
+    const [userType, setUserType] = useState(type);
     const [neptun, setNeptun] = useState('');
     const [lastName, setLastName] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -28,13 +36,14 @@ const CreateUser = ({ history }) => {
                 lastName,
                 firstName,
                 email,
-                password: `EKE_${neptun}`
+                password: `EKE_${neptun}`,
+                role: userType.toUpperCase()
             };
 
             if(userType === 'student'){
                 dispatch(insertStudent(user, history));
             } else {
-                // insert lecturer
+                dispatch(insertLecturer(user, history));
             }
         }
     }
