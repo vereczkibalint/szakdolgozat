@@ -1,11 +1,16 @@
 import React from 'react';
-
 import { Provider } from 'react-redux';
-import store from './store';
+import { store, persistor } from './store';
+import { PersistGate } from 'redux-persist/integration/react';
+
 import UserApp from './UserApp';
 
 const UserSubApp = () => (
-    <UserApp />
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <UserApp />
+        </PersistGate>
+    </Provider>
 );
 
 export default UserSubApp;
