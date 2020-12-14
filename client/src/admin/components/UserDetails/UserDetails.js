@@ -1,18 +1,21 @@
-import React, {useState } from 'react';
-import GoBackButton from "../GoBackButton";
-import Button from "react-bootstrap/Button";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCheckCircle, faEdit, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import {Form} from "react-bootstrap";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-import { withRouter, useParams } from 'react-router-dom';
-import { updateStudent } from "../../services/studentService";
-import {connect, useSelector} from "react-redux";
-import Alert from "../Alert";
+import GoBackButton from '../GoBackButton';
+import Alert from '../Alert';
 
-const UserDetails = ({ history, errorMessage, errors, updateStudent }) => {
-    const { id } = useParams();
-    const user = useSelector(state => state.student.students.find(student => student._id === id));
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+
+import { updateStudent, updateLecturer } from '../../services/userService';
+
+const UserDetails = ({ history, type, user }) => {
+
+    const dispatch = useDispatch();
 
     const [role, setRole] = useState(user.role);
     const [neptun, setNeptun] = useState(user.neptun);
@@ -21,6 +24,9 @@ const UserDetails = ({ history, errorMessage, errors, updateStudent }) => {
     const [email, setEmail] = useState(user.email);
 
     const [editMode, setEditMode] = useState(false);
+
+    const errorMessage = useSelector(state => state.user.errors.message);
+    const errors = useSelector(state => state.user.errors.errors);
 
     function handleSave() {
         if(canCreate){
@@ -32,7 +38,11 @@ const UserDetails = ({ history, errorMessage, errors, updateStudent }) => {
                 neptun,
                 role
             };
-            updateStudent(updatedUser, history);
+            if(type === 'student') {
+                dispatch(updateStudent(updatedUser, history));
+            } else {
+                dispatch(updateLecturer(updatedUser, history));
+            }
         }
     }
 
@@ -201,11 +211,10 @@ const UserDetails = ({ history, errorMessage, errors, updateStudent }) => {
                                     <h6 className="mb-2">Jogosultság</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {editMode ?
+                                    {editMode && role !== 'ADMIN' ?
                                         <Form.Control as="select" onChange={(e) => setRole(e.target.value)} value={role}>
                                             <option value="STUDENT" >Hallgató</option>
                                             <option value="LECTURER">Oktató</option>
-                                            <option value="ADMIN">Admin</option>
                                         </Form.Control>
                                         : {
                                             'STUDENT': 'Hallgató',
@@ -223,9 +232,4 @@ const UserDetails = ({ history, errorMessage, errors, updateStudent }) => {
     );
 }
 
-const mapStateToProps = (state) => ({
-    errorMessage: state.student.errors.message,
-    errors: state.student.errors.errors
-});
-
-export default connect(mapStateToProps, { updateStudent })(withRouter(UserDetails));
+export default withRouter(UserDetails);
