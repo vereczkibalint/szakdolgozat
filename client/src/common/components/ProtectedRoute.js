@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 const ProtectedRoute = ({
     component: Component,
@@ -9,7 +9,7 @@ const ProtectedRoute = ({
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     if(!isAuthenticated) {
-        return <Redirect to="/admin/login" />;
+        return <Redirect to="/user" />;
     }
     return(
         <Route
