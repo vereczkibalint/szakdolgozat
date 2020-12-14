@@ -40,13 +40,13 @@ const AdminApp = () => {
                             />
 
                     <ProtectedRoute
-                        path="/admin/dashboard/students/create"
+                        path="/admin/dashboard/:type/create"
                         exact
                         component={CreateUser}
                     />
 
                     <ProtectedRoute
-                        path="/admin/dashboard/students/:id"
+                        path="/admin/dashboard/details/:id"
                         exact
                         component={UserDetailsPage}
                     />
