@@ -2,8 +2,9 @@ import React, {useEffect} from "react";
 import {fetchAllTheses} from "../../services/thesesService";
 import {useDispatch, useSelector} from "react-redux";
 import { useHistory } from 'react-router-dom';
-import Datatable from "../Datatable/Datatable";
+import ThesisDatatable from "../Datatable/ThesisDatatable";
 import LoadingSpinner from "../../../common/components/Loading/LoadingSpinner";
+import Button from "react-bootstrap/Button";
 
 const ManageTheses = () => {
     const history = useHistory();
@@ -33,6 +34,10 @@ const ManageTheses = () => {
                 Szakdolgozatok kezelése
             </h2>
 
+            <Button variant="primary" className="mb-2" onClick={redirectToCreateThesisPage}>
+                Új felvétele
+            </Button>
+
             { isLoading &&
             <div className="d-flex align-content-center justify-content-center mt-5">
                 <LoadingSpinner />
@@ -40,7 +45,7 @@ const ManageTheses = () => {
             }
 
             { !isLoading &&
-                <Datatable headers={headers} body={theses} history={history}/>
+                <ThesisDatatable headers={headers} body={theses} history={history}/>
             }
         </div>
     );

@@ -11,9 +11,9 @@ import { faInfoCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import Alert from "../../../common/components/Alert";
 
-const Datatable = ({ headers, body, history }) => {
+const ThesisDatatable = ({ headers, body, history }) => {
     const dispatch = useDispatch();
-    console.log(body);
+
     const [filterBy, setFilterBy] = useState('student');
     const [filterInput, setFilterInput] = useState('');
     const [filteredData, setFilteredData] = useState([...body]);
@@ -22,7 +22,7 @@ const Datatable = ({ headers, body, history }) => {
         const filterData = () => {
             switch(filterBy){
                 case 'student':
-                    setFilteredData(body.filter(thesis => thesis.student.firstName.toLowerCase().includes(filterInput.toLowerCase()) || thesis.student.lastName.toLowerCase().includes(filterInput.toLowerCase())));
+                    setFilteredData(body.filter(thesis => thesis.student.lastName.concat(' ', thesis.student.firstName).includes(filterInput)));
                     break;
                 case 'topic':
                     setFilteredData(body.filter(thesis => thesis.topic.toLowerCase().includes(filterInput.toLowerCase())));
@@ -45,6 +45,10 @@ const Datatable = ({ headers, body, history }) => {
         if(window.confirm("Biztosan törli a szakdolgozatot?")) {
             dispatch(deleteThesis(thesis._id));
         }
+    }
+
+    if(body.length === 0) {
+        return <Alert type="danger" message="Nincsen szakdolgozat az adatbázisban!"/>;
     }
 
     return (
@@ -75,9 +79,9 @@ const Datatable = ({ headers, body, history }) => {
                 <tbody>
                 { filteredData.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                        <td>{`${row.student.lastName} ${row.student.firstName}`}</td>
-                        <td>{`${row.topic}`}</td>
-                        <td>{`${row.title}`}</td>
+                        <td>{row.student.lastName.concat(' ', row.student.firstName)}</td>
+                        <td>{row.topic}</td>
+                        <td>{row.title}</td>
                         <td className='d-flex justify-content-around'>
                             <Button variant='info' onClick={() => handleDetailsClick(row)}>
                                 <FontAwesomeIcon icon={faInfoCircle}/>
@@ -94,4 +98,4 @@ const Datatable = ({ headers, body, history }) => {
     )
 }
 
-export default Datatable;
+export default ThesisDatatable;

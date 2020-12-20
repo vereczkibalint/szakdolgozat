@@ -42,8 +42,6 @@ const ManageStudents = () => {
                 </Button>
             </div>
 
-
-
             { isLoading &&
                 <div className="d-flex align-content-center justify-content-center mt-5">
                     <LoadingSpinner />
