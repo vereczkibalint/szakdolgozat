@@ -11,6 +11,7 @@ const ThesisSchema = new Schema({
         required: [true, 'Oktató megadása kötelező!']
     },
     student: {
+	// TODO: egy hallgatóhoz 1 szakdoga max.
         type: Schema.Types.ObjectId,
         ref: 'user',
         required: [true, 'Hallgató megadása kötelező!']
@@ -31,7 +32,7 @@ const ThesisSchema = new Schema({
             message: 'Cím legalább 5 karakterből kell álljon!'
         }
     }
-});
+}, { timestamps: true });
 
 const populateHook = function(next) {
     this.populate('student', { password: 0 }).populate('lecturer', { password: 0 });

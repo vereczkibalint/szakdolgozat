@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MilestoneFileSchema = new Schema({
+	milestone: {
+		type: Schema.Types.ObjectId,
+        ref: 'milestone',
+        required: [true, 'Mérföldkő megadása kötelező!']
+	},
     fileName: {
         type: String,
         required: [true, 'Fájlnév megadása kötelező!'],

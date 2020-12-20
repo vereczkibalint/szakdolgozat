@@ -9,6 +9,7 @@ router.get('/:role', auth, checkPermission(['LECTURER','ADMIN']), userController
 router.get('/:userId', auth, userController.fetchById);
 router.post('/', auth, checkPermission(['ADMIN']), userController.create);
 router.post('/import', auth, checkPermission(['LECTURER','ADMIN']), userController.import);
+// TODO: change password route
 router.put('/:userId', auth, userController.update);
 router.delete('/:userId', auth, checkPermission(['ADMIN']), userController.delete);
 

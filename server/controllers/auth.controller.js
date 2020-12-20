@@ -16,6 +16,7 @@ exports.fetchUser = async (req, res) => {
 
 exports.login = async (req, res) => {
     try{
+	// TODO: admin nem léphet be ezen a controlleren keresztül (módosítani a service-t)!
         const { email, password } = req.body;
 
         if(!email || !password) {

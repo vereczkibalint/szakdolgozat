@@ -6,7 +6,7 @@ const MilestoneCommentSchema = new Schema({
     milestone: {
         type: Schema.Types.ObjectId,
         ref: 'milestone',
-        required: [true, 'Mérföldő megadása kötelező!']
+        required: [true, 'Mérföldkő megadása kötelező!']
     },
     author: {
         type: Schema.Types.ObjectId,
@@ -22,11 +22,7 @@ const MilestoneCommentSchema = new Schema({
             },
             message: 'Az üzenet legalább 5 karakterből kell álljon!'
         }
-    },
-    files: [{
-        type: Schema.Types.ObjectId,
-        ref: 'milestone_file'
-    }]
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('milestone_comment', MilestoneCommentSchema);

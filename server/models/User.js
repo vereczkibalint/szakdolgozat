@@ -59,7 +59,7 @@ const UserSchema = new Schema({
         required: [true, 'Jogosultság megadása kötelező!'],
         default: 'STUDENT'
     }
-});
+}, { timestamps: true });
 
 function isNeptunRequired() {
     return this.role != "ADMIN";
