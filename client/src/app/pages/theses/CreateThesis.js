@@ -71,7 +71,7 @@ const CreateThesis = ({ history }) => {
 
                         <option value="">Kérem válasszon...</option>
                         { students.map(student => (
-                            <option value={student._id}>{student.lastName.concat(' ', student.firstName)}</option>
+                            <option value={student._id} key={student._id}>{student.lastName.concat(' ', student.firstName)}</option>
                         )) }
                     </Form.Control>
                     <Form.Control.Feedback type="invalid">

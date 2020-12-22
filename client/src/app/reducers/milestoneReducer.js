@@ -79,3 +79,5 @@ export const milestoneReducer = (state = initialState, action) => {
             return state;
     }
 }
+
+export default milestoneReducer;

@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar";
 import ThesesPage from "./pages/theses/ThesesPage";
 import LecturerRoute from "../common/components/LecturerRoute";
 import CreateThesis from "./pages/theses/CreateThesis";
+import MilestonePage from "./pages/milestones/MilestonePage";
 
 const UserApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -36,6 +37,12 @@ const UserApp = () => {
                         path="/user/theses"
                         exact
                         component={ThesesPage} />
+
+                    <ProtectedRoute
+                        path="/user/milestones"
+                        exact
+                        component={MilestonePage} />
+
                     <LecturerRoute
                         path="/user/theses/create"
                         exact

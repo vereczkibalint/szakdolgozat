@@ -3,11 +3,11 @@ import {useSelector} from "react-redux";
 import ManageTheses from "../../components/Theses/ManageTheses";
 
 const ThesesPage = () => {
-    const user = useSelector(state => state.auth.user);
+    const role = useSelector(state => state.auth.user.role);
     return (
         <div className="mt-3">
-            {/* user.role === 'STUDENT' && <OwnThesis /> */}
-            { user.role === 'LECTURER' && <ManageTheses /> }
+            {/* role === 'STUDENT' && <OwnThesis /> */}
+            { role === 'LECTURER' && <ManageTheses /> }
         </div>
     );
 }

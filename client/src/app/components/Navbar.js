@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import { Link } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import { logout } from "../services/authService";
 import { NavDropdown } from "react-bootstrap";
 
@@ -18,13 +18,13 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="user_navbar">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <Link to="/user/theses" className="nav-link">Szakdolgozat</Link>
+                        <NavLink to="/user/theses" className="nav-link">Szakdolgozat</NavLink>
                     </li>
                     <li className="nav-item">
-                        <Link to="/user/consultations" className="nav-link">Konzultációk</Link>
+                        <NavLink to="/user/consultations" className="nav-link">Konzultációk</NavLink>
                     </li>
                     <li className="nav-item">
-                        <Link to="/user/milestones" className="nav-link">Mérföldkövek</Link>
+                        <NavLink to="/user/milestones" className="nav-link">Mérföldkövek</NavLink>
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
