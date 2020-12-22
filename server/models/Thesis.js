@@ -31,7 +31,7 @@ const ThesisSchema = new Schema({
             validator: thesisValidator.titleLengthValidator,
             message: 'Cím legalább 5 karakterből kell álljon!'
         }
-    }
+    } /* TODO: témavázlat fájlfeltöltés */
 }, { timestamps: true });
 
 const populateHook = function(next) {

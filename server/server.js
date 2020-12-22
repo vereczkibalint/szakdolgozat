@@ -28,6 +28,7 @@ app.use('/api/users', userRouter);
 app.use('/api/theses', thesisRouter);
 app.use('/api/milestones', milestoneRouter);
 app.use('/api/consultations', consultationRouter);
+//TODO: témákhoz CRUD
 
 const PORT = process.env.PORT || 3001;
 
