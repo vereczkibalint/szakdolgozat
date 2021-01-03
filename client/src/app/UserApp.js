@@ -12,6 +12,9 @@ import ThesesPage from "./pages/theses/ThesesPage";
 import LecturerRoute from "../common/components/LecturerRoute";
 import CreateThesis from "./pages/theses/CreateThesis";
 import MilestonePage from "./pages/milestones/MilestonePage";
+import CreateMilestone from "./pages/milestones/CreateMilestone";
+import MilestoneDetailsPage from "./pages/milestones/MilestoneDetailsPage";
+import SettingsPage from "./pages/settings/SettingsPage";
 
 const UserApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -44,9 +47,24 @@ const UserApp = () => {
                         component={MilestonePage} />
 
                     <LecturerRoute
+                        path="/user/milestones/create"
+                        exact
+                        component={CreateMilestone} />
+
+                    <ProtectedRoute
+                        path="/user/milestones/:milestoneId"
+                        exact
+                        component={MilestoneDetailsPage} />
+
+                    <LecturerRoute
                         path="/user/theses/create"
                         exact
                         component={CreateThesis} />
+
+                    <ProtectedRoute
+                        path="/user/settings"
+                        exact
+                        component={SettingsPage} />
 
                     <Route component={NotFound} />
                 </Switch>
