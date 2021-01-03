@@ -68,7 +68,7 @@ const ThesisDatatable = ({ headers, body, history }) => {
                     onChange={(e) => setFilterInput(e.target.value)}
                 />
             </div>
-            <Table hover bordered responsive>
+            <Table hover responsive className="text-center">
                 <thead>
                 <tr>
                     { headers.map((header, index) =>
