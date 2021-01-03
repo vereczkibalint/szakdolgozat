@@ -12,7 +12,7 @@ export const fetchAllStudent = () => {
     return async (dispatch) => {
         try {
             dispatch(studentFetchRequested());
-            const { data } = await api.get(`${API_ENDPOINT}/student`);
+            const { data } = await api.get(`${API_ENDPOINT}/role/student`);
             dispatch(studentFetchSuccess(data));
         } catch(error) {
             const { data } = error.response;
