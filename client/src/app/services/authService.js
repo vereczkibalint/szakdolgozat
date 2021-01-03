@@ -5,7 +5,7 @@ import {
     authRequested,
     successfulAuth,
     failedAuth,
-    logoutAuth
+    logoutAuth, passwordChangeRequested, passwordChangeSuccess, passwordChangeFailed
 } from '../../common/actions/authActions';
 
 export const userLogin = (email, password) => {
@@ -15,8 +15,8 @@ export const userLogin = (email, password) => {
             const { data } = await api.post('/auth',
                 { email, password });
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('user', JSON.stringify(data.user));
 
             dispatch(successfulAuth(data.token, data.user));
         } catch (error) {
@@ -26,10 +26,26 @@ export const userLogin = (email, password) => {
     }
 }
 
+export const changePassword = (oldPassword, newPassword) => {
+    return async (dispatch) => {
+        try {
+            dispatch(passwordChangeRequested());
+            const { data } = await api.post('/users/change_password', {
+                oldPassword,
+                password: newPassword
+            });
+            dispatch(passwordChangeSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(passwordChangeFailed(data));
+        }
+    }
+}
+
 export const logout = () => {
     return (dispatch) => {
         dispatch(logoutAuth());
-        localStorage.clear();
+        sessionStorage.clear();
         setTimeout(() => persistor.purge(), 200);
     }
 }

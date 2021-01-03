@@ -2,7 +2,7 @@ import {
     AUTH_REQUEST,
     AUTH_SUCCESS,
     AUTH_FAILED,
-    AUTH_LOGOUT
+    AUTH_LOGOUT, AUTH_CHANGE_PASSWORD_REQUEST, AUTH_CHANGE_PASSWORD_SUCCESS, AUTH_CHANGE_PASSWORD_FAILED
 } from '../constants/authConstants';
 
 const initialState = {
@@ -17,6 +17,7 @@ const authLoginReducer = (state = initialState, action) => {
 
     switch(type) {
         case AUTH_REQUEST:
+        case AUTH_CHANGE_PASSWORD_REQUEST:
             return { 
                 ...state,
                 loading: true
@@ -29,6 +30,19 @@ const authLoginReducer = (state = initialState, action) => {
                 token: payload.token,
                 user: payload.user,
                 isAuthenticated: true
+            }
+        case AUTH_CHANGE_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                error: [],
+                loading: false,
+                user: payload.user
+            }
+        case AUTH_CHANGE_PASSWORD_FAILED:
+            return {
+                ...state,
+                error: payload.errors,
+                loading: false
             }
         case AUTH_FAILED:
             return {
