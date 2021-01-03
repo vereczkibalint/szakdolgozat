@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const { messageLengthValidator } = require('./validators/milestone_comment.validators');
 const Schema = mongoose.Schema;
 
 const MilestoneCommentSchema = new Schema({
@@ -16,13 +16,17 @@ const MilestoneCommentSchema = new Schema({
     message: {
         type: String,
         required: [true, 'Üzenet megadása kötelező!'],
-        validate: {
-            validator: function(messageValue) {
-                return messageValue && messageValue.length > 5;
-            },
-            message: 'Az üzenet legalább 5 karakterből kell álljon!'
-        }
+        validate: [
+            { validator: messageLengthValidator, message: 'Az üzenet legalább 5 karakterből kell álljon!' }
+        ]
     }
 }, { timestamps: true });
+
+const populateHook = function(next) {
+    this.populate('milestone').populate('author');
+    next();
+}
+
+MilestoneCommentSchema.pre('find', populateHook).pre('findOne', populateHook);
 
 module.exports = mongoose.model('milestone_comment', MilestoneCommentSchema);
