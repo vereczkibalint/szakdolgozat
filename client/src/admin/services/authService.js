@@ -15,8 +15,8 @@ export const adminLogin = (email, password) => {
             const { data } = await api.post('/auth/admin', 
                                     { email, password });
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('user', JSON.stringify(data.user));
 
             dispatch(successfulAuth(data.token, data.user));            
         } catch (error) {
@@ -29,7 +29,7 @@ export const adminLogin = (email, password) => {
 export const logout = () => {
     return (dispatch) => {
         dispatch(logoutAuth());
-        localStorage.clear();
+        sessionStorage.clear();
         setTimeout(() => persistor.purge(), 200);
     }
 }

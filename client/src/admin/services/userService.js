@@ -34,7 +34,7 @@ export const fetchAllStudent = () => {
     return async (dispatch) => {
         dispatch(studentLoadRequested());
         try{
-            const { data } = await api.get(`${API_ENDPOINT}/student`);
+            const { data } = await api.get(`${API_ENDPOINT}/role/student`);
             dispatch(studentLoadSuccess(data));
         } catch(error) {
             const { data } = error.response;
@@ -88,7 +88,7 @@ export const fetchAllLecturer = () => {
     return async (dispatch) => {
         dispatch(lecturerLoadRequested());
         try{
-            const { data } = await api.get(`${API_ENDPOINT}/lecturer`);
+            const { data } = await api.get(`${API_ENDPOINT}/role/lecturer`);
             dispatch(lecturerLoadSuccess(data));
         } catch(error) {
             const { data } = error.response;
