@@ -17,11 +17,11 @@ import api from "../../utils/api";
 const DASHBOARD_URL = "/user/milestones";
 const API_ENDPOINT = '/milestones';
 
-export const fetchAllMilestone = () => {
+export const fetchAllMilestone = (thesisId) => {
     return async (dispatch) => {
         try {
             dispatch(milestoneFetchRequested());
-            const { data } = await api.get(API_ENDPOINT);
+            const { data } = await api.get(`${API_ENDPOINT}/${thesisId}`);
             dispatch(milestoneFetchSuccess(data));
         } catch(error) {
             const { data } = error.response;
@@ -58,13 +58,15 @@ export const updateMilestone = (milestone, history) => {
     }
 }
 
-export const deleteMilestone = (milestoneId) => {
+export const deleteMilestone = (milestoneId, history) => {
     return async (dispatch) => {
         try {
             dispatch(milestoneDeleteRequested());
             const { data } = await api.delete(`${API_ENDPOINT}/${milestoneId}`);
             dispatch(milestoneDeleteSuccess(data));
+            history.push(DASHBOARD_URL);
         } catch(error) {
+            console.log(error);
             const { data } = error.response;
             dispatch(milestoneDeleteFailed(data));
         }

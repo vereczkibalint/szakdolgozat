@@ -1,7 +1,7 @@
 import {
     MILESTONE_FETCH_REQUEST,
     MILESTONE_FETCH_SUCCESS,
-    MILESTONE_FETCH_FAILED ,
+    MILESTONE_FETCH_FAILED,
     MILESTONE_INSERT_REQUEST,
     MILESTONE_INSERT_SUCCESS,
     MILESTONE_INSERT_FAILED,
@@ -29,6 +29,7 @@ export const milestoneReducer = (state = initialState, action) => {
         return {
             ...state,
             errors: [],
+            milestones: [],
             isLoading: true
         }
         case MILESTONE_FETCH_SUCCESS:
