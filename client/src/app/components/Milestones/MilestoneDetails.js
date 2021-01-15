@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {Button} from "react-bootstrap";
 import {useDispatch} from "react-redux";
-import {updateMilestone} from "../../services/milestoneService";
+import {changeMilestoneStatus, updateMilestone} from "../../services/milestoneService";
 import { useHistory } from 'react-router-dom';
 import EditMilestoneForm from "./EditMilestoneForm";
 import MilestoneCommentsSection from "./MilestoneCommentsSection";
@@ -22,11 +22,7 @@ const MilestoneDetails = ({ milestone }) => {
     const [editMode, setEditMode] = useState(false);
 
     function handleStatusChange(newStatus) {
-        let updatedMilestone = {
-            ...milestone,
-            status: newStatus
-        };
-        dispatch(updateMilestone(updatedMilestone, history));
+        dispatch(changeMilestoneStatus(milestone._id, newStatus, history));
     }
 
     return (
