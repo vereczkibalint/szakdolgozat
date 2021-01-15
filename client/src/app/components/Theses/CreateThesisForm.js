@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchAllStudent} from "../../services/userService";
 import {insertThesis} from "../../services/thesesService";
 import Alert from "../../../common/components/Alert";
+import {Typeahead} from "react-bootstrap-typeahead";
+import "react-bootstrap-typeahead/css/Typeahead.min.css";
 
 const CreateThesisForm = ({ history }) => {
     const dispatch = useDispatch();
@@ -34,6 +36,12 @@ const CreateThesisForm = ({ history }) => {
 
     const canCreate = student !== "" && topic.length >= 5 && title.length >= 5;
 
+    function handleStudentChange(newStudent) {
+        if(newStudent) {
+            setStudent(newStudent._id);
+        }
+    }
+
     function handleThesisCreate() {
         if(canCreate){
             const thesis = {
@@ -52,22 +60,18 @@ const CreateThesisForm = ({ history }) => {
             <Form className="w-auto mx-auto">
                 <FormGroup>
                     <Form.Label htmlFor="student">Hallgató</Form.Label>
-                    <Form.Control as="select"
-                                  onChange={(e) => setStudent(e.target.value)}
-                                  disabled={isLoading || (!isLoading && students.length === 0)}>
-                        {isLoading &&
-                            <option value="">Adatok betöltése folyamatban...</option>
-                        }
+                    <Typeahead
+                        id="student"
+                        options={students}
+                        labelKey={option => `${option.lastName} ${option.firstName} (${option.neptun})`}
+                        onChange={(value) => handleStudentChange(value[0])}
+                        disabled={isLoading || (!isLoading && students.length === 0)}
+                        placeholder="Hallgató neve / NEPTUN kódja"
+                        highlightOnlyResult={true}
+                        maxResults={15}
+                        paginate={true}
+                    />
 
-                        {!isLoading && students.length === 0 &&
-                            <option value="">Nincs hallgató az adatbázisban!</option>
-                        }
-
-                        <option value="">Kérem válasszon...</option>
-                        { students.map(student => (
-                            <option value={student._id} key={student._id}>{student.lastName.concat(' ', student.firstName)}</option>
-                        )) }
-                    </Form.Control>
                     { checkErrorExists('student') && (
                         <div className="invalid-feedback d-block">
                             {getErrorMessage('student')}
