@@ -8,12 +8,15 @@ import {fetchAllMilestone} from "../../services/milestoneService";
 import MilestoneDatatable from "./MilestoneDatatable";
 
 const MilestoneListing = () => {
+    const dispatch = useDispatch();
+
     const milestones = useSelector(state => state.milestones);
     const theses = useSelector(state => state.theses);
 
     const [thesisId, setThesisId] = useState('');
-
-    const dispatch = useDispatch();
+    const [titleFilter, setTitleFilter] = useState('');
+    const [dateOrderBy, setDateOrderBy] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
 
     useEffect(() => {
         dispatch(fetchAllTheses());
@@ -22,22 +25,78 @@ const MilestoneListing = () => {
         }
     }, [dispatch, thesisId]);
 
+    useEffect(() => {
+        filterMilestonesByTitle(titleFilter);
+    }, [titleFilter]);
+
     const [filteredMilestones, setFilteredMilestones] = useState([...milestones.milestones]);
 
     useEffect(() => {
         setFilteredMilestones([...milestones.milestones]);
     }, [milestones.milestones]);
 
-    useEffect(() => {
-        const filterMilestones = () => {
-            setFilteredMilestones(milestones.milestones.filter(milestone => milestone.thesis._id === thesisId));
-        }
-        if(thesisId !== ''){
-            filterMilestones();
+
+    function handleThesisChange(newThesis) {
+        setThesisId(newThesis);
+        if(newThesis !== '') {
+            filterMilestonesByThesisId();
         } else {
-            setFilteredMilestones(milestones.milestones);
+            setFilteredMilestones([]);
         }
-    }, [thesisId]);
+    }
+
+    function filterMilestonesByTitle(title) {
+        if(title !== '') {
+            setFilteredMilestones(milestones.milestones.filter(milestone => milestone.thesis._id === thesisId && milestone.title.toLowerCase().includes(title.toLowerCase())));
+        } else {
+            filterMilestonesByThesisId();
+        }
+    }
+
+    function handleDateOrderChange(orderBy) {
+        setDateOrderBy(orderBy);
+
+        switch(dateOrderBy) {
+            case 'desc':
+                sortByDateDesc();
+                break;
+            case 'asc':
+            default:
+                sortByDateAsc();
+                break;
+        }
+    }
+
+    function sortByDateAsc() {
+        filteredMilestones.sort(function(prev, next) {
+            return new Date(next.deadline) - new Date(prev.deadline);
+        });
+    }
+
+    function sortByDateDesc() {
+        filteredMilestones.sort(function(prev, next) {
+            return new Date(prev.deadline) - new Date(next.deadline);
+        });
+    }
+
+    function handleStatusFilterChange(status) {
+        setStatusFilter(status);
+
+        if(thesisId !== '') {
+            if(status === '') {
+                filterMilestonesByThesisId();
+            } else {
+                setFilteredMilestones(milestones.milestones.filter(milestone => milestone.thesis._id === thesisId && milestone.status === status).sort(
+                    dateOrderBy === 'asc' ? sortByDateAsc : sortByDateDesc
+                ));
+                // TODO: sort miután status change volt
+            }
+        }
+    }
+
+    function filterMilestonesByThesisId() {
+        setFilteredMilestones(milestones.milestones.filter(milestone => milestone.thesis._id === thesisId));
+    }
 
     return (
         <Fragment>
@@ -47,13 +106,42 @@ const MilestoneListing = () => {
                 id="thesisIdSelect"
                 as="select"
                 disabled={theses.isLoading}
-                onChange={(e) => setThesisId(e.target.value)}>
-                    <option value="">Kérem válasszon...</option>
-                    { theses.theses.map(thesis => (
-                        <option value={thesis._id} key={thesis._id}>{thesis.student.lastName.concat(' ',thesis.student.firstName)} - {thesis.title}</option>
-                      ))
-                    }
+                onChange={(e) => handleThesisChange(e.target.value)}>
+                <option value="">Kérem válasszon...</option>
+                { theses.theses.map(thesis => (
+                    <option value={thesis._id} key={thesis._id}>{thesis.student.lastName.concat(' ',thesis.student.firstName)} - {thesis.title}</option>
+                ))}
             </Form.Control>
+            { thesisId !== '' && (
+                <div className="d-flex flex-md-row flex-column mt-2">
+                    <Form.Group className="mr-3">
+                        <Form.Label htmlFor="title">Cím</Form.Label>
+                        <Form.Control
+                            id="title"
+                            type="text"
+                            placeholder="Mérföldkő címe"
+                            value={titleFilter}
+                            onChange={(e) => setTitleFilter(e.target.value)}
+                        />
+                    </Form.Group>
+                    <Form.Group className="mr-3">
+                        <Form.Label>Dátum</Form.Label>
+                        <Form.Control as="select" value={dateOrderBy} onChange={(e) => handleDateOrderChange(e.target.value)}>
+                            <option value="asc">Növekvő</option>
+                            <option value="desc">Csökkenő</option>
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Állapot</Form.Label>
+                        <Form.Control as="select" value={statusFilter} onChange={(e) => handleStatusFilterChange(e.target.value)}>
+                            <option value="">Összes</option>
+                            <option value="pending">Folyamatban</option>
+                            <option value="accepted">Elfogadott</option>
+                            <option value="rejected">Elutasított</option>
+                        </Form.Control>
+                    </Form.Group>
+                </div>
+            )}
         </Form.Group>
 
         {(theses.isLoading || milestones.isLoading) && (
@@ -63,7 +151,7 @@ const MilestoneListing = () => {
         )}
 
         { !theses.isLoading && !milestones.isLoading && thesisId !== '' && filteredMilestones.length === 0 ? (
-                <Alert type="danger" message="Nem található mérföldkő az adatbázisban!" />
+                <Alert type="danger" message="A megadott kritériumokkal nem található mérföldkő!" />
             ) : (
                 <MilestoneDatatable milestones={filteredMilestones} />
             )
