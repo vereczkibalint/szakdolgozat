@@ -10,7 +10,7 @@ import {
     milestoneUpdateFailed,
     milestoneDeleteRequested,
     milestoneDeleteSuccess,
-    milestoneDeleteFailed
+    milestoneDeleteFailed, milestoneStatusChangeRequested, milestoneStatusChangeSuccess, milestoneStatusChangeFailed
 } from "../actions/milestoneActions";
 import api from "../../utils/api";
 
@@ -54,6 +54,20 @@ export const updateMilestone = (milestone, history) => {
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneUpdateFailed(data));
+        }
+    }
+}
+
+export const changeMilestoneStatus = (milestoneId, newStatus, history) => {
+    return async (dispatch) => {
+        try {
+            dispatch(milestoneStatusChangeRequested());
+            const { data } = await api.post(`${API_ENDPOINT}/status/${milestoneId}`, {status: newStatus});
+            dispatch(milestoneStatusChangeSuccess(data));
+            history.push(DASHBOARD_URL);
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(milestoneStatusChangeFailed(data));
         }
     }
 }
