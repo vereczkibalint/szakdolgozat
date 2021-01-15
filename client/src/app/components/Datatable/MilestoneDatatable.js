@@ -10,7 +10,7 @@ const MilestoneDatatable = ({ milestones }) => {
         <Table hover responsive className="text-center">
             <thead className="font-weight-bold">
             <tr>
-                <td>Mérföldkő megnevezése</td>
+                <td>Mérföldkő címe</td>
                 <td>Határidő</td>
                 <td>Állapot</td>
                 <td>Műveletek</td>
