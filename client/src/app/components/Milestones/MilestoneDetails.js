@@ -68,7 +68,7 @@ const MilestoneDetails = ({ milestone }) => {
                             }} />
                         </Fragment>
                     )}
-                    <small><span className="font-weight-bold">Utolsó frissítés:</span> {moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}</small>
+                    <small><span className="font-weight-bold">Utolsó frissítés:</span> {moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}{moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}</small>
                 </div>
                 <div className="col-md-4">
                     <div className="d-flex flex-column justify-content-center">
@@ -111,7 +111,7 @@ const MilestoneDetails = ({ milestone }) => {
                 </div>
             </div>
             <div className={editMode ? "d-none" : "row border-top mt-3"}>
-                <MilestoneCommentsSection />
+                <MilestoneCommentsSection milestoneId={milestone._id} comments={milestone.comments} />
             </div>
         </div>
     );

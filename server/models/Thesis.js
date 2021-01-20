@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const thesisValidator = require('./validators/thesis.validators');
-
+const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 const ThesisSchema = new Schema({
@@ -11,9 +11,9 @@ const ThesisSchema = new Schema({
         required: [true, 'Oktató megadása kötelező!']
     },
     student: {
-	// TODO: egy hallgatóhoz 1 szakdoga max.
         type: Schema.Types.ObjectId,
         ref: 'user',
+        unique: true,
         required: [true, 'Hallgató megadása kötelező!']
     },
     topic: {
@@ -40,5 +40,5 @@ const populateHook = function(next) {
 }
 
 ThesisSchema.pre('find', populateHook).pre('findOne', populateHook);
-
+ThesisSchema.plugin(uniqueValidator, { message: 'Ehhez a hallgatóhoz már tartozik szakdolgozat!' });
 module.exports = mongoose.model('thesis', ThesisSchema);

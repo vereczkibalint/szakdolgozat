@@ -78,7 +78,6 @@ exports.delete = async (req, res) => {
         }
 
         const deletedMilestone = await milestoneService.delete(req.user, milestoneId);
-        console.log(deletedMilestone);
         return res.json(deletedMilestone);
     } catch (error) {
         return handleApiError(error, res);

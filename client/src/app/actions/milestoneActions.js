@@ -13,7 +13,10 @@ import {
     MILESTONE_DELETE_FAILED,
     MILESTONE_STATUS_CHANGE_REQUESTED,
     MILESTONE_STATUS_CHANGE_SUCCESS,
-    MILESTONE_STATUS_CHANGE_FAILED
+    MILESTONE_STATUS_CHANGE_FAILED,
+    MILESTONE_COMMENT_INSERT_REQUESTED,
+    MILESTONE_COMMENT_INSERT_SUCCESS,
+    MILESTONE_COMMENT_INSERT_FAILED
 } from '../constants/milestoneConstants';
 
 export const milestoneFetchRequested = () => {
@@ -58,6 +61,30 @@ export const milestoneInsertSuccess = (milestone) => {
 export const milestoneInsertFailed = (errors) => {
     return {
         type: MILESTONE_INSERT_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const milestoneCommentInsertRequested = () => {
+    return {
+        type: MILESTONE_COMMENT_INSERT_REQUESTED
+    }
+}
+
+export const milestoneCommentInsertSuccess = (milestone) => {
+    return {
+        type: MILESTONE_COMMENT_INSERT_SUCCESS,
+        payload: {
+            milestone
+        }
+    }
+}
+
+export const milestoneCommentInsertFailed = (errors) => {
+    return {
+        type: MILESTONE_COMMENT_INSERT_FAILED,
         payload: {
             errors
         }
