@@ -9,21 +9,25 @@ import MilestoneDatatable from "./MilestoneDatatable";
 
 const MilestoneListing = () => {
     const dispatch = useDispatch();
-
-    const milestones = useSelector(state => state.milestones);
-    const theses = useSelector(state => state.theses);
-
     const [thesisId, setThesisId] = useState('');
-    const [titleFilter, setTitleFilter] = useState('');
-    const [dateOrderBy, setDateOrderBy] = useState('');
-    const [statusFilter, setStatusFilter] = useState('');
 
     useEffect(() => {
         dispatch(fetchAllTheses());
+    }, []);
+
+    useEffect(() => {
         if(thesisId !== ''){
             dispatch(fetchAllMilestone(thesisId));
         }
     }, [dispatch, thesisId]);
+
+    const milestones = useSelector(state => state.milestones);
+    const theses = useSelector(state => state.theses);
+
+
+    const [titleFilter, setTitleFilter] = useState('');
+    const [dateOrderBy, setDateOrderBy] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
 
     useEffect(() => {
         filterMilestonesByTitle(titleFilter);

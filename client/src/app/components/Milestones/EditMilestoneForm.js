@@ -11,7 +11,7 @@ import {useDispatch} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSave} from "@fortawesome/free-solid-svg-icons";
 
-const EditMilestoneForm = ({ milestone,  }) => {
+const EditMilestoneForm = ({ milestone, toggleEditMode }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -43,6 +43,7 @@ const EditMilestoneForm = ({ milestone,  }) => {
             };
 
             dispatch(updateMilestone(updatedMilestone, history));
+            toggleEditMode();
         }
     }
 

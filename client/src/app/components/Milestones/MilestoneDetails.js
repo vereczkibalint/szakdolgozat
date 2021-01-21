@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {Button} from "react-bootstrap";
 import {useDispatch} from "react-redux";
-import {changeMilestoneStatus, updateMilestone} from "../../services/milestoneService";
+import {changeMilestoneStatus} from "../../services/milestoneService";
 import { useHistory } from 'react-router-dom';
 import EditMilestoneForm from "./EditMilestoneForm";
 import MilestoneCommentsSection from "./MilestoneCommentsSection";
@@ -68,7 +68,7 @@ const MilestoneDetails = ({ milestone }) => {
                             }} />
                         </Fragment>
                     )}
-                    <small><span className="font-weight-bold">Utolsó frissítés:</span> {moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}{moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}</small>
+                    <small><span className="font-weight-bold">Utolsó frissítés:</span> {moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}</small>
                 </div>
                 <div className="col-md-4">
                     <div className="d-flex flex-column justify-content-center">

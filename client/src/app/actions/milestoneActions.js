@@ -16,7 +16,13 @@ import {
     MILESTONE_STATUS_CHANGE_FAILED,
     MILESTONE_COMMENT_INSERT_REQUESTED,
     MILESTONE_COMMENT_INSERT_SUCCESS,
-    MILESTONE_COMMENT_INSERT_FAILED
+    MILESTONE_COMMENT_INSERT_FAILED,
+    MILESTONE_FETCH_BY_ID_REQUESTED,
+    MILESTONE_FETCH_BY_ID_SUCCESS,
+    MILESTONE_FETCH_BY_ID_FAILED,
+    MILESTONE_COMMENT_DELETE_REQUESTED,
+    MILESTONE_COMMENT_DELETE_SUCCESS,
+    MILESTONE_COMMENT_DELETE_FAILED, FETCH_STATE
 } from '../constants/milestoneConstants';
 
 export const milestoneFetchRequested = () => {
@@ -37,6 +43,30 @@ export const milestoneFetchSuccess = (milestones) => {
 export const milestoneFetchFailed = (errors) => {
     return {
         type: MILESTONE_FETCH_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const milestoneFetchByIdRequested = () => {
+    return {
+        type: MILESTONE_FETCH_BY_ID_REQUESTED
+    }
+}
+
+export const milestoneFetchByIdSuccess = (milestone) => {
+    return {
+        type: MILESTONE_FETCH_BY_ID_SUCCESS,
+        payload: {
+            milestone
+        }
+    }
+}
+
+export const milestoneFetchByIdFailed = (errors) => {
+    return {
+        type: MILESTONE_FETCH_BY_ID_FAILED,
         payload: {
             errors
         }
@@ -85,6 +115,30 @@ export const milestoneCommentInsertSuccess = (milestone) => {
 export const milestoneCommentInsertFailed = (errors) => {
     return {
         type: MILESTONE_COMMENT_INSERT_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const milestoneCommentDeleteRequested = () => {
+    return {
+        type: MILESTONE_COMMENT_DELETE_REQUESTED
+    }
+}
+
+export const milestoneCommentDeleteSuccess = (milestone) => {
+    return {
+        type: MILESTONE_COMMENT_DELETE_SUCCESS,
+        payload: {
+            milestone
+        }
+    }
+}
+
+export const milestoneCommentDeleteFailed = (errors) => {
+    return {
+        type: MILESTONE_COMMENT_DELETE_FAILED,
         payload: {
             errors
         }

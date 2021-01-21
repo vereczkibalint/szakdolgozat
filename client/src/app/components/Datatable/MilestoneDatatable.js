@@ -32,10 +32,7 @@ const MilestoneDatatable = ({ milestones }) => {
                     </td>
                     <td className="d-flex justify-content-around align-content-center">
                         <Link to={{
-                            pathname: `/user/milestones/${milestone._id}`,
-                            state: {
-                                milestone
-                            }
+                        pathname: `/user/milestones/${milestone._id}`
                         }}>
                             <FontAwesomeIcon
                                 style={{fontSize: '18px', cursor: 'pointer'}}

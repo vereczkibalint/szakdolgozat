@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 const Login = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     if(isAuthenticated) {
-        return <Redirect to='/user/dashboard' />;
+        return <Redirect to='/user/theses' />;
     }
 
     return <LoginForm />;

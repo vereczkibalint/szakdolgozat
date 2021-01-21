@@ -14,7 +14,14 @@ import {
     milestoneStatusChangeRequested,
     milestoneStatusChangeSuccess,
     milestoneStatusChangeFailed,
-    milestoneCommentInsertRequested, milestoneCommentInsertSuccess, milestoneCommentInsertFailed
+    milestoneCommentInsertRequested,
+    milestoneCommentInsertSuccess,
+    milestoneCommentInsertFailed,
+    milestoneFetchByIdRequested,
+    milestoneFetchByIdSuccess,
+    milestoneFetchByIdFailed,
+    milestoneCommentDeleteRequested,
+    milestoneCommentDeleteSuccess, milestoneCommentDeleteFailed
 } from "../actions/milestoneActions";
 import api from "../../utils/api";
 
@@ -25,11 +32,24 @@ export const fetchAllMilestone = (thesisId) => {
     return async (dispatch) => {
         try {
             dispatch(milestoneFetchRequested());
-            const { data } = await api.get(`${API_ENDPOINT}/${thesisId}`);
+            const { data } = await api.get(`${API_ENDPOINT}/thesis/${thesisId}`);
             dispatch(milestoneFetchSuccess(data));
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneFetchFailed(data));
+        }
+    }
+}
+
+export const fetchMilestoneById = (milestoneId) => {
+    return async (dispatch) => {
+        try {
+            dispatch(milestoneFetchByIdRequested());
+            const { data } = await api.get(`${API_ENDPOINT}/${milestoneId}`);
+            dispatch(milestoneFetchByIdSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(milestoneFetchByIdFailed(data));
         }
     }
 }
@@ -54,7 +74,7 @@ export const updateMilestone = (milestone, history) => {
             dispatch(milestoneUpdateRequested());
             const { data } = await api.put(`${API_ENDPOINT}/${milestone._id}`, milestone);
             dispatch(milestoneUpdateSuccess(data));
-            history.push(DASHBOARD_URL);
+            //history.push(DASHBOARD_URL);
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneUpdateFailed(data));
@@ -68,7 +88,6 @@ export const changeMilestoneStatus = (milestoneId, newStatus, history) => {
             dispatch(milestoneStatusChangeRequested());
             const { data } = await api.post(`${API_ENDPOINT}/status/${milestoneId}`, {status: newStatus});
             dispatch(milestoneStatusChangeSuccess(data));
-            history.push(DASHBOARD_URL);
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneStatusChangeFailed(data));
@@ -80,12 +99,24 @@ export const insertMilestoneComment = (milestoneId, comment, history) => {
     return async (dispatch) => {
         try {
             dispatch(milestoneCommentInsertRequested());
-            console.log(comment);
             const { data } = await api.post(`${API_ENDPOINT}/comments/${milestoneId}`, comment);
             dispatch(milestoneCommentInsertSuccess(data));
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneCommentInsertFailed(data));
+        }
+    }
+}
+
+export const deleteMilestoneComment = (milestoneId, commentId) => {
+    return async (dispatch) => {
+        try {
+            dispatch(milestoneCommentDeleteRequested());
+            const { data } = await api.delete(`${API_ENDPOINT}/comments/${milestoneId}/${commentId}`);
+            dispatch(milestoneCommentDeleteSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(milestoneCommentDeleteFailed(data));
         }
     }
 }
@@ -98,7 +129,6 @@ export const deleteMilestone = (milestoneId, history) => {
             dispatch(milestoneDeleteSuccess(data));
             history.push(DASHBOARD_URL);
         } catch(error) {
-            console.log(error);
             const { data } = error.response;
             dispatch(milestoneDeleteFailed(data));
         }

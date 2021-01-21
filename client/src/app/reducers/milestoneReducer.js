@@ -16,7 +16,13 @@ import {
     MILESTONE_STATUS_CHANGE_FAILED,
     MILESTONE_COMMENT_INSERT_REQUESTED,
     MILESTONE_COMMENT_INSERT_SUCCESS,
-    MILESTONE_COMMENT_INSERT_FAILED
+    MILESTONE_COMMENT_INSERT_FAILED,
+    MILESTONE_FETCH_BY_ID_REQUESTED,
+    MILESTONE_FETCH_BY_ID_SUCCESS,
+    MILESTONE_FETCH_BY_ID_FAILED,
+    MILESTONE_COMMENT_DELETE_REQUESTED,
+    MILESTONE_COMMENT_DELETE_SUCCESS,
+    MILESTONE_COMMENT_DELETE_FAILED
 } from '../constants/milestoneConstants';
 
 const initialState = {
@@ -34,6 +40,8 @@ export const milestoneReducer = (state = initialState, action) => {
         case MILESTONE_DELETE_REQUEST:
         case MILESTONE_STATUS_CHANGE_REQUESTED:
         case MILESTONE_COMMENT_INSERT_REQUESTED:
+        case MILESTONE_FETCH_BY_ID_REQUESTED:
+        case MILESTONE_COMMENT_DELETE_REQUESTED:
         return {
             ...state,
             errors: [],
@@ -45,6 +53,14 @@ export const milestoneReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 milestones: payload.milestones,
+                errors: []
+            }
+        case MILESTONE_FETCH_BY_ID_SUCCESS:
+        case MILESTONE_COMMENT_DELETE_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                milestones: [payload.milestone],
                 errors: []
             }
         case MILESTONE_INSERT_SUCCESS:
@@ -59,14 +75,8 @@ export const milestoneReducer = (state = initialState, action) => {
         case MILESTONE_COMMENT_INSERT_SUCCESS:
             return {
                 ...state,
-                milestones: state.milestones.map(milestone => {
-                    if(milestone._id === payload.milestone._id) {
-                        return payload.milestone;
-                    }
-
-                    return milestone;
-                }),
                 isLoading: false,
+                milestones: [payload.milestone],
                 errors: []
             }
         case MILESTONE_DELETE_SUCCESS:
@@ -82,6 +92,8 @@ export const milestoneReducer = (state = initialState, action) => {
         case MILESTONE_DELETE_FAILED:
         case MILESTONE_STATUS_CHANGE_FAILED:
         case MILESTONE_COMMENT_INSERT_FAILED:
+        case MILESTONE_FETCH_BY_ID_FAILED:
+        case MILESTONE_COMMENT_DELETE_FAILED:
             return {
                 ...state,
                 isLoading: false,
