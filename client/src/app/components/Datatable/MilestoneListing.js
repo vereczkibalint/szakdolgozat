@@ -13,7 +13,7 @@ const MilestoneListing = () => {
 
     useEffect(() => {
         dispatch(fetchAllTheses());
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         if(thesisId !== ''){
@@ -149,9 +149,7 @@ const MilestoneListing = () => {
         </Form.Group>
 
         {(theses.isLoading || milestones.isLoading) && (
-            <div className="d-flex align-content-center justify-content-center mb-3">
-                <LoadingSpinner />
-            </div>
+            <LoadingSpinner />
         )}
 
         { !theses.isLoading && !milestones.isLoading && thesisId !== '' && filteredMilestones.length === 0 ? (
