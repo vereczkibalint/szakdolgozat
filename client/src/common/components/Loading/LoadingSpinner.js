@@ -3,9 +3,10 @@ import Spinner from 'react-bootstrap/Spinner';
 
 const LoadingSpinner = () => {
     return (
-        <Spinner animation="border" role="status">
-            <span className="sr-only">Betöltés...</span>
-        </Spinner>
+        <div className="d-flex flex-column text-center justify-content-center align-items-center m-3">
+            <Spinner animation="border" role="status" className="mr-2" /> <br />
+            <span>Adatok betöltése...</span>
+        </div>
     )
 }
 
