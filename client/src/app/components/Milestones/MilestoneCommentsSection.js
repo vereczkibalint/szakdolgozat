@@ -5,8 +5,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button} from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
 import draftToHtml from "draftjs-to-html";
-import {insertMilestoneComment} from "../../services/milestoneService";
+import {insertMilestoneComment, updateMilestoneComment} from "../../services/milestoneService";
 import MilestoneCommentBox from "./MilestoneCommentBox";
+import MilestoneCommentFileUpload from "./MilestoneCommentFileUpload";
 
 const MilestoneCommentsSection = ({ milestoneId, comments }) => {
     const dispatch = useDispatch();
@@ -17,8 +18,14 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
 
     const [commentEditState, setCommentEditState] = useState(false);
     const [commentToEdit, setCommentToEdit] = useState({});
+    const [selectedFiles, setSelectedFiles] = useState(undefined);
+    const [fileUploadProgress, setFileUploadProgress] = useState(0);
 
     const canSubmit = textEditorCommentState.getCurrentContent().hasText();
+
+    const changeSelectedFiles = (files) => {
+        setSelectedFiles(files);
+    }
 
     const fillEditorWithComment = (comment) => {
         setCommentEditState(prevState => !prevState);
@@ -48,11 +55,9 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
     const handleCommentEdit = () => {
         if(canSubmit) {
             let updatedComment = {
-                author: commentToEdit.author._id,
                 body: draftToHtml(convertToRaw(textEditorCommentState.getCurrentContent()))
             };
-            console.log(updatedComment)
-            //dispatch(updateMilestoneComment(milestoneId, updatedComment, history));
+            dispatch(updateMilestoneComment(milestoneId, commentToEdit._id, updatedComment));
         }
     }
 
@@ -61,11 +66,15 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
             <div className="col-md-12">
                 <h2 className="m-4">Megjegyzések</h2>
                 <TextEditor state={textEditorCommentState} onChange={(state) => settextEditorCommentState(state)}/>
+                <MilestoneCommentFileUpload setFiles={changeSelectedFiles} />
                 { commentEditState ?
-                    <Button variant="primary" className="mt-2" onClick={handleCommentEdit}>Komment mentése</Button>
+                    <Fragment>
+                        <Button variant="primary" className="mt-2" onClick={handleCommentEdit}>Komment mentése</Button>
+                        <Button variant="danger" className="mt-2 ml-2" onClick={fillEditorWithComment}>Szerkesztés elvetése</Button>
+                    </Fragment>
+
                     : <Button variant="primary" className="mt-2" onClick={handleCommentSubmit}>Küldés</Button>
                 }
-
             </div>
 
             <div className="w-100 mx-auto mb-3">

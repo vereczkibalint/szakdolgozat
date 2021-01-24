@@ -54,9 +54,7 @@ const MilestoneDetailsPage = () => {
 
     if(isLoading) {
         return (
-            <div className="mt-5 d-flex justify-content-center align-items-center mx-auto">
-                <LoadingSpinner />
-            </div>
+            <LoadingSpinner />
         );
     }
 
@@ -80,7 +78,7 @@ const MilestoneDetailsPage = () => {
                         (
                             <>
                             <Button
-                                variant="outline-danger"
+                                variant="danger"
                                 className="mb-3"
                                 onClick={handleMilestoneDelete}
                             >Törlés</Button>
@@ -88,7 +86,6 @@ const MilestoneDetailsPage = () => {
                         ) :
                     ''}
                 </div>
-                {/*<MilestoneDetails milestone={milestone} />*/}
                 <div className="mt-2">
                     <h2 className={editMode ? "d-none" : "text-center"}>
                         "{milestone.title}" szerkesztése
