@@ -58,7 +58,7 @@ const CreateThesisForm = ({ history }) => {
         <Fragment>
             { thesesErrorMessage && <Alert type="danger" message={thesesErrorMessage} /> }
             <Form className="w-auto mx-auto">
-                <FormGroup>
+                <Form.Group>
                     <Form.Label htmlFor="student">Hallgató</Form.Label>
                     <Typeahead
                         id="student"
@@ -77,7 +77,7 @@ const CreateThesisForm = ({ history }) => {
                             {getErrorMessage('student')}
                         </div>
                     )}
-                </FormGroup>
+                </Form.Group>
                 <FormGroup>
                     <Form.Label htmlFor="topic">Szakdolgozat témája</Form.Label>
                     <Form.Control
