@@ -15,8 +15,7 @@ const ManageMilestones = () => {
 
     return (
         <div style={{width: "85%"}} className="mt-4 mx-auto">
-            <div className="d-flex align-content-center justify-content-between">
-                <GoBackButton />
+            <div className="d-flex align-content-center justify-content-end">
                 <Button variant="success" className="mb-3" onClick={() => redirectToCreateMilestonePage()}>
                     <FontAwesomeIcon icon={faPlus} /> Új felvétele
                 </Button>

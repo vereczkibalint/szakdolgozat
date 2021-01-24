@@ -30,6 +30,12 @@ const ManageStudents = () => {
         'Műveletek'
     ];
 
+    if(isLoading) {
+        return (
+            <LoadingSpinner />
+        );
+    }
+
     return (
         <div className="mt-3">
             <h2 className="m-3 text-center">
@@ -41,12 +47,6 @@ const ManageStudents = () => {
                     Új felvétele
                 </Button>
             </div>
-
-            { isLoading &&
-                <div className="d-flex align-content-center justify-content-center mt-5">
-                    <LoadingSpinner />
-                </div>
-            }
 
             { !isLoading &&
                 <Datatable headers={headers} body={students} history={history}/>
