@@ -10,7 +10,7 @@ const Navbar = () => {
     const user = useSelector(state => state.auth.user);
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: '#17364f' }}>
             <Link to="/admin/dashboard" className="navbar-brand">Vezérlőpult</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#user_navbar" aria-controls="admin_navbar" aria-expanded="false" aria-label="Navigáció">
                 <span className="navbar-toggler-icon" />
@@ -28,7 +28,7 @@ const Navbar = () => {
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
-                    <NavDropdown title={user.lastName + ' ' + user.firstName} id="basic-nav-dropdown">
+                    <NavDropdown title={user.lastName + ' ' + user.firstName + ` (${user.role === 'LECTURER' ? 'Oktató' : 'Hallgató'})`} id="basic-nav-dropdown">
                         <NavDropdown.Item href="/user/settings">Beállítások</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item className="text-danger" onClick={() => dispatch(logout())}>Kijelentkezés</NavDropdown.Item>
