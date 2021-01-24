@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Login from "./pages/login/Login";
-import Dashboard from "./pages/dashboard/Dashboard";
 import ProtectedRoute from "../common/components/ProtectedRoute";
 import { NotFound } from "../common/pages/error-pages";
 
@@ -15,6 +14,8 @@ import MilestonePage from "./pages/milestones/MilestonePage";
 import CreateMilestone from "./pages/milestones/CreateMilestone";
 import MilestoneDetailsPage from "./pages/milestones/MilestoneDetailsPage";
 import SettingsPage from "./pages/settings/SettingsPage";
+import ConsultationPage from "./pages/consultations/ConsultationPage";
+import CreateConsultation from "./pages/consultations/CreateConsultation";
 
 const UserApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -32,14 +33,19 @@ const UserApp = () => {
                     <Route path="/user" exact component={Login} />
                     <Route path="/user/login" exact component={Login} />
                     <ProtectedRoute
-                        path="/user/dashboard"
-                        exact
-                        component={Dashboard}
-                    />
-                    <ProtectedRoute
                         path="/user/theses"
                         exact
                         component={ThesesPage} />
+
+                    <ProtectedRoute
+                        path="/user/consultations"
+                        exact
+                        component={ConsultationPage} />
+
+                    <LecturerRoute
+                        path="/user/consultations/create"
+                        exact
+                        component={CreateConsultation} />
 
                     <ProtectedRoute
                         path="/user/milestones"
