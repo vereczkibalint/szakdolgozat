@@ -22,7 +22,10 @@ import {
     MILESTONE_FETCH_BY_ID_FAILED,
     MILESTONE_COMMENT_DELETE_REQUESTED,
     MILESTONE_COMMENT_DELETE_SUCCESS,
-    MILESTONE_COMMENT_DELETE_FAILED
+    MILESTONE_COMMENT_DELETE_FAILED,
+    MILESTONE_COMMENT_UPDATE_REQUESTED,
+    MILESTONE_COMMENT_UPDATE_SUCCESS,
+    MILESTONE_COMMENT_UPDATE_FAILED
 } from '../constants/milestoneConstants';
 
 const initialState = {
@@ -42,10 +45,10 @@ export const milestoneReducer = (state = initialState, action) => {
         case MILESTONE_COMMENT_INSERT_REQUESTED:
         case MILESTONE_FETCH_BY_ID_REQUESTED:
         case MILESTONE_COMMENT_DELETE_REQUESTED:
+        case MILESTONE_COMMENT_UPDATE_REQUESTED:
         return {
             ...state,
             errors: [],
-            milestones: [],
             isLoading: true
         }
         case MILESTONE_FETCH_SUCCESS:
@@ -57,6 +60,7 @@ export const milestoneReducer = (state = initialState, action) => {
             }
         case MILESTONE_FETCH_BY_ID_SUCCESS:
         case MILESTONE_COMMENT_DELETE_SUCCESS:
+        case MILESTONE_COMMENT_UPDATE_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
@@ -94,6 +98,7 @@ export const milestoneReducer = (state = initialState, action) => {
         case MILESTONE_COMMENT_INSERT_FAILED:
         case MILESTONE_FETCH_BY_ID_FAILED:
         case MILESTONE_COMMENT_DELETE_FAILED:
+        case MILESTONE_COMMENT_UPDATE_FAILED:
             return {
                 ...state,
                 isLoading: false,

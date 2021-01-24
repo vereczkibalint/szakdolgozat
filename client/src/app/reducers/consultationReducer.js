@@ -85,7 +85,7 @@ export const consultationReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                consultations: state.consultations.filter(consultation => consultation._id !== payload.consultationId),
+                consultations: state.consultations.filter(consultation => consultation._id !== payload.consultation._id),
                 errors: []
             }
         case CONSULTATION_FETCH_FAILED:
@@ -104,3 +104,5 @@ export const consultationReducer = (state = initialState, action) => {
             return state;
     }
 }
+
+export default consultationReducer;

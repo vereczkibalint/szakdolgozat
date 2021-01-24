@@ -10,7 +10,10 @@ import {
     THESIS_UPDATE_FAILED,
     THESIS_DELETE_REQUEST,
     THESIS_DELETE_SUCCESS,
-    THESIS_DELETE_FAILED
+    THESIS_DELETE_FAILED,
+    THESES_FETCH_BY_STUDENT_REQUEST,
+    THESES_FETCH_BY_STUDENT_SUCCESS,
+    THESES_FETCH_BY_STUDENT_FAILED
 } from '../constants/thesesConstants';
 
 const initialState = {
@@ -24,6 +27,7 @@ const thesesReducer = (state = initialState, action) => {
 
     switch(type) {
         case THESES_FETCH_REQUEST:
+        case THESES_FETCH_BY_STUDENT_REQUEST:
         case THESIS_INSERT_REQUEST:
         case THESIS_UPDATE_REQUEST:
         case THESIS_DELETE_REQUEST:
@@ -37,6 +41,13 @@ const thesesReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 theses: payload.theses,
+                errors: []
+            }
+        case THESES_FETCH_BY_STUDENT_SUCCESS:
+            return {
+                ...state,
+                theses: [payload.thesis],
+                isLoading: false,
                 errors: []
             }
         case THESIS_INSERT_SUCCESS:
@@ -67,6 +78,7 @@ const thesesReducer = (state = initialState, action) => {
                 errors: []
             }
         case THESES_FETCH_FAILED:
+        case THESES_FETCH_BY_STUDENT_FAILED:
         case THESIS_INSERT_FAILED:
         case THESIS_UPDATE_FAILED:
         case THESIS_DELETE_FAILED:
