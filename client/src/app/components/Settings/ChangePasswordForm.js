@@ -22,12 +22,15 @@ const ChangePasswordForm = () => {
         }
     }
 
+    const newPasswordInvalid = newPassword !== '' && newPassword.length < 8;
+    const passwordConfirmInvalid = newPasswordConfirm !== '' && newPasswordConfirm !== newPassword;
+
     return (
-        <div className="w-75 mx-auto mt-3">
+        <div className="mx-auto w-75 mt-3">
             { errorMessage && <Alert type="danger" message={errorMessage}/> }
             <Form className="p-3" style={{border: '.2rem solid #ececec', borderRadius: '10px'}}>
                 <Form.Group>
-                    <Form.Label htmlFor="current_password">Jelenlegi jelszó:</Form.Label>
+                    <Form.Label htmlFor="current_password">Jelenlegi jelszó<span className="text-danger">*</span>:</Form.Label>
                     <Form.Control
                         id="current_password"
                         type="password"
@@ -36,22 +39,32 @@ const ChangePasswordForm = () => {
                     />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Label htmlFor="new_password">Új jelszó:</Form.Label>
+                    <Form.Label htmlFor="new_password">Új jelszó<span className="text-danger">*</span>:</Form.Label>
                     <Form.Control
                         id="new_password"
                         type="password"
                         value={newPassword}
+                        isInvalid={newPasswordInvalid}
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
+                    <Form.Text className={newPasswordInvalid ? "text-danger" : "text-muted"}>
+                        Legalább 8 karakter.
+                    </Form.Text>
                 </Form.Group>
                 <Form.Group>
-                    <Form.Label htmlFor="new_password_confirm">Új jelszó megerősítése:</Form.Label>
+                    <Form.Label htmlFor="new_password_confirm">Új jelszó megerősítése<span className="text-danger">*</span>:</Form.Label>
                     <Form.Control
                         id="new_password_confirm"
                         type="password"
                         value={newPasswordConfirm}
+                        isInvalid={passwordConfirmInvalid}
                         onChange={(e) => setnewPasswordConfirm(e.target.value)}
                     />
+                    { passwordConfirmInvalid && (
+                        <Form.Control.Feedback type="invalid">
+                            A két jelszó nem egyezik meg!
+                        </Form.Control.Feedback>
+                    )}
                 </Form.Group>
                 <Button variant="primary" disabled={!canSubmit} onClick={changePasswordSubmit}>Mentés</Button>
             </Form>
