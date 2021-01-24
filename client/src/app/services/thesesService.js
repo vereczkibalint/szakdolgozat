@@ -12,7 +12,7 @@ import {
     thesisUpdateFailed,
     thesisDeleteRequested,
     thesisDeleteSuccess,
-    thesisDeleteFailed
+    thesisDeleteFailed, thesisFetchByStudentRequested, thesisFetchByStudentSuccess, thesisFetchByStudentFailed
 } from '../actions/thesesActions';
 
 const DASHBOARD_URL = "/user/theses";
@@ -27,6 +27,19 @@ export const fetchAllTheses = () => {
         } catch(error) {
             const { data } = error.response;
             dispatch(thesesFetchFailed(data));
+        }
+    }
+}
+
+export const fetchThesisByStudent = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(thesisFetchByStudentRequested());
+            const { data } = await api.get(`${API_ENDPOINT}/student`);
+            dispatch(thesisFetchByStudentSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(thesisFetchByStudentFailed(data));
         }
     }
 }

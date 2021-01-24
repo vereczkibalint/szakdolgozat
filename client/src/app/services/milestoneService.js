@@ -21,7 +21,10 @@ import {
     milestoneFetchByIdSuccess,
     milestoneFetchByIdFailed,
     milestoneCommentDeleteRequested,
-    milestoneCommentDeleteSuccess, milestoneCommentDeleteFailed
+    milestoneCommentDeleteSuccess,
+    milestoneCommentDeleteFailed,
+    milestoneCommentUpdateRequested,
+    milestoneCommentUpdateSuccess, milestoneCommentUpdateFailed
 } from "../actions/milestoneActions";
 import api from "../../utils/api";
 
@@ -104,6 +107,19 @@ export const insertMilestoneComment = (milestoneId, comment, history) => {
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneCommentInsertFailed(data));
+        }
+    }
+}
+
+export const updateMilestoneComment = (milestoneId, commentId, updatedComment) => {
+    return async (dispatch) => {
+        try {
+            dispatch(milestoneCommentUpdateRequested());
+            const { data } = await api.put(`${API_ENDPOINT}/comments/${milestoneId}/${commentId}`, updatedComment);
+            dispatch(milestoneCommentUpdateSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(milestoneCommentUpdateFailed(data));
         }
     }
 }
