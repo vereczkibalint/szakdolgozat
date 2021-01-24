@@ -145,11 +145,11 @@ export const consultationDeleteRequested = () => {
     }
 }
 
-export const consultationDeleteSuccess = (consultationId) => {
+export const consultationDeleteSuccess = (consultation) => {
     return {
         type: CONSULTATION_DELETE_SUCCESS,
         payload: {
-            consultationId
+            consultation
         }
     }
 }

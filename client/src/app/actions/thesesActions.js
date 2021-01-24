@@ -10,7 +10,10 @@ import {
     THESIS_UPDATE_FAILED,
     THESIS_DELETE_REQUEST,
     THESIS_DELETE_SUCCESS,
-    THESIS_DELETE_FAILED
+    THESIS_DELETE_FAILED,
+    THESES_FETCH_BY_STUDENT_REQUEST,
+    THESES_FETCH_BY_STUDENT_SUCCESS,
+    THESES_FETCH_BY_STUDENT_FAILED
 } from '../constants/thesesConstants';
 
 export const thesesFetchRequested = () => {
@@ -31,6 +34,30 @@ export const thesesFetchSuccess = (theses) => {
 export const thesesFetchFailed = (errors) => {
     return {
         type: THESES_FETCH_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const thesisFetchByStudentRequested = () => {
+    return {
+        type: THESES_FETCH_BY_STUDENT_REQUEST
+    }
+}
+
+export const thesisFetchByStudentSuccess = (thesis) => {
+    return {
+        type: THESES_FETCH_BY_STUDENT_SUCCESS,
+        payload: {
+            thesis
+        }
+    }
+}
+
+export const thesisFetchByStudentFailed = (errors) => {
+    return {
+        type: THESES_FETCH_BY_STUDENT_FAILED,
         payload: {
             errors
         }
