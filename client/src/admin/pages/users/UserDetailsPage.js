@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 
-import UserDetails from "../../components/UserDetails/UserDetails";
+import UserDetails from "../../../common/components/UserDetails";
 
 const UserDetailsPage = () => {
     const { id } = useParams();
-    const student = useSelector(state => state.user.students.find(student => student._id === id));
-    const lecturer = useSelector(state => state.user.lecturers.find(lecturer => lecturer._id === id));
+    const student = useSelector(state => state.users.students.find(student => student._id === id));
+    const lecturer = useSelector(state => state.users.lecturers.find(lecturer => lecturer._id === id));
 
     if(student) {
         return <UserDetails type="student" user={student} />;
