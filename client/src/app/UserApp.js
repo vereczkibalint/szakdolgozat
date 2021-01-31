@@ -16,6 +16,9 @@ import MilestoneDetailsPage from "./pages/milestones/MilestoneDetailsPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import ConsultationPage from "./pages/consultations/ConsultationPage";
 import CreateConsultation from "./pages/consultations/CreateConsultation";
+import EditConsultation from "./pages/consultations/EditConsultation";
+import StudentsListPage from "./pages/students/StudentsListPage";
+import StudentDetailsPage from "./pages/students/StudentDetailsPage";
 
 const UserApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -32,6 +35,16 @@ const UserApp = () => {
                 <Switch>
                     <Route path="/user" exact component={Login} />
                     <Route path="/user/login" exact component={Login} />
+                    <LecturerRoute
+                        path="/user/students"
+                        exact
+                        component={StudentsListPage} />
+
+                    <LecturerRoute
+                        path="/user/students/:studentId"
+                        exact
+                        component={StudentDetailsPage} />
+
                     <ProtectedRoute
                         path="/user/theses"
                         exact
@@ -46,6 +59,11 @@ const UserApp = () => {
                         path="/user/consultations/create"
                         exact
                         component={CreateConsultation} />
+
+                    <LecturerRoute
+                        path="/user/consultations/edit/:consultationId"
+                        exact
+                        component={EditConsultation} />
 
                     <ProtectedRoute
                         path="/user/milestones"

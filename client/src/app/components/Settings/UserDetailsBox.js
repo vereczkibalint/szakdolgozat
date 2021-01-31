@@ -49,7 +49,7 @@ const UserDetailsBox = () => {
                                     <h6 className="font-weight-bold"><Form.Label htmlFor="neptun">NEPTUN</Form.Label></h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    { user.neptun }
+                                    { user.role === 'ADMIN' ? '-' : user.neptun }
                                 </div>
                             </div>
                             <hr />
@@ -70,7 +70,8 @@ const UserDetailsBox = () => {
                                     {
                                         {
                                             'STUDENT': 'Hallgató',
-                                            'LECTURER': 'Oktató'
+                                            'LECTURER': 'Oktató',
+                                            'ADMIN': 'Ügyintéző'
                                         }[user.role]
                                     }
                                 </div>

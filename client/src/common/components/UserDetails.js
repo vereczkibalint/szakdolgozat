@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import GoBackButton from '../../../common/components/GoBackButton';
-import Alert from '../../../common/components/Alert';
+import GoBackButton from './GoBackButton';
+import Alert from './Alert';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-import { updateStudent, updateLecturer } from '../../services/userService';
+import { updateStudent, updateLecturer } from '../../admin/services/userService';
 
 const UserDetails = ({ history, type, user }) => {
 
