@@ -63,8 +63,8 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
 
     return (
         <Fragment>
-            <div className="col-md-12">
-                <h2 className="m-4">Megjegyzések</h2>
+            <div className="col-md-12 mb-3">
+                <h3 className="m-4">Megjegyzések</h3>
                 <TextEditor state={textEditorCommentState} onChange={(state) => settextEditorCommentState(state)}/>
                 <MilestoneCommentFileUpload setFiles={changeSelectedFiles} />
                 { commentEditState ?
@@ -77,7 +77,7 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
                 }
             </div>
 
-            <div className="w-100 mx-auto mb-3">
+            <div className="mx-auto mb-3" style={{ width: '100%' }}>
                 { comments && comments.length === 0 && (
                     <h2 className="text-center">Nincsenek hozzászólások!</h2>
                 )}

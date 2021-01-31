@@ -19,24 +19,20 @@ const MilestoneCommentBox = ({editComment, milestoneId, comment}) => {
         <Fragment>
         <hr />
         <div className="p-2 mt-2">
-            <div className="d-flex flex-row comment-row">
+            <div className='d-flex flex-row'>
                 <div className="p-2">
-                    <span className="round">
-                        <img src={`https://eu.ui-avatars.com/api/?name=${comment.author.lastName + '+' + comment.author.firstName}&size=48`} alt="user" width="50"/>
-                    </span>
+                    <img src={`https://eu.ui-avatars.com/api/?name=${comment.author.lastName + '+' + comment.author.firstName}&size=50`} alt="user" className="rounded-circle" width="50"/>
                 </div>
-                <div className="comment-text w-100">
+                <div className="w-100">
                     <h5>{comment.author.lastName + ' ' + comment.author.firstName}</h5>
-                    <div className="comment-footer">
-                        <span className="date">{moment(comment.createdAt).format('YYYY.MM.DD. HH:mm')}</span>
-                        {user._id === comment.author._id && (
-                            <span>
-                                <FontAwesomeIcon icon={faPen} className="ml-2 text-primary" style={{cursor: 'pointer'}} onClick={() => editComment(comment)} />
-                                <FontAwesomeIcon icon={faTrash} className="ml-2 text-danger" style={{cursor: 'pointer'}} onClick={() => handleCommentDelete()} />
-                            </span>
-                        )}
-                    </div>
-                    <p className="m-b-5 m-t-10" dangerouslySetInnerHTML={{
+                    <span className="date">{moment(comment.createdAt).format('YYYY.MM.DD. HH:mm')}</span>
+                    {user._id === comment.author._id && (
+                        <span>
+                            <FontAwesomeIcon icon={faPen} className="ml-2 text-primary" style={{cursor: 'pointer'}} onClick={() => editComment(comment)} />
+                            <FontAwesomeIcon icon={faTrash} className="ml-2 text-danger" style={{cursor: 'pointer'}} onClick={() => handleCommentDelete()} />
+                        </span>
+                    )}
+                    <p dangerouslySetInnerHTML={{
                         __html: comment.body
                     }} />
                 </div>
