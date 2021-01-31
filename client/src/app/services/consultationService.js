@@ -16,7 +16,10 @@ import {
     consultationReserveFailed,
     consultationCancelRequested,
     consultationCancelSuccess,
-    consultationCancelFailed
+    consultationCancelFailed,
+    consultationFetchByIdRequested,
+    consultationFetchByIdSuccess,
+    consultationFetchByIdFailed
 } from '../actions/consultationActions';
 import api from "../../utils/api";
 
@@ -36,18 +39,18 @@ export const fetchAllConsultation = () => {
     }
 }
 
-/*export const fetchConsultationById = (consultationId) => {
+export const consultationFetchById = (consultationId) => {
     return async (dispatch) => {
         try {
-            dispatch(milestoneFetchByIdRequested());
-            const { data } = await api.get(`${API_ENDPOINT}/${milestoneId}`);
-            dispatch(milestoneFetchByIdSuccess(data));
+            dispatch(consultationFetchByIdRequested());
+            const { data } = await api.get(`${API_ENDPOINT}/${consultationId}`);
+            dispatch(consultationFetchByIdSuccess(data));
         } catch(error) {
             const { data } = error.response;
-            dispatch(milestoneFetchByIdFailed(data));
+            dispatch(consultationFetchByIdFailed(data));
         }
     }
-}*/
+}
 
 export const createConsultation = (consultation, history) => {
     return async (dispatch) => {
@@ -69,7 +72,7 @@ export const updateConsultation = (consultation, history) => {
             dispatch(consultationUpdateRequested());
             const { data } = await api.put(`${API_ENDPOINT}/${consultation._id}`, consultation);
             dispatch(consultationUpdateSuccess(data));
-            //history.push(DASHBOARD_URL);
+            history.push(DASHBOARD_URL);
         } catch(error) {
             const { data } = error.response;
             dispatch(consultationUpdateFailed(data));
@@ -82,12 +85,36 @@ export const deleteConsultation = (consultationId, history) => {
         try {
             dispatch(consultationDeleteRequested());
             const { data } = await api.delete(`${API_ENDPOINT}/${consultationId}`);
-            console.log(data);
             dispatch(consultationDeleteSuccess(data));
-            history.push(DASHBOARD_URL);
         } catch(error) {
             const { data } = error.response;
             dispatch(consultationDeleteFailed(data));
+        }
+    }
+}
+
+export const reserveConsultation = (consultationId) => {
+    return async (dispatch) => {
+        try {
+            dispatch(consultationReserveRequested());
+            const { data } = await api.post(`${API_ENDPOINT}/reserve/${consultationId}`);
+            dispatch(consultationReserveSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(consultationReserveFailed(data));
+        }
+    }
+}
+
+export const cancelReservation = (reservationId) => {
+    return async (dispatch) => {
+        try {
+            dispatch(consultationCancelRequested());
+            const { data } = await api.post(`${API_ENDPOINT}/cancel/${reservationId}`);
+            dispatch(consultationCancelSuccess(data));
+        } catch(error) {
+           const { data } = error.response;
+            dispatch(consultationCancelFailed(data));
         }
     }
 }

@@ -17,13 +17,15 @@ import {
     CONSULTATION_DELETE_REQUEST,
     CONSULTATION_DELETE_SUCCESS,
     CONSULTATION_DELETE_FAILED,
+    CONSULTATION_FETCH_BY_ID_REQUESTED,
+    CONSULTATION_FETCH_BY_ID_SUCCESS,
+    CONSULTATION_FETCH_BY_ID_FAILED
 } from '../constants/consultationConstants';
 
 const initialState = {
     isLoading: false,
     errors: [],
-    consultations: [],
-    reservations: []
+    consultations: []
 };
 
 export const consultationReducer = (state = initialState, action) => {
@@ -35,6 +37,7 @@ export const consultationReducer = (state = initialState, action) => {
         case CONSULTATION_CANCEL_REQUEST:
         case CONSULTATION_UPDATE_REQUEST:
         case CONSULTATION_DELETE_REQUEST:
+        case CONSULTATION_FETCH_BY_ID_REQUESTED:
             return {
                 ...state,
                 errors: [],
@@ -47,6 +50,13 @@ export const consultationReducer = (state = initialState, action) => {
                 consultations: payload.consultations,
                 errors: []
             }
+        case CONSULTATION_FETCH_BY_ID_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                consultations: [payload.consultation],
+                errors: []
+            }
         case CONSULTATION_INSERT_SUCCESS:
             return {
                 ...state,
@@ -55,19 +65,7 @@ export const consultationReducer = (state = initialState, action) => {
                 isLoading: false
             }
         case CONSULTATION_RESERVE_SUCCESS:
-            return {
-                ...state,
-                errors: [],
-                isLoading: false,
-                reservations: [...state.reservations, payload.reservation]
-            }
         case CONSULTATION_CANCEL_SUCCESS:
-            return {
-                ...state,
-                errors: [],
-                isLoading: false,
-                reservations: state.consultations.filter(consultation => consultation._id !== payload.consultationId)
-            }
         case CONSULTATION_UPDATE_SUCCESS:
             return {
                 ...state,
@@ -94,6 +92,7 @@ export const consultationReducer = (state = initialState, action) => {
         case CONSULTATION_CANCEL_FAILED:
         case CONSULTATION_UPDATE_FAILED:
         case CONSULTATION_DELETE_FAILED:
+        case CONSULTATION_FETCH_BY_ID_FAILED:
             return {
                 ...state,
                 isLoading: false,

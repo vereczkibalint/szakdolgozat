@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { useHistory } from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheckCircle, faEye, faTimesCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faCheckCircle, faEye, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Table} from "react-bootstrap";
 import {useDispatch} from "react-redux";
 import {deleteConsultation} from "../../services/consultationService";
@@ -15,6 +15,10 @@ const ConsultationDatatable = ({ consultations }) => {
         if(window.confirm('Biztosan törölni szeretné ezt a konzultációt?')) {
             dispatch(deleteConsultation(consultationId, history));
         }
+    }
+
+    function redirectToConsultationEditPage(consultationId) {
+        history.push(`/user/consultations/edit/${consultationId}`);
     }
 
     return (
@@ -35,15 +39,17 @@ const ConsultationDatatable = ({ consultations }) => {
                     <td>{moment(consultation.endTime).format('YYYY.MM.DD. HH:mm')}</td>
                     <td>{consultation.location}</td>
                     <td>
-                        {consultation.isAvailable ?
-                            <FontAwesomeIcon icon={faCheckCircle} className="text-success" title="Elérhető"/> :
-                            <FontAwesomeIcon icon={faTimesCircle} className="text-danger" title="Foglalt"/>}
+                        {!consultation.reservation ?
+                            (<FontAwesomeIcon icon={faCheckCircle} className="text-success" title="Elérhető"/>) :
+                            (<small><span className="font-weight-bold">Hallgató:</span> {consultation.reservation.student.lastName + ' ' + consultation.reservation.student.firstName + '(' + consultation.reservation.student.neptun + ')'}</small>)
+                        }
                     </td>
                     <td className="d-flex justify-content-center align-content-center">
                         <FontAwesomeIcon
                             style={{cursor: 'pointer'}}
                             icon={faEye}
                             className="text-primary"
+                            onClick={() => redirectToConsultationEditPage(consultation._id)}
                             title="Részletek megtekintése"/>
                         <FontAwesomeIcon
                             style={{cursor: 'pointer'}}

@@ -16,7 +16,10 @@ import {
     CONSULTATION_UPDATE_FAILED,
     CONSULTATION_DELETE_REQUEST,
     CONSULTATION_DELETE_SUCCESS,
-    CONSULTATION_DELETE_FAILED
+    CONSULTATION_DELETE_FAILED,
+    CONSULTATION_FETCH_BY_ID_REQUESTED,
+    CONSULTATION_FETCH_BY_ID_SUCCESS,
+    CONSULTATION_FETCH_BY_ID_FAILED
 } from '../constants/consultationConstants';
 
 export const consultationFetchRequested = () => {
@@ -43,17 +46,41 @@ export const consultationFetchFailed = (errors) => {
     }
 }
 
+export const consultationFetchByIdRequested = () => {
+    return {
+        type: CONSULTATION_FETCH_BY_ID_REQUESTED
+    }
+}
+
+export const consultationFetchByIdSuccess = (consultation) => {
+    return {
+        type: CONSULTATION_FETCH_BY_ID_SUCCESS,
+        payload: {
+            consultation
+        }
+    }
+}
+
+export const consultationFetchByIdFailed = (errors) => {
+    return {
+        type: CONSULTATION_FETCH_BY_ID_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
 export const consultationReserveRequested = () => {
     return {
         type: CONSULTATION_RESERVE_REQUEST
     }
 }
 
-export const consultationReserveSuccess = (reservation) => {
+export const consultationReserveSuccess = (consultation) => {
     return {
         type: CONSULTATION_RESERVE_SUCCESS,
         payload: {
-            reservation
+            consultation
         }
     }
 }
@@ -73,11 +100,11 @@ export const consultationCancelRequested = () => {
     }
 }
 
-export const consultationCancelSuccess = (reservationId) => {
+export const consultationCancelSuccess = (consultation) => {
     return {
         type: CONSULTATION_CANCEL_SUCCESS,
         payload: {
-            reservationId
+            consultation
         }
     }
 }
