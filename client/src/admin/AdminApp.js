@@ -15,6 +15,7 @@ import ProtectedRoute from '../common/components/ProtectedRoute';
 import CreateUser from "./pages/users/CreateUser";
 
 import Navbar from './components/Navbar';
+import SettingsPage from "../app/pages/settings/SettingsPage";
 
 const AdminApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -33,7 +34,7 @@ const AdminApp = () => {
                     <ProtectedRoute
                             path="/admin/dashboard" 
                             exact 
-                            component={Dashboard}
+                            component={ManageStudents}
                             />
                     <ProtectedRoute
                             path="/admin/dashboard/students"
@@ -57,6 +58,12 @@ const AdminApp = () => {
                             path="/admin/dashboard/lecturers"
                             exact
                             component={ManageLecturers}
+                            />
+
+                    <ProtectedRoute
+                            path="/admin/settings"
+                            exact
+                            component={SettingsPage}
                             />
 
                     <Route component={NotFound} />
