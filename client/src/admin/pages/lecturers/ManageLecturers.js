@@ -16,8 +16,8 @@ const ManageLecturers = () => {
         dispatch(fetchAllLecturer());
     }, [dispatch]);
 
-    let lecturers = useSelector(state => state.user.lecturers);
-    let isLoading = useSelector(state => state.user.isLoading);
+    let lecturers = useSelector(state => state.users.lecturers);
+    let isLoading = useSelector(state => state.users.isLoading);
 
     function redirectToCreateLecturerPage() {
         history.push('/admin/dashboard/lecturer/create');

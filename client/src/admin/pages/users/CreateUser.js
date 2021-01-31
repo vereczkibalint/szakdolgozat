@@ -18,8 +18,8 @@ const CreateUser = ({ history }) => {
 
     const dispatch = useDispatch();
 
-    let errorMessage = useSelector(state => state.user.errors.message);
-    let errors = useSelector(state => state.user.errors.errors);
+    let errorMessage = useSelector(state => state.users.errors.message);
+    let errors = useSelector(state => state.users.errors.errors);
 
     const [userType, setUserType] = useState(type);
     const [neptun, setNeptun] = useState('');

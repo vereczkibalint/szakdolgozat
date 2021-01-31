@@ -5,7 +5,7 @@ import userReducer from "./userReducer";
 
 const adminAppRootReducer = combineReducers({
     auth: authReducer,
-    user: userReducer
+    users: userReducer
 });
 
 export default adminAppRootReducer;
