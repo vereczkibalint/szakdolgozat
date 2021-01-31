@@ -12,8 +12,8 @@ const ManageStudents = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    let students = useSelector(state => state.user.students);
-    let isLoading = useSelector(state => state.user.isLoading);
+    let students = useSelector(state => state.users.students);
+    let isLoading = useSelector(state => state.users.isLoading);
 
     useEffect(() => {
         dispatch(fetchAllStudent());
