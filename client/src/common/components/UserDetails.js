@@ -16,6 +16,7 @@ import { updateStudent, updateLecturer } from '../../services/userService';
 const UserDetails = ({ history, type, user }) => {
 
     const dispatch = useDispatch();
+    const loggedInUser = useSelector(state => state.auth.user);
 
     const [role, setRole] = useState(user.role);
     const [neptun, setNeptun] = useState(user.neptun);
@@ -25,8 +26,8 @@ const UserDetails = ({ history, type, user }) => {
 
     const [editMode, setEditMode] = useState(false);
 
-    const errorMessage = useSelector(state => state.user.errors.message);
-    const errors = useSelector(state => state.user.errors.errors);
+    const errorMessage = useSelector(state => state.users.errors.message);
+    const errors = useSelector(state => state.users.errors.errors);
 
     function handleSave() {
         if(canCreate){
@@ -57,27 +58,39 @@ const UserDetails = ({ history, type, user }) => {
         }
     }
 
+    function renderEditRow() {
+        if(loggedInUser.role === 'ADMIN') {
+            if(editMode) {
+                return (
+                    <>
+                        <Button variant="success" className="mb-3" onClick={() => handleSave()} disabled={!canCreate}>
+                            <FontAwesomeIcon icon={faCheckCircle} /> Mentés
+                        </Button>
+                        <Button variant="danger" className="mb-3" onClick={() => setEditMode(current => !current)}>
+                            <FontAwesomeIcon icon={faTimesCircle} /> Mégsem
+                        </Button>
+                    </>
+                );
+            } else {
+                return (
+                    <>
+                        <Button variant="primary" className="mb-3" onClick={() => setEditMode(current => !current)}>
+                            <FontAwesomeIcon icon={faEdit} /> Szerkeszt
+                        </Button>
+                    </>
+                );
+            }
+        }
+    }
+
     const canCreate = neptun.length === 6 && lastName.length >= 4 && firstName.length >= 4 && /([^\s]).+@([^\s])[^.]+(\..+)/g.test(email);
 
     return (
         <div className="mt-5">
         { errorMessage && <Alert type="danger" message={errorMessage} /> }
-        <div className="d-flex justify-content-around">
+        <div className={`d-flex ${loggedInUser.role === 'ADMIN' ? 'justify-content-around' : 'justify-content-start'}`}>
             <GoBackButton />
-            { editMode ? (
-                <>
-                    <Button variant="success" className="mb-3" onClick={() => handleSave()} disabled={!canCreate}>
-                        <FontAwesomeIcon icon={faCheckCircle} /> Mentés
-                    </Button>
-                    <Button variant="danger" className="mb-3" onClick={() => setEditMode(current => !current)}>
-                        <FontAwesomeIcon icon={faTimesCircle} /> Mégsem
-                    </Button>
-                </>
-            ) : (
-                <Button variant="primary" className="mb-3" onClick={() => setEditMode(current => !current)}>
-                    <FontAwesomeIcon icon={faEdit} /> Szerkeszt
-                </Button>
-            )}
+            { renderEditRow() }
         </div>
         <div className="row gutters-sm">
             <div className="col-md-4 mb-3">
