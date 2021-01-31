@@ -1,11 +1,13 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import { logout } from '../services/authService';
+import {NavDropdown} from "react-bootstrap";
 
 const Navbar = () => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,7 +25,11 @@ const Navbar = () => {
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
-                    <Link to="" style={{ cursor: "pointer" }} className="nav-link" onClick={() => dispatch(logout())}>Kijelentkezés</Link>
+                    <NavDropdown title={user.lastName + ' ' + user.firstName + ' (ügyintéző)'} id="basic-nav-dropdown">
+                        <NavDropdown.Item href="/admin/settings">Beállítások</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item className="text-danger" onClick={() => dispatch(logout())}>Kijelentkezés</NavDropdown.Item>
+                    </NavDropdown>
                 </ul>
             </div>
         </nav>
