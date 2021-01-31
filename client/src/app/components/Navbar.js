@@ -17,6 +17,11 @@ const Navbar = () => {
             </button>
             <div className="collapse navbar-collapse" id="user_navbar">
                 <ul className="navbar-nav">
+                    { user.role === 'LECTURER' && (
+                        <li className="nav-item">
+                            <NavLink to="/user/students" className="nav-link">Hallgatók</NavLink>
+                        </li>
+                    )}
                     <li className="nav-item">
                         <NavLink to="/user/theses" className="nav-link">Szakdolgozat</NavLink>
                     </li>
@@ -29,7 +34,7 @@ const Navbar = () => {
                 </ul>
                 <ul className="navbar-nav ml-auto">
                     <NavDropdown title={user.lastName + ' ' + user.firstName + ` (${user.role === 'LECTURER' ? 'Oktató' : 'Hallgató'})`} id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/user/settings">Beállítások</NavDropdown.Item>
+                        <NavDropdown.Item href={user.role === 'ADMIN' ? "/admin/settings" : "/user/settings"}>Beállítások</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item className="text-danger" onClick={() => dispatch(logout())}>Kijelentkezés</NavDropdown.Item>
                     </NavDropdown>
