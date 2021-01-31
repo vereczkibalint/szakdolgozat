@@ -2,7 +2,6 @@ import React from "react";
 import {Button} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
-import GoBackButton from "../../../common/components/GoBackButton";
 import {useHistory} from "react-router-dom";
 import MilestoneListing from "../Datatable/MilestoneListing";
 

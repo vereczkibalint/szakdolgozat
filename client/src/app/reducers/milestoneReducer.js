@@ -49,6 +49,7 @@ export const milestoneReducer = (state = initialState, action) => {
         return {
             ...state,
             errors: [],
+            milestones: [],
             isLoading: true
         }
         case MILESTONE_FETCH_SUCCESS:
@@ -102,8 +103,7 @@ export const milestoneReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                errors: payload.errors,
-                milestones: []
+                errors: payload.errors
             }
         default:
             return state;

@@ -98,7 +98,7 @@ export const changeMilestoneStatus = (milestoneId, newStatus, history) => {
     }
 }
 
-export const insertMilestoneComment = (milestoneId, comment, history) => {
+export const insertMilestoneComment = (milestoneId, comment) => {
     return async (dispatch) => {
         try {
             dispatch(milestoneCommentInsertRequested());
