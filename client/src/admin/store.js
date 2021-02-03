@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session'
 import thunk from 'redux-thunk';
 import adminAppRootReducer from './reducers/index';
