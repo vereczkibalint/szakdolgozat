@@ -7,7 +7,6 @@ import api from "../utils/api";
 
 import { NotFound } from '../common/pages/error-pages/index';
 import LoginPage from './pages/login/Login';
-import Dashboard from './pages/dashboard/Dashboard';
 import UserDetailsPage from "./pages/users/UserDetailsPage";
 import ManageStudents from './pages/students/ManageStudents';
 import ManageLecturers from './pages/lecturers/ManageLecturers';
