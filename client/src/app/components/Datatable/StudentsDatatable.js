@@ -6,9 +6,12 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {deleteStudent} from "../../services/userService";
+import {useDispatch} from "react-redux";
 
 const StudentsDatatable = ({ students }) => {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const [filterBy, setFilterBy] = useState('name');
     const [filterInput, setFilterInput] = useState('');
@@ -39,6 +42,12 @@ const StudentsDatatable = ({ students }) => {
 
     function handleDetailsClick(studentId) {
         history.push(`/user/students/${studentId}`);
+    }
+
+    function handleDelete(studentId) {
+        if(window.confirm('Biztosan törölni szeretné ezt a hallgatót?')) {
+            dispatch(deleteStudent(studentId));
+        }
     }
 
     return (
@@ -76,6 +85,9 @@ const StudentsDatatable = ({ students }) => {
                         <td className='d-flex justify-content-around'>
                             <Button variant='info' onClick={() => handleDetailsClick(row._id)}>
                                 <FontAwesomeIcon icon={faInfoCircle}/>
+                            </Button>
+                            <Button variant="danger" onClick={() => handleDelete(row._id)}>
+                                <FontAwesomeIcon icon={faTrash} />
                             </Button>
                         </td>
                     </tr>
