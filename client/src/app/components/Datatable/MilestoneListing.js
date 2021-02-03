@@ -18,6 +18,8 @@ const MilestoneListing = () => {
     useEffect(() => {
         if(thesisId !== ''){
             dispatch(fetchAllMilestone(thesisId));
+        } else {
+            setFilteredMilestones([]);
         }
     }, [dispatch, thesisId]);
 

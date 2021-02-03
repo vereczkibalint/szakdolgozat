@@ -1,19 +1,29 @@
 import React, {useEffect, useState} from "react";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheckCircle, faEye, faHourglassHalf, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import {Link} from "react-router-dom";
+import {faCheckCircle, faEye, faHourglassHalf, faTimesCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {Link, useHistory} from "react-router-dom";
 import {Table} from "react-bootstrap";
-import {useSelector} from "react-redux";
-import Alert from "../../../common/components/Alert";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteMilestone} from "../../services/milestoneService";
 
 const MilestoneDatatable = ({ milestones }) => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     const user = useSelector(state => state.auth.user);
     const [filteredMilestones, setFilteredMilestones] = useState(milestones.filter(milestone => milestone.isDraft === false));
 
     useEffect(() => {
         setFilteredMilestones(milestones.filter(milestone => milestone.isDraft === false));
     }, [milestones]);
+
+    const handleMilestoneDelete = (milestoneId) => {
+        if(window.confirm('Biztosan törölni szeretné ezt a mérföldkövet?')) {
+            dispatch(deleteMilestone(milestoneId, history));
+            history.push('/user/milestones');
+        }
+    }
 
     function renderDatatable(dataSource) {
         return (
@@ -63,6 +73,13 @@ const MilestoneDatatable = ({ milestones }) => {
                                 icon={faEye}
                                 title="Részletek megtekintése"/>
                         </Link>
+                        <FontAwesomeIcon
+                            style={{fontSize: '18px', cursor: 'pointer'}}
+                            icon={faTrash}
+                            className="text-danger"
+                            title="Törlés"
+                            onClick={() => handleMilestoneDelete(milestone._id)}
+                        />
                     </td>
                 </tr>
                 );

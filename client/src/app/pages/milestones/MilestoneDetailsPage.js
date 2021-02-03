@@ -1,10 +1,9 @@
 import React, {Fragment, useEffect, useState} from "react";
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, withRouter } from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "react-bootstrap";
 import {
     changeMilestoneStatus,
-    deleteMilestone,
     fetchMilestoneById, insertMilestoneComment
 } from "../../services/milestoneService";
 import Alert from "../../../common/components/Alert";
@@ -26,6 +25,10 @@ import {Chip} from "@material-ui/core";
 const MilestoneDetailsPage = () => {
     let dispatch = useDispatch();
     const { milestoneId } = useParams();
+    const history = useHistory();
+
+    const user = useSelector(state => state.auth.user);
+    const milestoneErrorMessage = useSelector(state => state.milestones.errors.message);
 
     useEffect(() => {
         dispatch(fetchMilestoneById(milestoneId));
@@ -35,10 +38,20 @@ const MilestoneDetailsPage = () => {
     let milestone = useSelector(state => state.milestones.milestones[0]);
     let isLoading = useSelector(state => state.milestones.isLoading);
 
+    if(isLoading) {
+        return (
+            <LoadingSpinner />
+        );
+    }
+
+    if(!isLoading && !milestone) {
+        history.push('/user/milestones');
+    }
+
     function handleStatusChange(newStatus) {
         dispatch(changeMilestoneStatus(milestone._id, newStatus, history));
         let commentNewStatusFormat = "";
-        switch(newStatus) {
+        switch (newStatus) {
             case 'accepted':
                 commentNewStatusFormat = "<span class='text-success font-weight-bold'>Elfogadva</span>";
                 break;
@@ -58,27 +71,6 @@ const MilestoneDetailsPage = () => {
         dispatch(insertMilestoneComment(milestone._id, newComment));
     }
 
-    const history = useHistory();
-
-    const user = useSelector(state => state.auth.user);
-    const milestoneErrorMessage = useSelector(state => state.milestones.errors.message);
-
-    if(!isLoading && !milestone) {
-        history.goBack();
-    }
-
-    const handleMilestoneDelete = () => {
-        if(window.confirm('Biztosan törölni szeretné ezt a mérföldkövet?')) {
-            dispatch(deleteMilestone(milestone._id, history));
-        }
-    }
-
-    if(isLoading) {
-        return (
-            <LoadingSpinner />
-        );
-    }
-
     const toggleEditMode = () => {
         setEditMode(prevState => !prevState);
     }
@@ -95,79 +87,77 @@ const MilestoneDetailsPage = () => {
         <>
             <div className="mt-3">
                 <div className="d-flex justify-content-between">
-                    <GoBackButton />
-                    { user.role === 'LECTURER' ?
-                        (
-                            <>
-                            <Button
-                                variant="danger"
-                                className="mb-3"
-                                onClick={handleMilestoneDelete}
-                            >Törlés</Button>
-                            </>
-                        ) :
-                    ''}
+                    <GoBackButton/>
                 </div>
                 <div className="mt-2">
                     <h2 className={editMode ? "d-none" : "text-center"}>
-                        <span className={milestone.isDraft ? 'text-danger' : ''}>{milestone.title} {milestone.isDraft ? '(piszkozat)' : ''}</span>
+                        <span
+                            className={milestone.isDraft ? 'text-danger' : ''}>{milestone.title} {milestone.isDraft ? '(piszkozat)' : ''}</span>
                     </h2>
-                    <div className="d-flex flex-md-row flex-column text-sm-center justify-content-md-between text-center mt-3">
-                        <small><span className="font-weight-bold text-danger">Határidő:</span> {moment(milestone.deadline).format('YYYY.MM.DD. HH:mm')}</small>
+                    <div
+                        className="d-flex flex-md-row flex-column text-sm-center justify-content-md-between text-center mt-3">
+                        <small><span
+                            className="font-weight-bold text-danger">Határidő:</span> {moment(milestone.deadline).format('YYYY.MM.DD. HH:mm')}
+                        </small>
                         <small>
                             {
                                 {
                                     'pending': (
                                         <div className="font-weight-bold">
-                                            <FontAwesomeIcon title="Folyamatban" icon={faHourglassHalf} /> - Folyamatban
+                                            <FontAwesomeIcon title="Folyamatban" icon={faHourglassHalf}/> -
+                                            Folyamatban
                                         </div>
                                     ),
                                     'accepted': (
                                         <div className="text-success font-weight-bold">
-                                            <FontAwesomeIcon title="Elfogadva" icon={faCheckCircle} /> - Elfogadva
+                                            <FontAwesomeIcon title="Elfogadva" icon={faCheckCircle}/> - Elfogadva
                                         </div>
                                     ),
                                     'rejected': (
                                         <div className="text-danger font-weight-bold">
-                                            <FontAwesomeIcon title="Elutasítva" icon={faTimesCircle} /> - Elutasítva
+                                            <FontAwesomeIcon title="Elutasítva" icon={faTimesCircle}/> - Elutasítva
                                         </div>
                                     )
                                 }[milestone.status]
                             }
                         </small>
-                        <small><span className="font-weight-bold">Létrehozva:</span> {moment(milestone.createdAt).format('YYYY.MM.DD. HH:mm')}</small>
+                        <small><span
+                            className="font-weight-bold">Létrehozva:</span> {moment(milestone.createdAt).format('YYYY.MM.DD. HH:mm')}
+                        </small>
                     </div>
-                    <hr />
+                    <hr/>
                     <div className="row">
                         <div className="col-md-8 border-right p-2">
-                            { editMode ? (
-                                <EditMilestoneForm milestone={milestone} toggleEditMode={toggleEditMode} />
+                            {editMode ? (
+                                <EditMilestoneForm milestone={milestone} toggleEditMode={toggleEditMode}/>
                             ) : (
                                 <Fragment>
                                     <h2 className="font-weight-bold mb-4">Leírás:</h2>
                                     <div dangerouslySetInnerHTML={{
                                         __html: milestone.description
-                                    }} />
+                                    }}/>
                                 </Fragment>
                             )}
-                            <small><span className="font-weight-bold">Utolsó frissítés:</span> {moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}</small>
+                            <small><span
+                                className="font-weight-bold">Utolsó frissítés:</span> {moment(milestone.updatedAt).format('YYYY.MM.DD. HH:mm')}
+                            </small>
                         </div>
                         <div className="col-md-4">
-                            <div className={milestone.tags.length === 0 || editMode ? 'd-none': 'd-block'}>
+                            <div className={milestone.tags.length === 0 || editMode ? 'd-none' : 'd-block'}>
                                 <p className='font-weight-bold'>Címkék:</p>
                                 <div className="mb-3">
-                                    { milestone.tags.map((tag, index) => (
+                                    {milestone.tags.map((tag, index) => (
                                         <Chip label={tag} key={index} className="mr-1"/>
                                     ))}
                                 </div>
                             </div>
-                            { user.role === 'LECTURER' && (
+                            {user.role === 'LECTURER' && (
                                 <div className="d-flex flex-column justify-content-center">
                                     <Button
                                         variant={editMode ? 'primary' : 'outline-primary'}
                                         className={editMode ? 'd-none' : 'd-block'}
                                         onClick={() => toggleEditMode()}>
-                                        <FontAwesomeIcon icon={faPencilAlt} /> Szerkesztés
+                                        <FontAwesomeIcon icon={faPencilAlt}/> Szerkesztés
                                     </Button>
 
                                     <Button
@@ -175,35 +165,38 @@ const MilestoneDetailsPage = () => {
                                         className={editMode ? 'd-block' : 'd-none'}
                                         onClick={() => toggleEditMode()}
                                     >
-                                        <FontAwesomeIcon icon={faWindowClose} /> Szerkesztés elvetése
+                                        <FontAwesomeIcon icon={faWindowClose}/> Szerkesztés elvetése
                                     </Button>
 
-                                    <hr className={editMode ? "d-none" : "border-dark w-100"} />
+                                    <hr className={editMode ? "d-none" : "border-dark w-100"}/>
 
                                     <Button
-                                        variant={milestone.status === 'accepted' ? 'success': 'outline-success'}
+                                        variant={milestone.status === 'accepted' ? 'success' : 'outline-success'}
                                         className={editMode ? 'd-none' : 'mb-3'}
+                                        disabled={milestone.status === 'accepted'}
                                         onClick={() => handleStatusChange('accepted')}>
-                                        <FontAwesomeIcon icon={faCheckCircle} /> Elfogadás
+                                        <FontAwesomeIcon icon={faCheckCircle}/> Elfogadás
                                     </Button>
                                     <Button
-                                        variant={milestone.status === 'pending' ? 'dark': 'outline-dark'}
+                                        variant={milestone.status === 'pending' ? 'dark' : 'outline-dark'}
                                         className={editMode ? 'd-none' : 'mb-3'}
+                                        disabled={milestone.status === 'pending'}
                                         onClick={() => handleStatusChange('pending')}>
-                                        <FontAwesomeIcon icon={faHourglassHalf} /> Függőben
+                                        <FontAwesomeIcon icon={faHourglassHalf}/> Folyamatban
                                     </Button>
                                     <Button
-                                        variant={milestone.status === 'rejected' ? 'danger': 'outline-danger'}
+                                        variant={milestone.status === 'rejected' ? 'danger' : 'outline-danger'}
                                         className={editMode ? 'd-none' : 'mb-3'}
+                                        disabled={milestone.status === 'rejected'}
                                         onClick={() => handleStatusChange('rejected')}>
-                                        <FontAwesomeIcon icon={faTimesCircle} /> Elutasítás
+                                        <FontAwesomeIcon icon={faTimesCircle}/> Elutasítás
                                     </Button>
                                 </div>
                             )}
                         </div>
                     </div>
                     <div className={editMode ? "d-none" : "row border-top mt-3"}>
-                        <MilestoneCommentsSection milestoneId={milestone._id} comments={milestone.comments} />
+                        <MilestoneCommentsSection milestoneId={milestone._id} comments={milestone.comments}/>
                     </div>
                 </div>
             </div>
@@ -211,4 +204,4 @@ const MilestoneDetailsPage = () => {
     );
 }
 
-export default MilestoneDetailsPage;
+export default withRouter(MilestoneDetailsPage);
