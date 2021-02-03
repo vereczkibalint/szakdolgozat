@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { useHistory } from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheckCircle, faEye, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faCheckCircle, faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Table} from "react-bootstrap";
 import {useDispatch} from "react-redux";
 import {deleteConsultation} from "../../services/consultationService";
@@ -47,7 +47,7 @@ const ConsultationDatatable = ({ consultations }) => {
                     <td className="d-flex justify-content-center align-content-center">
                         <FontAwesomeIcon
                             style={{cursor: 'pointer'}}
-                            icon={faEye}
+                            icon={faPen}
                             className="text-primary"
                             onClick={() => redirectToConsultationEditPage(consultation._id)}
                             title="Részletek megtekintése"/>

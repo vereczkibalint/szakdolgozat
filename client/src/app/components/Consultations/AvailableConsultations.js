@@ -9,7 +9,7 @@ import LoadingSpinner from "../../../common/components/Loading/LoadingSpinner";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck, faCheckCircle, faQuestion, faTimes, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import {Button, Table, Form} from "react-bootstrap";
+import {Button, Table, Form, OverlayTrigger, Popover} from "react-bootstrap";
 import Alert from "../../../common/components/Alert";
 
 const AvailableConsultations = () => {
@@ -70,6 +70,62 @@ const AvailableConsultations = () => {
         }
     }
 
+    const startTimeBeforeCurrentTimePopover = (
+        <Popover id="popover-basic">
+            <Popover.Title as="h3">Lefoglalás nem lehetséges!</Popover.Title>
+            <Popover.Content>
+                Konzultáció foglalásra legkésőbb a kezdet előtt 24 órával van lehetőség!
+            </Popover.Content>
+        </Popover>
+    );
+
+    const currentTimeCancelTimeDiffLessThan24HoursPopover = (
+        <Popover id="popover-basic">
+            <Popover.Title as="h3">Lemondás nem lehetséges!</Popover.Title>
+            <Popover.Content>
+                Konzultáció lemondására legkésőbb a kezdet előtt 24 órával van lehetőség!
+            </Popover.Content>
+        </Popover>
+    );
+
+    function renderOptionsColumn(consultation) {
+        let startTimeCurrentTimeDiffInHours = moment(consultation.startTime).diff(moment(), 'h');
+        let startTimeReservationTimeDiffInHours = 0;
+
+        if (consultation.reservation) {
+            startTimeReservationTimeDiffInHours = moment(consultation.startTime).diff(moment(consultation.reservation.createdAt), 'h');
+        }
+
+        if (!consultation.reservation && startTimeCurrentTimeDiffInHours > 24) {
+            return (
+                <Button variant="success" size="sm" onClick={() => handleConsultationReservation(consultation._id)}>
+                    <FontAwesomeIcon icon={faCheck}/> Lefoglalás
+                </Button>
+            );
+        } else if (!consultation.reservation && startTimeCurrentTimeDiffInHours < 24) {
+            return (
+                <OverlayTrigger trigger="click" placement="left" overlay={startTimeBeforeCurrentTimePopover}>
+                    <FontAwesomeIcon icon={faQuestion} cursor="pointer" />
+                </OverlayTrigger>
+            );
+        } else if (consultation.reservation && consultation.reservation.student._id === user && startTimeReservationTimeDiffInHours < 24) {
+            return (
+                <OverlayTrigger trigger="click" placement="left" overlay={currentTimeCancelTimeDiffLessThan24HoursPopover}>
+                    <FontAwesomeIcon icon={faQuestion} cursor="pointer"/>
+                </OverlayTrigger>
+            );
+        } else if(consultation.reservation && consultation.reservation.student._id === user && startTimeReservationTimeDiffInHours > 24){
+            return (
+                <Button variant="danger" size="sm"
+                        onClick={() => handleConsultationReservationCancel(consultation.reservation._id)}>
+                    <FontAwesomeIcon icon={faTimes}/> Lemondás
+                </Button>
+            );
+        } else {
+            return;
+        }
+    }
+
     return (
         <div className="mt-5">
             <h2 className="text-center mb-3">Elérhető konzultációk</h2>
@@ -104,21 +160,7 @@ const AvailableConsultations = () => {
                                 <FontAwesomeIcon icon={faTimesCircle} className="text-danger" title="Foglalt"/>}
                         </td>
                         <td className="d-flex justify-content-center align-content-center">
-                            { !consultation.reservation && (
-                                <Button variant="success" size="sm" onClick={() => handleConsultationReservation(consultation._id)}>
-                                    <FontAwesomeIcon icon={faCheck} /> Lefoglalás
-                                </Button>
-                            )}
-
-                            { consultation.reservation && consultation.reservation.student._id === user && moment(consultation.startTime).diff(moment(consultation.reservation.createdAt), 'h') < 24 && (
-                                <FontAwesomeIcon icon={faQuestion} cursor="pointer" title="Konzultáció lemondására legkésőbb a kezdet előtt 24 órával van lehetőség!" />
-                            )}
-
-                            { consultation.reservation && consultation.reservation.student._id === user && moment(consultation.startTime).diff(moment(consultation.reservation.createdAt), 'h') > 24 && (
-                                <Button variant="danger" size="sm" onClick={() => handleConsultationReservationCancel(consultation.reservation._id)}>
-                                    <FontAwesomeIcon icon={faTimes} /> Lemondás
-                                </Button>
-                            )}
+                            {renderOptionsColumn(consultation)}
                         </td>
                     </tr>
                 ))
