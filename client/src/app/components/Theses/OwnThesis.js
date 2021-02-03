@@ -47,7 +47,8 @@ const OwnThesis = () => {
                                     <h6 className="font-weight-bold"><Form.Label htmlFor="title">Oktató</Form.Label></h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {thesis.lecturer.lastName + ' ' + thesis.lecturer.firstName}
+                                    {thesis.lecturer.lastName + ' ' + thesis.lecturer.firstName} <br />
+                                    Email: <a href={`mailto:${thesis.lecturer.email}`}>{thesis.lecturer.email}</a>
                                 </div>
                             </div>
                             <hr />
