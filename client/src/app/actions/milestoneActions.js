@@ -25,8 +25,14 @@ import {
     MILESTONE_COMMENT_DELETE_FAILED,
     MILESTONE_COMMENT_UPDATE_REQUESTED,
     MILESTONE_COMMENT_UPDATE_SUCCESS,
-    MILESTONE_COMMENT_UPDATE_FAILED
+    MILESTONE_COMMENT_UPDATE_FAILED, MILESTONE_CLEAR_STATE
 } from '../constants/milestoneConstants';
+
+export const milestoneClearState = () => {
+    return {
+        type: MILESTONE_CLEAR_STATE
+    }
+}
 
 export const milestoneFetchRequested = () => {
     return {
@@ -226,11 +232,11 @@ export const milestoneDeleteRequested = () => {
     }
 }
 
-export const milestoneDeleteSuccess = (milestoneId) => {
+export const milestoneDeleteSuccess = (milestone) => {
     return {
         type: MILESTONE_DELETE_SUCCESS,
         payload: {
-            milestoneId
+            milestone
         }
     }
 }

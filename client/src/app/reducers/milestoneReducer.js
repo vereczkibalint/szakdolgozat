@@ -25,7 +25,7 @@ import {
     MILESTONE_COMMENT_DELETE_FAILED,
     MILESTONE_COMMENT_UPDATE_REQUESTED,
     MILESTONE_COMMENT_UPDATE_SUCCESS,
-    MILESTONE_COMMENT_UPDATE_FAILED
+    MILESTONE_COMMENT_UPDATE_FAILED, MILESTONE_CLEAR_STATE
 } from '../constants/milestoneConstants';
 
 const initialState = {
@@ -49,9 +49,15 @@ export const milestoneReducer = (state = initialState, action) => {
         return {
             ...state,
             errors: [],
-            milestones: [],
             isLoading: true
         }
+        case MILESTONE_CLEAR_STATE:
+            return {
+                ...state,
+                errors: [],
+                isLoading: false,
+                milestones: []
+            }
         case MILESTONE_FETCH_SUCCESS:
             return {
                 ...state,
@@ -88,7 +94,7 @@ export const milestoneReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                milestones: state.milestones.filter(milestone => milestone._id !== payload.milestoneId),
+                milestones: state.milestones.filter(milestone => milestone._id !== payload.milestone._id),
                 errors: []
             }
         case MILESTONE_FETCH_FAILED:

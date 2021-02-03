@@ -143,7 +143,6 @@ export const deleteMilestone = (milestoneId, history) => {
             dispatch(milestoneDeleteRequested());
             const { data } = await api.delete(`${API_ENDPOINT}/${milestoneId}`);
             dispatch(milestoneDeleteSuccess(data));
-            history.push(DASHBOARD_URL);
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneDeleteFailed(data));
