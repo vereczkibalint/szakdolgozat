@@ -3,9 +3,8 @@ import Alert from "../../../common/components/Alert";
 import { useHistory } from 'react-router-dom';
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {deleteStudent} from "../../services/userService";
 import {useDispatch} from "react-redux";
 
@@ -67,7 +66,7 @@ const StudentsDatatable = ({ students }) => {
                     onChange={(e) => setFilterInput(e.target.value)}
                 />
             </div>
-            <Table hover bordered responsive>
+            <Table hover responsive>
                 <thead>
                 <tr>
                     <th>Teljes név</th>
@@ -83,12 +82,18 @@ const StudentsDatatable = ({ students }) => {
                         <td>{`${row.neptun}`}</td>
                         <td>{`${row.email}`}</td>
                         <td className='d-flex justify-content-around'>
-                            <Button variant='info' onClick={() => handleDetailsClick(row._id)}>
-                                <FontAwesomeIcon icon={faInfoCircle}/>
-                            </Button>
-                            <Button variant="danger" onClick={() => handleDelete(row._id)}>
-                                <FontAwesomeIcon icon={faTrash} />
-                            </Button>
+                            <FontAwesomeIcon icon={faEye}
+                                 className="text-primary"
+                                 style={{fontSize: "18px"}}
+                                 cursor="pointer"
+                                 onClick={() => handleDetailsClick(row._id)}
+                            />
+                            <FontAwesomeIcon icon={faTrash}
+                                 className="text-danger"
+                                 style={{fontSize: "18px"}}
+                                 cursor="pointer"
+                                 onClick={() => handleDelete(row._id)}
+                            />
                         </td>
                     </tr>
                 ))}
