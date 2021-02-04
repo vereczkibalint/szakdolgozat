@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteThesis } from "../../services/thesesService";
-
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-
+import {Table, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {faEye, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 import Alert from "../../../common/components/Alert";
 
@@ -37,13 +33,13 @@ const ThesisDatatable = ({ headers, body, history }) => {
         filterData();
     }, [body, filterBy, filterInput]);
 
-    function handleDetailsClick(thesis) {
-        history.push(`/user/theses/details/${thesis._id}`);
+    function handleDetailsClick(thesisId) {
+        history.push(`/user/theses/${thesisId}`);
     }
 
-    function handleDeleteClick(thesis) {
+    function handleDeleteClick(thesisId) {
         if(window.confirm("Biztosan törli a szakdolgozatot?")) {
-            dispatch(deleteThesis(thesis._id));
+            dispatch(deleteThesis(thesisId));
         }
     }
 
@@ -83,12 +79,18 @@ const ThesisDatatable = ({ headers, body, history }) => {
                         <td>{row.topic}</td>
                         <td>{row.title}</td>
                         <td className='d-flex justify-content-around'>
-                            <Button variant='info' onClick={() => handleDetailsClick(row)}>
-                                <FontAwesomeIcon icon={faInfoCircle}/>
-                            </Button>
-                            <Button variant='danger' onClick={() => handleDeleteClick(row)}>
-                                <FontAwesomeIcon icon={faTrash}/>
-                            </Button>
+                            <FontAwesomeIcon icon={faEye}
+                                className="text-primary"
+                                style={{fontSize: '18px'}}
+                                cursor="pointer"
+                                onClick={() => handleDetailsClick(row._id)}
+                            />
+                            <FontAwesomeIcon icon={faTrash}
+                                className="text-danger"
+                                style={{fontSize: '18px'}}
+                                cursor="pointer"
+                                onClick={() => handleDeleteClick(row._id)}
+                            />
                         </td>
                     </tr>
                 ))}

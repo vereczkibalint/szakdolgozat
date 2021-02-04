@@ -44,7 +44,7 @@ const ConsultationDatatable = ({ consultations }) => {
                             (<small><span className="font-weight-bold">Hallgató:</span> {consultation.reservation.student.lastName + ' ' + consultation.reservation.student.firstName + '(' + consultation.reservation.student.neptun + ')'}</small>)
                         }
                     </td>
-                    <td className="d-flex justify-content-center align-content-center">
+                    <td className="d-flex justify-content-around">
                         <FontAwesomeIcon
                             style={{cursor: 'pointer'}}
                             icon={faPen}
