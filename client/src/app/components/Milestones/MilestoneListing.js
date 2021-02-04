@@ -5,7 +5,7 @@ import Alert from "../../../common/components/Alert";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchAllTheses} from "../../services/thesesService";
 import {fetchAllMilestone} from "../../services/milestoneService";
-import MilestoneDatatable from "./MilestoneDatatable";
+import MilestoneDatatable from "../Datatable/MilestoneDatatable";
 
 const MilestoneListing = () => {
     const dispatch = useDispatch();
