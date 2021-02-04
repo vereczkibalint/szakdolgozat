@@ -102,8 +102,20 @@ export const insertMilestoneComment = (milestoneId, comment) => {
     return async (dispatch) => {
         try {
             dispatch(milestoneCommentInsertRequested());
-            const { data } = await api.post(`${API_ENDPOINT}/comments/${milestoneId}`, comment);
-            dispatch(milestoneCommentInsertSuccess(data));
+            let result;
+            if(comment.files) {
+                let formData = new FormData();
+                let { files, ...commentBody } = comment;
+                formData.append('files', comment.files);
+                formData.append('body', commentBody);
+                const { data } = await api.post(`${API_ENDPOINT}/comments/${milestoneId}`, formData);
+                result = data;
+            } else {
+                const { data } = await api.post(`${API_ENDPOINT}/comments/${milestoneId}`, comment);
+                result = data;
+            }
+
+            dispatch(milestoneCommentInsertSuccess(result));
         } catch(error) {
             const { data } = error.response;
             dispatch(milestoneCommentInsertFailed(data));

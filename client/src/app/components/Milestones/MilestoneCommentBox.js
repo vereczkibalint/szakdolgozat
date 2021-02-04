@@ -5,7 +5,7 @@ import {faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMilestoneComment} from "../../services/milestoneService";
 
-const MilestoneCommentBox = ({editComment, milestoneId, comment}) => {
+const MilestoneCommentBox = ({ editComment, milestoneId, comment}) => {
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 

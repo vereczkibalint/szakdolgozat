@@ -1,9 +1,9 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Button} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {useHistory} from "react-router-dom";
-import MilestoneListing from "../Datatable/MilestoneListing";
+import MilestoneListing from "./MilestoneListing";
 import {useDispatch} from "react-redux";
 import {milestoneClearState} from "../../actions/milestoneActions";
 

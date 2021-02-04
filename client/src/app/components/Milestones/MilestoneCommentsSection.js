@@ -8,6 +8,7 @@ import draftToHtml from "draftjs-to-html";
 import {insertMilestoneComment, updateMilestoneComment} from "../../services/milestoneService";
 import MilestoneCommentBox from "./MilestoneCommentBox";
 import MilestoneCommentFileUpload from "./MilestoneCommentFileUpload";
+import SelectedFileRow from "./SelectedFileRow";
 
 const MilestoneCommentsSection = ({ milestoneId, comments }) => {
     const dispatch = useDispatch();
@@ -48,6 +49,9 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
                 author: user._id,
                 body: draftToHtml(convertToRaw(textEditorCommentState.getCurrentContent())),
             };
+            if(selectedFiles) {
+                newComment.files = selectedFiles;
+            }
             dispatch(insertMilestoneComment(milestoneId, newComment, history));
         }
     }
@@ -61,12 +65,20 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
         }
     }
 
+    function deleteFileFromSelected(fileName) {
+        setSelectedFiles(Array.from(selectedFiles).filter(file => file.name !== fileName));
+
+    }
+
     return (
         <Fragment>
             <div className="col-md-12 mb-3">
                 <h3 className="m-4">Megjegyzések</h3>
                 <TextEditor state={textEditorCommentState} onChange={(state) => settextEditorCommentState(state)}/>
                 <MilestoneCommentFileUpload setFiles={changeSelectedFiles} />
+                { selectedFiles && Array.from(selectedFiles).map((file,i) => (
+                    <SelectedFileRow key={i} fileName={file.name} deleteFileFromList={deleteFileFromSelected} />
+                ))}
                 { commentEditState ?
                     <Fragment>
                         <Button variant="primary" className="mt-2" onClick={handleCommentEdit}>Komment mentése</Button>
@@ -82,7 +94,7 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
                     <h2 className="text-center">Nincsenek hozzászólások!</h2>
                 )}
                 { comments && comments.length > 0 && comments.map(comment => (
-                    <MilestoneCommentBox key={comment._id} editComment={fillEditorWithComment} milestoneId={milestoneId} comment={comment} />
+                    <MilestoneCommentBox key={comment._id} selectFiles={changeSelectedFiles} editComment={fillEditorWithComment} milestoneId={milestoneId} comment={comment} />
                 ))}
             </div>
         </Fragment>

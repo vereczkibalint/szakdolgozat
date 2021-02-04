@@ -1,9 +1,9 @@
-    import React from "react";
+import React from "react";
 import {Button} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {useHistory} from "react-router-dom";
-import ConsultationListing from "../Datatable/ConsultationListing";
+import ConsultationListing from "./ConsultationListing";
 
 const ManageConsultations = () => {
     const history = useHistory();
