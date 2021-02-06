@@ -51,8 +51,8 @@ const StudentsDatatable = ({ students }) => {
 
     return (
         <>
-            <div className="d-flex mb-3">
-                <Form.Control className="w-auto mr-3" as="select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+            <div className="d-flex flex-md-row flex-column mb-3">
+                <Form.Control className="w-auto mr-3 mb-3" as="select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
                     <option value="name">Név alapján</option>
                     <option value="neptun">NEPTUN alapján</option>
                     <option value="email">Email alapján</option>

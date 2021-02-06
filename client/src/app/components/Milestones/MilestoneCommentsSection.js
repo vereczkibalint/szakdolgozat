@@ -20,7 +20,6 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
     const [commentEditState, setCommentEditState] = useState(false);
     const [commentToEdit, setCommentToEdit] = useState({});
     const [selectedFiles, setSelectedFiles] = useState(undefined);
-    const [fileUploadProgress, setFileUploadProgress] = useState(0);
 
     const canSubmit = textEditorCommentState.getCurrentContent().hasText();
 
