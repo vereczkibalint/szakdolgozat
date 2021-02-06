@@ -5,6 +5,7 @@ import thesesReducer from "./thesesReducer";
 import userReducer from "./userReducer";
 import milestoneReducer from "./milestoneReducer";
 import consultationReducer from "./consultationReducer";
+import thesesThemesReducer from "./thesesThemesReducer";
 
 const rootReducer = (state, action) => {
     if(action.type === 'AUTH_LOGOUT') {
@@ -18,7 +19,8 @@ const userAppRootReducer = combineReducers({
     theses: thesesReducer,
     users: userReducer,
     milestones: milestoneReducer,
-    consultations: consultationReducer
+    consultations: consultationReducer,
+    themes: thesesThemesReducer
 });
 
 export default rootReducer;
