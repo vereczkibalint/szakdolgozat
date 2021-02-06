@@ -57,7 +57,7 @@ const OwnThesis = () => {
                                     <h6 className="font-weight-bold"><Form.Label htmlFor="title">Szakdolgozat témája</Form.Label></h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {thesis.topic}
+                                    {thesis.theme.title}
                                 </div>
                             </div>
                             <hr />

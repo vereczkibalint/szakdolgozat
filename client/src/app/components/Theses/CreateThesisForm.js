@@ -6,11 +6,13 @@ import {insertThesis} from "../../services/thesesService";
 import Alert from "../../../common/components/Alert";
 import {Typeahead} from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.min.css";
+import {fetchThesisThemes} from "../../services/thesesThemeService";
 
 const CreateThesisForm = ({ history }) => {
     const dispatch = useDispatch();
 
     const isLoading = useSelector(state => state.users.isLoading);
+    const themes = useSelector(state => state.themes.themes);
     const students = useSelector(state => state.users.students);
     const lecturer = useSelector(state => state.auth.user._id);
     const thesesErrorMessage = useSelector(state => state.theses.errors.message);
@@ -18,10 +20,11 @@ const CreateThesisForm = ({ history }) => {
 
     useEffect(() => {
         dispatch(fetchAllStudent());
+        dispatch(fetchThesisThemes());
     }, [dispatch]);
 
     const [student, setStudent] = useState('');
-    const [topic, setTopic] = useState('');
+    const [theme, setTheme] = useState('');
     const [title, setTitle] = useState('');
 
     function checkErrorExists(path) {
@@ -34,11 +37,17 @@ const CreateThesisForm = ({ history }) => {
         }
     }
 
-    const canCreate = student !== "" && topic.length >= 5 && title.length >= 5;
+    const canCreate = student !== "" && theme && theme !== '' && title.length >= 5;
 
     function handleStudentChange(newStudent) {
         if(newStudent) {
             setStudent(newStudent._id);
+        }
+    }
+
+    function handleThemeChange(newTheme) {
+        if(newTheme) {
+            setTheme(newTheme._id);
         }
     }
 
@@ -47,7 +56,7 @@ const CreateThesisForm = ({ history }) => {
             const thesis = {
                 lecturer,
                 student,
-                topic,
+                theme,
                 title
             };
             dispatch(insertThesis(thesis, history));
@@ -78,24 +87,26 @@ const CreateThesisForm = ({ history }) => {
                         </div>
                     )}
                 </Form.Group>
-                <FormGroup>
+                <Form.Group>
                     <Form.Label htmlFor="topic">Szakdolgozat témája</Form.Label>
-                    <Form.Control
-                        required
-                        type="text"
-                        placeholder="Téma"
-                        id="topic"
-                        value={topic}
-                        onChange={(e) => setTopic(e.target.value)}
-                        isInvalid={!!getErrorMessage('topic')}
+                    <Typeahead
+                        id="theme"
+                        options={themes}
+                        labelKey={option => `${option.title}`}
+                        onChange={(value) => handleThemeChange(value[0])}
+                        disabled={isLoading || (!isLoading && themes.length === 0)}
+                        placeholder={!isLoading && themes.length > 0 ? "Szakdolgozat témája" : "Nincsenek témák!"}
+                        highlightOnlyResult={true}
+                        maxResults={15}
+                        paginate={true}
                     />
-                    <Form.Control.Feedback type="invalid">
-                        {getErrorMessage('topic')}
-                    </Form.Control.Feedback>
-                    <Form.Text className="text-muted">
-                        Legalább 5 karakter.
-                    </Form.Text>
-                </FormGroup>
+
+                    { checkErrorExists('theme') && (
+                        <div className="invalid-feedback d-block">
+                            {getErrorMessage('theme')}
+                        </div>
+                    )}
+                </Form.Group>
                 <FormGroup>
                     <Form.Label htmlFor="title">Szakdolgozat címe</Form.Label>
                     <Form.Control

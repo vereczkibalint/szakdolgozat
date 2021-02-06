@@ -19,6 +19,7 @@ import CreateConsultation from "./pages/consultations/CreateConsultation";
 import EditConsultation from "./pages/consultations/EditConsultation";
 import StudentsListPage from "./pages/students/StudentsListPage";
 import StudentDetailsPage from "./pages/students/StudentDetailsPage";
+import ThemesPage from "./pages/themes/ThemesPage";
 
 const UserApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -50,6 +51,16 @@ const UserApp = () => {
                         exact
                         component={ThesesPage} />
 
+                    <LecturerRoute
+                        path="/user/theses/create"
+                        exact
+                        component={CreateThesis} />
+
+                    <LecturerRoute
+                        path="/user/themes"
+                        exact
+                        component={ThemesPage} />
+
                     <ProtectedRoute
                         path="/user/consultations"
                         exact
@@ -79,11 +90,6 @@ const UserApp = () => {
                         path="/user/milestones/:milestoneId"
                         exact
                         component={MilestoneDetailsPage} />
-
-                    <LecturerRoute
-                        path="/user/theses/create"
-                        exact
-                        component={CreateThesis} />
 
                     <ProtectedRoute
                         path="/user/settings"
