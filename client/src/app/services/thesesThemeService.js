@@ -56,7 +56,6 @@ export const updateThesisTheme = (updatedTheme) => {
 }
 
 export const deleteThesisTheme = (themeId) => {
-    console.log(themeId)
     return async (dispatch) => {
         try {
             dispatch(thesesThemeDeleteRequested());

@@ -25,7 +25,7 @@ const OwnThesis = () => {
         if(thesis) {
             dispatch(fetchAllMilestone(thesis._id));
         }
-    }, [dispatch, thesis]);
+    }, [thesis]);
 
     if(thesisLoading || milestoneLoading) {
         return (
@@ -99,27 +99,27 @@ const OwnThesis = () => {
                                     </div>
                                 </div>
                             </div>
-                        <hr />
-                        <div className="row">
-                            <div className="col-sm-3">
-                                <h6 className="font-weight-bold">Létrehozás ideje</h6>
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="font-weight-bold">Létrehozás ideje</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {moment(thesis.createdAt).format('YYYY.MM.DD HH:mm')}
+                                </div>
                             </div>
-                            <div className="col-sm-9 text-secondary">
-                                {moment(thesis.createdAt).format('YYYY.MM.DD HH:mm')}
-                            </div>
-                        </div>
-                        <hr />
-                        <div className="row">
-                            <div className="col-sm-3">
-                                <h6 className="font-weight-bold">Utolsó frissítés ideje</h6>
-                            </div>
-                            <div className="col-sm-9 text-secondary">
-                                {moment(thesis.updatedAt).format('YYYY.MM.DD HH:mm')}
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="font-weight-bold">Utolsó frissítés ideje</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {moment(thesis.updatedAt).format('YYYY.MM.DD HH:mm')}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         );
     }

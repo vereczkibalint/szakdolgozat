@@ -9,6 +9,7 @@ const ChangePasswordForm = () => {
 
     const errorMessage = useSelector(state => state.auth.error.message);
 
+    const [showPassword, setShowPassword] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordConfirm, setnewPasswordConfirm] = useState('');
@@ -29,11 +30,12 @@ const ChangePasswordForm = () => {
         <div className="mx-auto w-75 mt-3">
             { errorMessage && <Alert type="danger" message={errorMessage}/> }
             <Form className="p-3" style={{border: '.2rem solid #ececec', borderRadius: '10px'}}>
+                <Form.Check label="Jelszavak mutatása" className="text-right mb-1" onChange={(e) => setShowPassword(e.target.checked)} />
                 <Form.Group>
                     <Form.Label htmlFor="current_password">Jelenlegi jelszó<span className="text-danger">*</span>:</Form.Label>
                     <Form.Control
                         id="current_password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                     />
@@ -42,7 +44,7 @@ const ChangePasswordForm = () => {
                     <Form.Label htmlFor="new_password">Új jelszó<span className="text-danger">*</span>:</Form.Label>
                     <Form.Control
                         id="new_password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={newPassword}
                         isInvalid={newPasswordInvalid}
                         onChange={(e) => setNewPassword(e.target.value)}
@@ -55,7 +57,7 @@ const ChangePasswordForm = () => {
                     <Form.Label htmlFor="new_password_confirm">Új jelszó megerősítése<span className="text-danger">*</span>:</Form.Label>
                     <Form.Control
                         id="new_password_confirm"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={newPasswordConfirm}
                         isInvalid={passwordConfirmInvalid}
                         onChange={(e) => setnewPasswordConfirm(e.target.value)}

@@ -95,7 +95,7 @@ const CreateThesisForm = ({ history }) => {
                         labelKey={option => `${option.title}`}
                         onChange={(value) => handleThemeChange(value[0])}
                         disabled={isLoading || (!isLoading && themes.length === 0)}
-                        placeholder={!isLoading && themes.length > 0 ? "Szakdolgozat témája" : "Nincsenek témák!"}
+                        placeholder={!isLoading && themes.length > 0 ? "Szakdolgozat témája" : "Nincsen rögzített téma!"}
                         highlightOnlyResult={true}
                         maxResults={15}
                         paginate={true}
@@ -127,7 +127,7 @@ const CreateThesisForm = ({ history }) => {
                 </FormGroup>
                 <Button
                     className="mb-3"
-                    variant="primary"
+                    variant="success"
                     onClick={() => handleThesisCreate()}
                     disabled={!canCreate}>Mentés</Button>
             </Form>
