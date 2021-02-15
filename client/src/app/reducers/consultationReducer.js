@@ -96,8 +96,7 @@ export const consultationReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                errors: payload.errors,
-                consultations: []
+                errors: payload.errors
             }
         default:
             return state;
