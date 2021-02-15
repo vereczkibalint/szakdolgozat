@@ -13,7 +13,7 @@ import {
     THESIS_DELETE_FAILED,
     THESES_FETCH_BY_STUDENT_REQUEST,
     THESES_FETCH_BY_STUDENT_SUCCESS,
-    THESES_FETCH_BY_STUDENT_FAILED
+    THESES_FETCH_BY_STUDENT_FAILED, THESIS_FETCH_BY_ID_REQUESTED, THESIS_FETCH_BY_ID_SUCCESS, THESIS_FETCH_BY_ID_FAILED
 } from '../constants/thesesConstants';
 
 const initialState = {
@@ -31,6 +31,7 @@ const thesesReducer = (state = initialState, action) => {
         case THESIS_INSERT_REQUEST:
         case THESIS_UPDATE_REQUEST:
         case THESIS_DELETE_REQUEST:
+        case THESIS_FETCH_BY_ID_REQUESTED:
             return {
                 ...state,
                 errors: [],
@@ -44,6 +45,7 @@ const thesesReducer = (state = initialState, action) => {
                 errors: []
             }
         case THESES_FETCH_BY_STUDENT_SUCCESS:
+        case THESIS_FETCH_BY_ID_SUCCESS:
             return {
                 ...state,
                 theses: [payload.thesis],
@@ -78,6 +80,7 @@ const thesesReducer = (state = initialState, action) => {
                 errors: []
             }
         case THESES_FETCH_FAILED:
+        case THESIS_FETCH_BY_ID_FAILED:
         case THESES_FETCH_BY_STUDENT_FAILED:
         case THESIS_INSERT_FAILED:
         case THESIS_UPDATE_FAILED:
@@ -85,8 +88,7 @@ const thesesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                errors: payload.errors,
-                theses: []
+                errors: payload.errors
             }
         default:
             return state;
