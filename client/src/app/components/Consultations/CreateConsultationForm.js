@@ -31,6 +31,11 @@ const CreateConsultationForm = ({ history }) => {
 
     const canCreate = moment(endTime).isAfter(moment(startTime)) && location.length > 0;
 
+    function validStartTime(currentStartTime) {
+        let today = new Date();
+        return currentStartTime.year() <= today.getFullYear() + 1 && currentStartTime.isAfter(today);
+    }
+
     function handleConsultationCreate() {
         if(canCreate){
             const consultation = {
@@ -50,6 +55,7 @@ const CreateConsultationForm = ({ history }) => {
                 <Form.Group>
                     <Form.Label htmlFor="startTime">Konzultáció kezdete</Form.Label>
                     <Datetime
+                        isValidDate={validStartTime}
                         dateFormat="YYYY-MM-DD"
                         timeFormat="HH:mm"
                         initialValue={startTime}
