@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {useSelector} from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import './AdminApp.css';
 
 import api from "../utils/api";
 
@@ -24,7 +23,7 @@ const AdminApp = () => {
         api.defaults.headers.Authorization = `Bearer ${token}`;
     }
     return (
-        <>
+        <Fragment>
             { isAuthenticated ? <Navbar /> : '' }
             <div className="container">
                 <Switch>
@@ -68,7 +67,7 @@ const AdminApp = () => {
                     <Route component={NotFound} />
                 </Switch>
             </div>
-        </>
+        </Fragment>
     )
 }
 
