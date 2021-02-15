@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import MilestoneListing from "./MilestoneListing";
 import {useDispatch} from "react-redux";
 import {milestoneClearState} from "../../actions/milestoneActions";
@@ -6,9 +6,9 @@ import {milestoneClearState} from "../../actions/milestoneActions";
 const ManageMilestones = () => {
     const dispatch = useDispatch();
 
-    /*useEffect(() => {
+    useEffect(() => {
         dispatch(milestoneClearState());
-    }, [dispatch]);*/
+    }, [dispatch]);
 
     return (
         <div style={{width: "85%"}} className="mt-5 mx-auto">
