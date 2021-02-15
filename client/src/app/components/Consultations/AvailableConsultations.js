@@ -170,7 +170,7 @@ const AvailableConsultations = () => {
             { consultationErrorMessage && (
                 <Alert type="danger" message={consultationErrorMessage} />
             )}
-            { !isLoading && filteredConsultations.length === 0 && (
+            { !isLoading && !consultationErrorMessage && filteredConsultations.length === 0 && (
                 <Alert type="danger" message="A megadott feltételekkel nincs elérhető konzultáció!" />
             )}
         </div>
