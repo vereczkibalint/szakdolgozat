@@ -9,7 +9,8 @@ const initialState = {
     loading: false,
     isAuthenticated: false,
     token: null,
-    user: null
+    user: null,
+    passwordChangeMessage: undefined
 };
 
 const authLoginReducer = (state = initialState, action) => {
@@ -20,7 +21,8 @@ const authLoginReducer = (state = initialState, action) => {
         case AUTH_CHANGE_PASSWORD_REQUEST:
             return { 
                 ...state,
-                loading: true
+                loading: true,
+                passwordChangeMessage: undefined
             }
         case AUTH_SUCCESS:
             return {
@@ -36,13 +38,15 @@ const authLoginReducer = (state = initialState, action) => {
                 ...state,
                 error: [],
                 loading: false,
-                user: payload.user
+                user: payload.user,
+                passwordChangeMessage: "Sikeres jelszómódosítás!"
             }
         case AUTH_CHANGE_PASSWORD_FAILED:
             return {
                 ...state,
                 error: payload.errors,
-                loading: false
+                loading: false,
+                passwordChangeMessage: undefined
             }
         case AUTH_FAILED:
             return {
