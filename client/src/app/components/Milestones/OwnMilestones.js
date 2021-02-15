@@ -79,10 +79,6 @@ const OwnMilestones = () => {
         dispatch(fetchThesisByStudent());
     }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(fetchAllMilestone(thesis._id));
-    }, [dispatch, thesis]);
-
     if(thesisIsLoading || milestonesIsLoading) {
         return (
             <LoadingSpinner />
