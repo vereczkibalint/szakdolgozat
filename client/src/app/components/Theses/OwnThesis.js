@@ -39,7 +39,7 @@ const OwnThesis = () => {
         return (
             <div className="mt-5">
                 <h2 className="text-center mb-3">Szakdolgozat adatlapja</h2>
-                <div className="col-md-12" style={{width: '100%'}}>
+                <div className="col-md-12">
                     <div className="card mb-3">
                         <div className="card-body">
                             <div className="row">
@@ -57,7 +57,7 @@ const OwnThesis = () => {
                                     <h6 className="font-weight-bold"><Form.Label htmlFor="title">Szakdolgozat témája</Form.Label></h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {thesis.theme.title}
+                                    {thesis.topic.title}
                                 </div>
                             </div>
                             <hr />
