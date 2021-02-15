@@ -11,7 +11,11 @@ import {
     thesesThemeDeleteSuccess,
     thesesThemeDeleteFailed,
     thesesThemeUpdateRequested,
-    thesesThemeUpdateSuccess, thesesThemeUpdateFailed
+    thesesThemeUpdateSuccess,
+    thesesThemeUpdateFailed,
+    thesisThemeImportRequested,
+    thesisThemeImportSuccess,
+    thesisThemeImportFailed
 } from '../actions/thesesThemesActions';
 
 const API_ENDPOINT = '/theses/themes';
@@ -25,6 +29,21 @@ export const fetchThesisThemes = () => {
         } catch(error) {
             const { data } = error.response;
             dispatch(thesesThemeFetchFailed(data));
+        }
+    }
+}
+
+export const importThesisTheme = (importFile) => {
+    return async (dispatch) => {
+        try {
+            let formData = new FormData();
+            formData.append('import', importFile);
+            dispatch(thesisThemeImportRequested());
+            const { data } = await api.post(`${API_ENDPOINT}/import`, formData);
+            dispatch(thesisThemeImportSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(thesisThemeImportFailed(data));
         }
     }
 }

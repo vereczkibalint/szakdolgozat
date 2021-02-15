@@ -9,7 +9,11 @@ import {
     THESIS_THEME_DELETE_SUCCESS,
     THESIS_THEME_DELETE_FAILED,
     THESIS_THEME_UPDATE_REQUEST,
-    THESIS_THEME_UPDATE_SUCCESS, THESIS_THEME_UPDATE_FAILED
+    THESIS_THEME_UPDATE_SUCCESS,
+    THESIS_THEME_UPDATE_FAILED,
+    THESIS_THEME_IMPORT_REQUEST,
+    THESIS_THEME_IMPORT_SUCCESS,
+    THESIS_THEME_IMPORT_FAILED
 } from '../constants/thesesThemesConstants';
 
 export const thesesThemeFetchRequested = () => {
@@ -30,6 +34,30 @@ export const thesesThemeFetchSuccess = (themes) => {
 export const thesesThemeFetchFailed = (errors) => {
     return {
         type: THESIS_THEME_FETCH_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const thesisThemeImportRequested = () => {
+    return {
+        type: THESIS_THEME_IMPORT_REQUEST
+    }
+}
+
+export const thesisThemeImportSuccess = (themes) => {
+    return {
+        type: THESIS_THEME_IMPORT_SUCCESS,
+        payload: {
+            themes
+        }
+    }
+}
+
+export const thesisThemeImportFailed = (errors) => {
+    return {
+        type: THESIS_THEME_IMPORT_FAILED,
         payload: {
             errors
         }

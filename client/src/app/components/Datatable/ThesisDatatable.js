@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteThesis } from "../../services/thesesService";
 import {Table, Form} from 'react-bootstrap';
@@ -18,10 +18,10 @@ const ThesisDatatable = ({ headers, body, history }) => {
         const filterData = () => {
             switch(filterBy){
                 case 'student':
-                    setFilteredData(body.filter(thesis => thesis.student.lastName.concat(' ', thesis.student.firstName).includes(filterInput)));
+                    setFilteredData(body.filter(thesis => thesis.student.lastName.concat(' ', thesis.student.firstName).toLowerCase().includes(filterInput.toLowerCase())));
                     break;
                 case 'topic':
-                    setFilteredData(body.filter(thesis => thesis.theme.title.toLowerCase().includes(filterInput.toLowerCase())));
+                    setFilteredData(body.filter(thesis => thesis.topic.title.toLowerCase().includes(filterInput.toLowerCase())));
                     break;
                 case 'title':
                     setFilteredData(body.filter(thesis => thesis.title.toLowerCase().includes(filterInput.toLowerCase())));
@@ -48,7 +48,7 @@ const ThesisDatatable = ({ headers, body, history }) => {
     }
 
     return (
-        <>
+        <Fragment>
             <div className="d-flex flex-md-row flex-column mb-3">
                 <Form.Control className="w-auto mr-3 mb-3" as="select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
                     <option value="student">Hallgató alapján</option>
@@ -76,7 +76,7 @@ const ThesisDatatable = ({ headers, body, history }) => {
                 { filteredData.map((row, rowIndex) => (
                     <tr key={rowIndex}>
                         <td>{row.student.lastName.concat(' ', row.student.firstName)}</td>
-                        <td>{row.theme.title}</td>
+                        <td>{row.topic.title}</td>
                         <td>{row.title}</td>
                         <td className='d-flex justify-content-around'>
                             <FontAwesomeIcon icon={faEye}
@@ -96,7 +96,7 @@ const ThesisDatatable = ({ headers, body, history }) => {
                 ))}
                 </tbody>
             </Table>
-        </>
+        </Fragment>
     )
 }
 

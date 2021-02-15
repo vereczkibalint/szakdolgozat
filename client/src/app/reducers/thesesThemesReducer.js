@@ -9,7 +9,11 @@ import {
     THESIS_THEME_DELETE_FAILED,
     THESIS_THEME_DELETE_SUCCESS,
     THESIS_THEME_UPDATE_REQUEST,
-    THESIS_THEME_UPDATE_SUCCESS, THESIS_THEME_UPDATE_FAILED
+    THESIS_THEME_UPDATE_SUCCESS,
+    THESIS_THEME_UPDATE_FAILED,
+    THESIS_THEME_IMPORT_REQUEST,
+    THESIS_THEME_IMPORT_SUCCESS,
+    THESIS_THEME_IMPORT_FAILED
 } from '../constants/thesesThemesConstants';
 
 const initialState = {
@@ -25,12 +29,14 @@ const thesesThemesReducer = (state = initialState, action) => {
         case THESIS_THEME_FETCH_REQUEST:
         case THESIS_THEME_DELETE_REQUEST:
         case THESIS_THEME_UPDATE_REQUEST:
+        case THESIS_THEME_IMPORT_REQUEST:
             return {
                 ...state,
                 isLoading: true,
                 errors: []
             }
         case THESIS_THEME_FETCH_SUCCESS:
+        case THESIS_THEME_IMPORT_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
@@ -68,9 +74,9 @@ const thesesThemesReducer = (state = initialState, action) => {
         case THESIS_THEME_FETCH_FAILED:
         case THESIS_THEME_DELETE_FAILED:
         case THESIS_THEME_UPDATE_FAILED:
+        case THESIS_THEME_IMPORT_FAILED:
             return {
                 ...state,
-                themes: [],
                 isLoading: false,
                 errors: payload.errors
             }

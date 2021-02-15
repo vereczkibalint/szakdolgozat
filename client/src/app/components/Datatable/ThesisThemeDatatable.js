@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Table, Form, Button, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCheck, faPen, faPlus, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 import moment from "moment";
 import Alert from "../../../common/components/Alert";
-import {deleteThesisTheme, insertThesisTheme, updateThesisTheme} from "../../services/thesesThemeService";
+import {
+    deleteThesisTheme,
+    importThesisTheme,
+    insertThesisTheme,
+    updateThesisTheme
+} from "../../services/thesesThemeService";
 
 const ThesisDatatable = ({ headers, body }) => {
     const dispatch = useDispatch();
 
     const userId = useSelector(state => state.auth.user._id);
+    const themeErrors = useSelector(state => state.themes.errors);
 
     const [newThesisTheme, setNewThesisTheme] = useState('');
 
@@ -20,6 +26,8 @@ const ThesisDatatable = ({ headers, body }) => {
     const [editMode, setEditMode] = useState(false);
     const [updatedTitle, setUpdatedTitle] = useState('');
     const [themeToUpdate, setThemeToUpdate] = useState('');
+
+    const importInputFile = useRef(null);
 
     useEffect(() => {
         const filterData = () => {
@@ -65,8 +73,12 @@ const ThesisDatatable = ({ headers, body }) => {
         }
     }
 
+    function handleFileImport(importFile) {
+        dispatch(importThesisTheme(importFile));
+    }
+
     return (
-        <>
+        <Fragment>
             <div className="d-flex flex-md-row flex-column justify-content-between mb-3">
                 <InputGroup className="mb-3 w-auto">
                     <FormControl
@@ -80,20 +92,29 @@ const ThesisDatatable = ({ headers, body }) => {
                         </Button>
                     </InputGroup.Append>
                 </InputGroup>
-                <Form.Control
-                    type="text"
-                    className="w-auto mr-3"
-                    placeholder="Szűrés név alapján"
-                    value={filterInput}
-                    onChange={(e) => setFilterInput(e.target.value)}
-                />
+                <input type="file" ref={importInputFile} style={{ display: 'none' }} onChange={(e) => handleFileImport(e.target.files[0])} />
+                <Button variant="success" className="mb-3" onClick={() => importInputFile.current.click()}>
+                    <FontAwesomeIcon icon={faPlus}/> Importálás
+                </Button>
             </div>
+
+            <Form.Control
+                type="text"
+                className="w-auto mr-3 mb-3"
+                placeholder="Szűrés név alapján"
+                value={filterInput}
+                onChange={(e) => setFilterInput(e.target.value)}
+            />
+
             { body.length === 0 && (
                 <Alert type="danger" message="Nincsen rögzített szakdolgozati téma!"/>
             )}
             { body.length > 0 && filteredData.length === 0 && (
                 <Alert type="danger" message="Nincsen szakdolgozati téma a megadott feltétellel!"/>
             )}
+            { themeErrors.errors && themeErrors.errors.length > 0 && themeErrors.errors.map(error => (
+                <Alert type="danger" message={error.message} />
+            )) }
             <Table hover responsive className="text-center">
                 <thead>
                 <tr>
@@ -156,7 +177,7 @@ const ThesisDatatable = ({ headers, body }) => {
                 })}
                 </tbody>
             </Table>
-        </>
+        </Fragment>
     )
 }
 
