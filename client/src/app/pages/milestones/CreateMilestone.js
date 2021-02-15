@@ -69,7 +69,7 @@ const CreateMilestone = ({ history }) => {
     }
 
     function valid(current) {
-        var today = new Date();
+        let today = new Date();
         return current.isAfter(today);
     }
 
