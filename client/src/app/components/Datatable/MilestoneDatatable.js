@@ -73,13 +73,16 @@ const MilestoneDatatable = ({ milestones }) => {
                                 icon={faEye}
                                 title="Részletek megtekintése"/>
                         </Link>
-                        <FontAwesomeIcon
-                            style={{fontSize: '18px', cursor: 'pointer'}}
-                            icon={faTrash}
-                            className="text-danger"
-                            title="Törlés"
-                            onClick={() => handleMilestoneDelete(milestone._id)}
-                        />
+
+                        { user.role === 'LECTURER' && (
+                            <FontAwesomeIcon
+                                style={{fontSize: '18px', cursor: 'pointer'}}
+                                icon={faTrash}
+                                className="text-danger"
+                                title="Törlés"
+                                onClick={() => handleMilestoneDelete(milestone._id)}
+                            />
+                        )}
                     </td>
                 </tr>
                 );
