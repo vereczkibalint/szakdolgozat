@@ -56,7 +56,7 @@ const CreateThesisForm = ({ history }) => {
             const thesis = {
                 lecturer,
                 student,
-                theme,
+                topic: theme,
                 title
             };
             dispatch(insertThesis(thesis, history));
