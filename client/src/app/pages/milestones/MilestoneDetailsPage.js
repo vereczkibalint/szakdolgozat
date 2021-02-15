@@ -84,7 +84,7 @@ const MilestoneDetailsPage = () => {
     }
 
     return (
-        <>
+        <Fragment>
             <div className="mt-3">
                 <div className="d-flex justify-content-between">
                     <GoBackButton/>
@@ -200,7 +200,7 @@ const MilestoneDetailsPage = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </Fragment>
     );
 }
 

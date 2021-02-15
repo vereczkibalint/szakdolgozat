@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Login from "./pages/login/Login";
 import ProtectedRoute from "../common/components/ProtectedRoute";
@@ -20,6 +20,7 @@ import EditConsultation from "./pages/consultations/EditConsultation";
 import StudentsListPage from "./pages/students/StudentsListPage";
 import StudentDetailsPage from "./pages/students/StudentDetailsPage";
 import ThemesPage from "./pages/themes/ThemesPage";
+import ThesisDetailsPage from "./pages/theses/ThesisDetailsPage";
 
 const UserApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -30,7 +31,7 @@ const UserApp = () => {
     }
 
     return (
-        <>
+        <Fragment>
             { isAuthenticated ? <Navbar /> : '' }
             <div className="container">
                 <Switch>
@@ -55,6 +56,11 @@ const UserApp = () => {
                         path="/user/theses/create"
                         exact
                         component={CreateThesis} />
+
+                    <LecturerRoute
+                        path="/user/theses/:thesisId"
+                        exact
+                        component={ThesisDetailsPage} />
 
                     <LecturerRoute
                         path="/user/themes"
@@ -99,7 +105,7 @@ const UserApp = () => {
                     <Route component={NotFound} />
                 </Switch>
             </div>
-        </>
+        </Fragment>
     );
 }
 

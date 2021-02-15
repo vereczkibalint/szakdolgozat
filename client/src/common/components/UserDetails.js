@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -62,22 +62,22 @@ const UserDetails = ({ history, type, user }) => {
         if(loggedInUser.role === 'ADMIN') {
             if(editMode) {
                 return (
-                    <>
+                    <Fragment>
                         <Button variant="success" className="mb-3" onClick={() => handleSave()} disabled={!canCreate}>
                             <FontAwesomeIcon icon={faCheckCircle} /> Mentés
                         </Button>
                         <Button variant="danger" className="mb-3" onClick={() => setEditMode(current => !current)}>
                             <FontAwesomeIcon icon={faTimesCircle} /> Mégsem
                         </Button>
-                    </>
+                    </Fragment>
                 );
             } else {
                 return (
-                    <>
+                    <Fragment>
                         <Button variant="primary" className="mb-3" onClick={() => setEditMode(current => !current)}>
                             <FontAwesomeIcon icon={faEdit} /> Szerkeszt
                         </Button>
-                    </>
+                    </Fragment>
                 );
             }
         }
@@ -125,7 +125,7 @@ const UserDetails = ({ history, type, user }) => {
                             </div>
                             <div className="col-sm-9 text-secondary">
                                 {editMode ?
-                                    <>
+                                    <Fragment>
                                     <Form.Control
                                         required
                                         type="text"
@@ -138,7 +138,7 @@ const UserDetails = ({ history, type, user }) => {
                                         <Form.Control.Feedback type="invalid">
                                             {getErrorMessage('lastName')}
                                         </Form.Control.Feedback>
-                                    </>:
+                                    </Fragment>:
                                     lastName
                                 }
                             </div>
@@ -150,7 +150,7 @@ const UserDetails = ({ history, type, user }) => {
                                 </div>
                                 <div className="col-sm-9 text-secondary">
                                     {editMode ?
-                                        <>
+                                        <Fragment>
                                         <Form.Control
                                             required
                                             type="text"
@@ -163,7 +163,7 @@ const UserDetails = ({ history, type, user }) => {
                                             <Form.Control.Feedback type="invalid">
                                                 {getErrorMessage('firstName')}
                                             </Form.Control.Feedback>
-                                        </> :
+                                        </Fragment> :
                                         firstName
                                     }
                                 </div>
@@ -175,7 +175,7 @@ const UserDetails = ({ history, type, user }) => {
                                 </div>
                                 <div className="col-sm-9 text-secondary">
                                     {editMode ?
-                                        <>
+                                        <Fragment>
                                         <Form.Control
                                             required
                                             type="text"
@@ -188,7 +188,7 @@ const UserDetails = ({ history, type, user }) => {
                                             <Form.Control.Feedback type="invalid">
                                                 {getErrorMessage('neptun')}
                                             </Form.Control.Feedback>
-                                        </> :
+                                        </Fragment> :
                                         neptun
                                     }
                                 </div>
@@ -200,7 +200,7 @@ const UserDetails = ({ history, type, user }) => {
                                 </div>
                                 <div className="col-sm-9 text-secondary">
                                     {editMode ?
-                                        <>
+                                        <Fragment>
                                         <Form.Control
                                             required
                                             type="text"
@@ -213,7 +213,7 @@ const UserDetails = ({ history, type, user }) => {
                                             <Form.Control.Feedback type="invalid">
                                                 {getErrorMessage('email')}
                                             </Form.Control.Feedback>
-                                        </> :
+                                        </Fragment> :
                                         email
                                     }
                                 </div>

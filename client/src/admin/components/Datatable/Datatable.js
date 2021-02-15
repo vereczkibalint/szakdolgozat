@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteStudent, deleteLecturer } from '../../services/userService';
 
@@ -56,7 +56,7 @@ const Datatable = ({ headers, body, history }) => {
     }
 
     return (
-        <>
+        <Fragment>
             <div className="d-flex mb-3">
                 <Form.Control className="w-auto mr-3" as="select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
                     <option value="name">Név alapján</option>
@@ -98,7 +98,7 @@ const Datatable = ({ headers, body, history }) => {
                     ))}
                 </tbody>
             </Table>
-        </>
+        </Fragment>
     )
 }
 
