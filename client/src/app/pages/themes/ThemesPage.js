@@ -30,11 +30,8 @@ const ThemesPage = () => {
 
     return (
         <div className="mt-5">
-            <h2 className="text-center">Szakdolgozati témák kezelése</h2>
+            <h2 className="text-center mb-4">Szakdolgozati témák kezelése</h2>
             { errors.message && <Alert type="danger" message={errors.message} /> }
-            <div className="d-flex justify-content-start mt-3 mb-3">
-
-            </div>
             <ThesisThemeDatatable body={themes} headers={headers} />
         </div>
     );
