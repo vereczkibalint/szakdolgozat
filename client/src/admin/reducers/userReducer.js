@@ -22,13 +22,19 @@ import {
     LECTURER_UPDATE_FAILED,
     LECTURER_DELETE_REQUEST,
     LECTURER_DELETE_SUCCESS,
-    LECTURER_DELETE_FAILED
+    LECTURER_DELETE_FAILED,
+    USER_IMPORT_REQUEST,
+    USER_IMPORT_SUCCESS,
+    USER_IMPORT_FAILED,
+    ADMIN_LOAD_REQUEST,
+    ADMIN_LOAD_SUCCESS, ADMIN_LOAD_FAILED
 } from '../constants/userConstants';
 
 const initialState = {
     isLoading: false,
     students: [],
     lecturers: [],
+    admins: [],
     errors: []
 };
 
@@ -37,6 +43,7 @@ const userReducer = (state = initialState, action) => {
 
     switch(type) {
         case STUDENT_LOAD_REQUEST:
+        case USER_IMPORT_REQUEST:
         case STUDENT_INSERT_REQUEST:
         case STUDENT_UPDATE_REQUEST:
         case STUDENT_DELETE_REQUEST:
@@ -44,6 +51,7 @@ const userReducer = (state = initialState, action) => {
         case LECTURER_INSERT_REQUEST:
         case LECTURER_UPDATE_REQUEST:
         case LECTURER_DELETE_REQUEST:
+        case ADMIN_LOAD_REQUEST:
             return {
                 ...state,
                 errors: [],
@@ -56,11 +64,27 @@ const userReducer = (state = initialState, action) => {
                 students: payload.students,
                 errors: []
             }
+        case USER_IMPORT_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                students: payload.userType === 'STUDENT' ? payload.users : [],
+                lecturers: payload.userType === 'LECTURER' ? payload.users : [],
+                admins: payload.userType === 'ADMIN' ? payload.users : [],
+                errors: []
+            }
         case LECTURER_LOAD_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 lecturers: payload.lecturers,
+                errors: []
+            }
+        case ADMIN_LOAD_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                admins: payload.admins,
                 errors: []
             }
         case STUDENT_INSERT_SUCCESS:
@@ -118,6 +142,7 @@ const userReducer = (state = initialState, action) => {
                 errors: []
             }
         case STUDENT_LOAD_FAILED:
+        case USER_IMPORT_FAILED:
         case STUDENT_INSERT_FAILED:
         case STUDENT_UPDATE_FAILED:
         case STUDENT_DELETE_FAILED:
@@ -125,6 +150,7 @@ const userReducer = (state = initialState, action) => {
         case LECTURER_INSERT_FAILED:
         case LECTURER_UPDATE_FAILED:
         case LECTURER_DELETE_FAILED:
+        case ADMIN_LOAD_FAILED:
             return {
                 ...state,
                 isLoading: false,

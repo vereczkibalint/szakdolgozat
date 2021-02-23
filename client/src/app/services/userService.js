@@ -32,7 +32,7 @@ export const importStudents = (importFile) => {
             dispatch(studentImportRequested());
             let formData = new FormData();
             formData.append('import', importFile);
-            const { data } = await api.post(`${API_ENDPOINT}/students/import`, formData);
+            const { data } = await api.post(`${API_ENDPOINT}/student/import`, formData);
             dispatch(studentImportSuccess(data));
         } catch(error) {
             const { data } = error.response;

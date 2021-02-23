@@ -22,7 +22,12 @@ import {
     LECTURER_UPDATE_FAILED,
     LECTURER_DELETE_REQUEST,
     LECTURER_DELETE_SUCCESS,
-    LECTURER_DELETE_FAILED
+    LECTURER_DELETE_FAILED,
+    USER_IMPORT_REQUEST,
+    USER_IMPORT_SUCCESS,
+    USER_IMPORT_FAILED,
+    ADMIN_LOAD_REQUEST,
+    ADMIN_LOAD_SUCCESS, ADMIN_LOAD_FAILED
 } from "../constants/userConstants";
 
 export const studentLoadRequested = () => {
@@ -43,6 +48,31 @@ export const studentLoadSuccess = (students) => {
 export const studentLoadFailed = (errors) => {
     return {
         type: STUDENT_LOAD_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const userImportRequested = () => {
+    return {
+        type: USER_IMPORT_REQUEST
+    }
+}
+
+export const userImportSuccess = (users) => {
+    return {
+        type: USER_IMPORT_SUCCESS,
+        payload: {
+            users,
+            userType: users[0].role
+        }
+    }
+}
+
+export const userImportFailed = (errors) => {
+    return {
+        type: USER_IMPORT_FAILED,
         payload: {
             errors
         }
@@ -211,6 +241,30 @@ export const lecturerDeleteSuccess = (lecturerId) => {
 export const lecturerDeleteFailed = (errors) => {
     return {
         type: LECTURER_DELETE_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const adminLoadRequested = () => {
+    return {
+        type: ADMIN_LOAD_REQUEST
+    }
+}
+
+export const adminLoadSuccess = (admins) => {
+    return {
+        type: ADMIN_LOAD_SUCCESS,
+        payload: {
+            admins
+        }
+    }
+}
+
+export const adminLoadFailed = (errors) => {
+    return {
+        type: ADMIN_LOAD_FAILED,
         payload: {
             errors
         }

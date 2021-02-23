@@ -23,7 +23,13 @@ import {
     lecturerUpdateFailed,
     lecturerDeleteRequested,
     lecturerDeleteSuccess,
-    lecturerDeleteFailed
+    lecturerDeleteFailed,
+    userImportRequested,
+    userImportSuccess,
+    userImportFailed,
+    adminLoadRequested,
+    adminLoadSuccess,
+    adminLoadFailed
 } from '../actions/userActions';
 
 const STUDENTS_DASHBOARD_URL = "/admin/dashboard/students";
@@ -43,10 +49,25 @@ export const fetchAllStudent = () => {
     }
 }
 
+export const importUsers = (importFile, userType) => {
+    return async (dispatch) => {
+        try {
+            dispatch(userImportRequested());
+            let formData = new FormData();
+            formData.append('import', importFile);
+            const { data } = await api.post(`${API_ENDPOINT}/${userType.toLowerCase()}/import`, formData);
+            dispatch(userImportSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(userImportFailed(data));
+        }
+    }
+}
+
 export const insertStudent = (student, history) => {
     return async (dispatch) => {
-        dispatch(studentInsertRequested());
         try{
+            dispatch(studentInsertRequested());
             const { data } = await api.post(`${API_ENDPOINT}`, student);
             dispatch(studentInsertSuccess(data));
             history.push(STUDENTS_DASHBOARD_URL);
@@ -59,8 +80,8 @@ export const insertStudent = (student, history) => {
 
 export const updateStudent = (student, history) => {
     return async (dispatch) => {
-        dispatch(studentUpdateRequested());
         try {
+            dispatch(studentUpdateRequested());
             const { data } = await api.put(`${API_ENDPOINT}/${student._id}`, student);
             dispatch(studentUpdateSuccess(data));
             history.push(STUDENTS_DASHBOARD_URL);
@@ -73,8 +94,8 @@ export const updateStudent = (student, history) => {
 
 export const deleteStudent = (studentId) => {
     return async (dispatch) => {
-        dispatch(studentDeleteRequested());
         try {
+            dispatch(studentDeleteRequested());
             const { data } = await api.delete(`${API_ENDPOINT}/${studentId}`);
             dispatch(studentDeleteSuccess(data._id));
         } catch(error) {
@@ -86,8 +107,8 @@ export const deleteStudent = (studentId) => {
 
 export const fetchAllLecturer = () => {
     return async (dispatch) => {
-        dispatch(lecturerLoadRequested());
         try{
+            dispatch(lecturerLoadRequested());
             const { data } = await api.get(`${API_ENDPOINT}/role/lecturer`);
             dispatch(lecturerLoadSuccess(data));
         } catch(error) {
@@ -99,8 +120,8 @@ export const fetchAllLecturer = () => {
 
 export const insertLecturer = (lecturer, history) => {
     return async (dispatch) => {
-        dispatch(lecturerInsertRequested());
         try{
+            dispatch(lecturerInsertRequested());
             const { data } = await api.post(`${API_ENDPOINT}`, lecturer);
             dispatch(lecturerInsertSuccess(data));
             history.push(LECTURERS_DASHBOARD_URL);
@@ -113,8 +134,8 @@ export const insertLecturer = (lecturer, history) => {
 
 export const updateLecturer = (lecturer, history) => {
     return async (dispatch) => {
-        dispatch(lecturerUpdateRequested());
         try {
+            dispatch(lecturerUpdateRequested());
             const { data } = await api.put(`${API_ENDPOINT}/${lecturer._id}`, lecturer);
             dispatch(lecturerUpdateSuccess(data));
             history.push(LECTURERS_DASHBOARD_URL);
@@ -127,13 +148,26 @@ export const updateLecturer = (lecturer, history) => {
 
 export const deleteLecturer = (lecturerId) => {
     return async (dispatch) => {
-        dispatch(lecturerDeleteRequested());
         try {
+            dispatch(lecturerDeleteRequested());
             const { data } = await api.delete(`${API_ENDPOINT}/${lecturerId}`);
             dispatch(lecturerDeleteSuccess(data._id));
         } catch(error) {
             const { data } = error.response;
             dispatch(lecturerDeleteFailed(data));
+        }
+    }
+}
+
+export const fetchAllAdmin = () => {
+    return async (dispatch) => {
+        try{
+            dispatch(adminLoadRequested());
+            const { data } = await api.get(`${API_ENDPOINT}/role/admin`);
+            dispatch(adminLoadSuccess(data));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(adminLoadFailed(data));
         }
     }
 }
