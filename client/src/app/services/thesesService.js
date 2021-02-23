@@ -52,7 +52,7 @@ export const fetchThesisByStudent = () => {
     return async (dispatch) => {
         try {
             dispatch(thesisFetchByStudentRequested());
-            const { data } = await api.get(`${API_ENDPOINT}/student`);
+            const { data } = await api.get(`${API_ENDPOINT}`);
             dispatch(thesisFetchByStudentSuccess(data));
         } catch(error) {
             const { data } = error.response;
