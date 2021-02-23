@@ -95,7 +95,6 @@ const MilestoneListing = () => {
                 setFilteredMilestones(milestones.milestones.filter(milestone => milestone.thesis._id === thesisId && milestone.status === status).sort(
                     dateOrderBy === 'asc' ? sortByDateAsc : sortByDateDesc
                 ));
-                // TODO: sort miután status change volt
             }
         }
     }

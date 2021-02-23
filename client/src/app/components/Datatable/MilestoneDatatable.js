@@ -12,11 +12,8 @@ const MilestoneDatatable = ({ milestones }) => {
     const history = useHistory();
 
     const user = useSelector(state => state.auth.user);
-    const [filteredMilestones, setFilteredMilestones] = useState(milestones.filter(milestone => milestone.isDraft === false));
 
-    useEffect(() => {
-        setFilteredMilestones(milestones.filter(milestone => milestone.isDraft === false));
-    }, [milestones]);
+    let filteredMilestones = milestones.filter(milestone => milestone.isDraft === false);
 
     const handleMilestoneDelete = (milestoneId) => {
         if(window.confirm('Biztosan törölni szeretné ezt a mérföldkövet?')) {
@@ -27,7 +24,7 @@ const MilestoneDatatable = ({ milestones }) => {
 
     function renderDatatable(dataSource) {
         return (
-            dataSource.map(milestone => {
+            dataSource.map((milestone, index) => {
                 let isExpired = moment(milestone.deadline).isBefore(moment());
                 let diffInDays = moment(milestone.deadline).diff(moment(), 'days');
                 let duration = moment.duration(moment(milestone.deadline).diff(moment()));
@@ -35,7 +32,7 @@ const MilestoneDatatable = ({ milestones }) => {
                 let diffInMins = parseInt(duration.asMinutes()) % 60;
 
                 return (
-                <tr key={milestone._id}>
+                <tr key={index}>
                     <td><span
                         className={milestone.isDraft ? 'text-danger' : ''}>{milestone.title} {milestone.isDraft && '(piszkozat)'}</span>
                     </td>

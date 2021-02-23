@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchThesisByStudent} from "../../services/thesesService";
 import LoadingSpinner from "../../../common/components/Loading/LoadingSpinner";
-import {fetchAllMilestone} from "../../services/milestoneService";
 import MilestoneDatatable from "../Datatable/MilestoneDatatable";
 import Form from "react-bootstrap/Form";
 import Alert from "../../../common/components/Alert";
@@ -11,15 +10,18 @@ const OwnMilestones = () => {
     const dispatch = useDispatch();
 
     const thesisIsLoading = useSelector(state => state.theses.isLoading);
-    const thesis = useSelector(state => state.theses.theses[0]);
     const milestonesIsLoading = useSelector(state => state.milestones.isLoading);
     const milestones = useSelector(state => state.milestones.milestones);
-
-    const [filteredMilestones, setFilteredMilestones] = useState([...milestones]);
 
     const [titleFilter, setTitleFilter] = useState('');
     const [dateOrderBy, setDateOrderBy] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+
+    const [filteredMilestones, setFilteredMilestones] = useState([...milestones]);
+
+    useEffect(() => {
+        dispatch(fetchThesisByStudent());
+    }, [dispatch]);
 
     useEffect(() => {
         filterMilestonesByTitle(titleFilter);
@@ -40,7 +42,7 @@ const OwnMilestones = () => {
     function handleDateOrderChange(orderBy) {
         setDateOrderBy(orderBy);
 
-        switch(orderBy) {
+        switch(dateOrderBy) {
             case 'desc':
                 sortByDateDesc();
                 break;
@@ -65,19 +67,15 @@ const OwnMilestones = () => {
 
     function handleStatusFilterChange(status) {
         setStatusFilter(status);
-        if(status !== '') {
+
+        if(status === '') {
+            setFilteredMilestones([...milestones]);
+        } else {
             setFilteredMilestones(milestones.filter(milestone => milestone.status === status).sort(
                 dateOrderBy === 'asc' ? sortByDateAsc : sortByDateDesc
             ));
-        } else {
-            setFilteredMilestones([...milestones]);
         }
-        // TODO: sort miután status change volt
     }
-
-    useEffect(() => {
-        dispatch(fetchThesisByStudent());
-    }, [dispatch]);
 
     if(thesisIsLoading || milestonesIsLoading) {
         return (
@@ -119,11 +117,11 @@ const OwnMilestones = () => {
                 </Form.Group>
             </div>
 
-            <MilestoneDatatable milestones={filteredMilestones} />
-
-            { !filteredMilestones.length && (
+            { filteredMilestones.length > 0 ? (
+                <MilestoneDatatable milestones={filteredMilestones} />
+            ) : (
                 <Alert type="danger" message="A keresett feltételekkel nem található mérföldkő!" />
-            ) }
+            )}
         </div>
     );
 }
