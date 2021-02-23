@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import { Link } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import { logout } from '../services/authService';
 import {NavDropdown} from "react-bootstrap";
 
@@ -17,12 +17,15 @@ const Navbar = () => {
             </button>
             <div className="collapse navbar-collapse" id="admin_navbar">
                 <ul className="navbar-nav">
-                    <li className="nav-item">
-                        <Link to="/admin/dashboard/students" className="nav-link">Hallgatók</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/admin/dashboard/lecturers" className="nav-link">Oktatók</Link>
-                    </li>
+                    <NavLink className="nav-link" to="/admin/dashboard/students">
+                        Hallgatók
+                    </NavLink>
+                    <NavLink className="nav-link" to="/admin/dashboard/lecturers">
+                        Oktatók
+                    </NavLink>
+                    <NavLink className="nav-link" to="/admin/dashboard/admins">
+                        Ügyintézők
+                    </NavLink>
                 </ul>
                 <ul className="navbar-nav ml-auto">
                     <NavDropdown title={user.lastName + ' ' + user.firstName + ' (ügyintéző)'} id="basic-nav-dropdown">
