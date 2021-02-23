@@ -60,7 +60,9 @@ const Datatable = ({ headers, body, history }) => {
             <div className="d-flex mb-3">
                 <Form.Control className="w-auto mr-3" as="select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
                     <option value="name">Név alapján</option>
-                    <option value="neptun">NEPTUN alapján</option>
+                    { headers.includes('NEPTUN kód') && (
+                        <option value="neptun">NEPTUN alapján</option>
+                    )}
                     <option value="email">Email alapján</option>
                 </Form.Control>
 
@@ -84,7 +86,9 @@ const Datatable = ({ headers, body, history }) => {
                     { filteredData.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                             <td>{`${row.lastName} ${row.firstName}`}</td>
-                            <td>{`${row.neptun}`}</td>
+                            { headers.includes('NEPTUN kód') && (
+                                <td>{`${row.neptun}`}</td>
+                            )}
                             <td>{`${row.email}`}</td>
                             <td className='d-flex justify-content-around'>
                                 <Button variant='info' onClick={() => handleDetailsClick(row)}>

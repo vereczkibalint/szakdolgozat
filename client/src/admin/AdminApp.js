@@ -14,6 +14,7 @@ import CreateUser from "./pages/users/CreateUser";
 
 import Navbar from './components/Navbar';
 import SettingsPage from "../app/pages/settings/SettingsPage";
+import ManageAdmins from "./pages/admins/ManageAdmins";
 
 const AdminApp = () => {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -30,15 +31,16 @@ const AdminApp = () => {
                     <Route path="/admin" exact component={LoginPage} />
                     <Route path="/admin/login" exact component={LoginPage} />
                     <ProtectedRoute
-                            path="/admin/dashboard" 
-                            exact 
-                            component={ManageStudents}
-                            />
+                        path="/admin/dashboard"
+                        exact
+                        component={ManageStudents}
+                    />
+
                     <ProtectedRoute
-                            path="/admin/dashboard/students"
-                            exact
-                            component={ManageStudents}
-                            />
+                        path="/admin/dashboard/students"
+                        exact
+                        component={ManageStudents}
+                    />
 
                     <ProtectedRoute
                         path="/admin/dashboard/:type/create"
@@ -53,16 +55,22 @@ const AdminApp = () => {
                     />
 
                     <ProtectedRoute
-                            path="/admin/dashboard/lecturers"
-                            exact
-                            component={ManageLecturers}
-                            />
+                        path="/admin/dashboard/lecturers"
+                        exact
+                        component={ManageLecturers}
+                    />
 
                     <ProtectedRoute
-                            path="/admin/settings"
-                            exact
-                            component={SettingsPage}
-                            />
+                        path="/admin/dashboard/admins"
+                        exact
+                        component={ManageAdmins}
+                    />
+
+                    <ProtectedRoute
+                        path="/admin/settings"
+                        exact
+                        component={SettingsPage}
+                    />
 
                     <Route component={NotFound} />
                 </Switch>

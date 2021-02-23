@@ -47,7 +47,6 @@ const UserDetails = ({ history, type, user }) => {
         }
     }
 
-    // TODO: kiemelni ezeket a metódusokat valahova, mert többször használatos
     function checkErrorExists(path) {
         return errors && !!errors.find(err => err.path === path);
     }
