@@ -7,6 +7,9 @@ import 'moment/locale/hu';
 import "react-bootstrap-typeahead/css/Typeahead.min.css";
 import Datetime from "react-datetime";
 import {createConsultation} from "../../services/consultationService";
+import TextEditor from "../../../common/components/TextEditor";
+import {ContentState, convertToRaw, EditorState} from "draft-js";
+import draftToHtml from "draftjs-to-html";
 
 const CreateConsultationForm = ({ history }) => {
     const dispatch = useDispatch();
@@ -18,6 +21,11 @@ const CreateConsultationForm = ({ history }) => {
     const [startTime, setStartTime] = useState(moment());
     const [endTime, setEndTime] = useState(moment().add('30', 'minutes'));
     const [location, setLocation] = useState('');
+    const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromText('')));
+
+    function handleTextEditorChange(state) {
+        setEditorState(state);
+    }
 
     function checkErrorExists(path) {
         return consultationErrors && !!consultationErrors.find(err => err.path === path);
@@ -42,7 +50,8 @@ const CreateConsultationForm = ({ history }) => {
                 lecturer,
                 startTime,
                 endTime,
-                location
+                location,
+                description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
             };
             dispatch(createConsultation(consultation, history));
         }
@@ -102,6 +111,13 @@ const CreateConsultationForm = ({ history }) => {
                             {getErrorMessage('location')}
                         </div>
                     )}
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Leírás <span className="font-italic">(opcionális)</span></Form.Label>
+                    <TextEditor state={editorState} onChange={(state) => handleTextEditorChange(state)} />
+                    <Form.Control.Feedback type="invalid">
+                        {getErrorMessage('description')}
+                    </Form.Control.Feedback>
                 </Form.Group>
                 <Button
                     className="mb-3"

@@ -7,6 +7,9 @@ import 'moment/locale/hu';
 import "react-bootstrap-typeahead/css/Typeahead.min.css";
 import Datetime from "react-datetime";
 import {updateConsultation} from "../../services/consultationService";
+import {ContentState, convertFromHTML, convertToRaw, EditorState} from "draft-js";
+import TextEditor from "../../../common/components/TextEditor";
+import draftToHtml from "draftjs-to-html";
 
 const EditConsultationForm = ({ consultation, history }) => {
     const dispatch = useDispatch();
@@ -17,6 +20,15 @@ const EditConsultationForm = ({ consultation, history }) => {
     const [startTime, setStartTime] = useState(moment(consultation.startTime));
     const [endTime, setEndTime] = useState(moment(consultation.endTime));
     const [location, setLocation] = useState(consultation.location);
+
+    const blocksFromHTML = convertFromHTML(consultation.description);
+
+    const descriptionEditorState = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap,
+    );
+
+    const [textEditorDescriptionState, setTextEditorDescriptionState] = useState(EditorState.createWithContent(descriptionEditorState));
 
     function checkErrorExists(path) {
         return consultationErrors && !!consultationErrors.find(err => err.path === path);
@@ -36,8 +48,10 @@ const EditConsultationForm = ({ consultation, history }) => {
                 ...consultation,
                 startTime,
                 endTime,
-                location
+                location,
+                description: textEditorDescriptionState.getCurrentContent().hasText() ? draftToHtml(convertToRaw(textEditorDescriptionState.getCurrentContent())) : ''
             };
+
             dispatch(updateConsultation(updatedConsultation, history));
         }
     }
@@ -96,6 +110,10 @@ const EditConsultationForm = ({ consultation, history }) => {
                             {getErrorMessage('location')}
                         </div>
                     )}
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Leírás <span className="font-italic">(opcionális)</span></Form.Label>
+                    <TextEditor state={textEditorDescriptionState} onChange={(state) => setTextEditorDescriptionState(state)} />
                 </Form.Group>
                 <Button
                     className="mb-3"

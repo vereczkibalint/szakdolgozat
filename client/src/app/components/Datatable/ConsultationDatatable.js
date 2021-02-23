@@ -1,15 +1,17 @@
-import React from "react";
+import React, {Fragment, useState} from "react";
 import moment from "moment";
 import { useHistory } from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheckCircle, faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {Table} from "react-bootstrap";
+import {faCheckCircle, faEye, faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {OverlayTrigger, Popover, Table} from "react-bootstrap";
 import {useDispatch} from "react-redux";
 import {deleteConsultation} from "../../services/consultationService";
 
 const ConsultationDatatable = ({ consultations }) => {
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const [popoverText, setPopoverText] = useState('');
 
     const handleConsultationDelete = (consultationId) => {
         if(window.confirm('Biztosan törölni szeretné ezt a konzultációt?')) {
@@ -21,6 +23,19 @@ const ConsultationDatatable = ({ consultations }) => {
         history.push(`/user/consultations/edit/${consultationId}`);
     }
 
+    function togglePopover(text) {
+        setPopoverText(text);
+    }
+
+    const popover = (
+        <Popover>
+            <Popover.Title className="font-weight-bold">Konzultáció leírása</Popover.Title>
+            <Popover.Content>
+                <div dangerouslySetInnerHTML={{ __html: popoverText }} />
+            </Popover.Content>
+        </Popover>
+    );
+
     return (
         <Table hover responsive className="text-center">
             <thead className="font-weight-bold">
@@ -29,11 +44,12 @@ const ConsultationDatatable = ({ consultations }) => {
                 <td>Konzultáció vége</td>
                 <td>Konzultáció helyszíne</td>
                 <td>Elérhetőség</td>
+                <td>Leírás</td>
                 <td>Műveletek</td>
             </tr>
             </thead>
             <tbody>
-            { consultations.map(consultation => (
+            { consultations.map((consultation, index) => (
                 <tr key={consultation._id}>
                     <td>{moment(consultation.startTime).format('YYYY.MM.DD. HH:mm')}</td>
                     <td>{moment(consultation.endTime).format('YYYY.MM.DD. HH:mm')}</td>
@@ -43,6 +59,21 @@ const ConsultationDatatable = ({ consultations }) => {
                             (<FontAwesomeIcon icon={faCheckCircle} className="text-success" title="Elérhető"/>) :
                             (<small><span className="font-weight-bold">Hallgató:</span> {consultation.reservation.student.lastName + ' ' + consultation.reservation.student.firstName + '(' + consultation.reservation.student.neptun + ')'}</small>)
                         }
+                    </td>
+                    <td>
+                        { consultation.description && consultation.description !== '' ?
+                            <OverlayTrigger
+                                placement="left"
+                                trigger="click"
+                                overlay={popover}>
+                                    <FontAwesomeIcon
+                                        icon={faEye}
+                                        className="text-primary"
+                                        cursor="pointer"
+                                        onClick={() => togglePopover(consultation.description)}
+                                    />
+                            </OverlayTrigger>
+                            : '-' }
                     </td>
                     <td className="d-flex justify-content-around">
                         <FontAwesomeIcon

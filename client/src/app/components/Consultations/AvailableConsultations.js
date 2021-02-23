@@ -8,7 +8,7 @@ import {
 import LoadingSpinner from "../../../common/components/Loading/LoadingSpinner";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faCheckCircle, faQuestion, faTimes, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import {faCheck, faCheckCircle, faEye, faQuestion, faTimes, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import {Button, Table, Form, OverlayTrigger, Popover} from "react-bootstrap";
 import Alert from "../../../common/components/Alert";
 
@@ -19,7 +19,7 @@ const AvailableConsultations = () => {
     const isLoading = useSelector(state => state.consultations.isLoading);
     const consultations = useSelector(state => state.consultations.consultations);
     const consultationErrorMessage = useSelector(state => state.consultations.errors.message);
-
+    const [descriptionPopoverText, setDescriptionPopoverText] = useState('');
     const [filteredConsultations, setFilteredConsultations] = useState([...consultations]);
 
     useEffect(() => {
@@ -88,6 +88,15 @@ const AvailableConsultations = () => {
         </Popover>
     );
 
+    const descriptionPopover = (
+        <Popover>
+            <Popover.Title className="font-weight-bold">Konzultáció leírása</Popover.Title>
+            <Popover.Content>
+                <div dangerouslySetInnerHTML={{ __html: descriptionPopoverText }} />
+            </Popover.Content>
+        </Popover>
+    );
+
     function renderOptionsColumn(consultation) {
         let startTimeCurrentTimeDiffInHours = moment(consultation.startTime).diff(moment(), 'h');
         let startTimeReservationTimeDiffInHours = 0;
@@ -126,6 +135,10 @@ const AvailableConsultations = () => {
         }
     }
 
+    function togglePopover(text) {
+        setDescriptionPopoverText(text);
+    }
+
     return (
         <div className="mt-5">
             <h2 className="text-center mb-3">Elérhető konzultációk</h2>
@@ -144,6 +157,7 @@ const AvailableConsultations = () => {
                     <td>Konzultáció vége</td>
                     <td>Konzultáció helyszíne</td>
                     <td>Elérhetőség</td>
+                    <td>Leírás</td>
                     <td>Műveletek</td>
                 </tr>
                 </thead>
@@ -158,6 +172,21 @@ const AvailableConsultations = () => {
                             { !consultation.reservation ?
                                 <FontAwesomeIcon icon={faCheckCircle} className="text-success" title="Elérhető"/> :
                                 <FontAwesomeIcon icon={faTimesCircle} className="text-danger" title="Foglalt"/>}
+                        </td>
+                        <td>
+                        { consultation.description && consultation.description !== '' ?
+                            <OverlayTrigger
+                                placement="left"
+                                trigger="click"
+                                overlay={descriptionPopover}>
+                                <FontAwesomeIcon
+                                    icon={faEye}
+                                    className="text-primary"
+                                    cursor="pointer"
+                                    onClick={() => togglePopover(consultation.description)}
+                                />
+                            </OverlayTrigger>
+                            : '-' }
                         </td>
                         <td className="d-flex justify-content-center align-content-center">
                             {renderOptionsColumn(consultation)}
