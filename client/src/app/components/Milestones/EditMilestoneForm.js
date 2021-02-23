@@ -25,7 +25,7 @@ const EditMilestoneForm = ({ milestone, toggleEditMode }) => {
         blocksFromHTML.entityMap,
     );
 
-    const [textEditorDescriptionState, settextEditorDescriptionState] = useState(EditorState.createWithContent(descriptionEditorState));
+    const [textEditorDescriptionState, setTextEditorDescriptionState] = useState(EditorState.createWithContent(descriptionEditorState));
     const [tags, setTags] = useState([...milestone.tags]);
 
     function changeTags(tags) {
@@ -89,7 +89,7 @@ const EditMilestoneForm = ({ milestone, toggleEditMode }) => {
                 />
 
                 <h5 className="font-weight-bold">Leírás:</h5>
-                <TextEditor state={textEditorDescriptionState} onChange={(state) => settextEditorDescriptionState(state)} />
+                <TextEditor state={textEditorDescriptionState} onChange={(state) => setTextEditorDescriptionState(state)} />
                 <Form.Group className="d-flex flex-column mt-3">
                     <Form.Label>
                         Címkék

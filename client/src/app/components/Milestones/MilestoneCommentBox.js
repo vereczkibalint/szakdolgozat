@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMilestoneComment} from "../../services/milestoneService";
+import {Card, ListGroup} from "react-bootstrap";
 
 const MilestoneCommentBox = ({ editComment, milestoneId, comment}) => {
     const user = useSelector(state => state.auth.user);
@@ -13,6 +14,18 @@ const MilestoneCommentBox = ({ editComment, milestoneId, comment}) => {
         if(window.confirm('Biztosan törölni szeretné a hozzászólást?')) {
             dispatch(deleteMilestoneComment(milestoneId, comment._id));
         }
+    }
+
+    function renderAttachments() {
+        return comment.files.map(file => {
+            let fileNameSplitBlocks = file.split('/');
+            let fileName = fileNameSplitBlocks[fileNameSplitBlocks.length - 1];
+
+            return (
+                <ListGroup.Item><a href={`http://localhost:3001/${file}`} download target="_blank">{fileName}</a></ListGroup.Item>
+            );
+        });
+
     }
 
     return (
@@ -35,6 +48,15 @@ const MilestoneCommentBox = ({ editComment, milestoneId, comment}) => {
                     <p dangerouslySetInnerHTML={{
                         __html: comment.body
                     }} />
+
+                    { comment.files && comment.files.length > 0 && (
+                        <Card className="w-auto">
+                            <Card.Header className="font-weight-bold">Mellékletek</Card.Header>
+                            <ListGroup variant="flush">
+                                { renderAttachments() }
+                            </ListGroup>
+                        </Card>
+                    ) }
                 </div>
             </div>
         </div>

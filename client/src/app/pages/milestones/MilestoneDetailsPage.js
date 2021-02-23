@@ -75,14 +75,6 @@ const MilestoneDetailsPage = () => {
         setEditMode(prevState => !prevState);
     }
 
-    if(milestoneErrorMessage) {
-        return (
-            <div className="mt-5 d-flex justify-content-center mx-auto">
-                <Alert type="danger" message={milestoneErrorMessage} />
-            </div>
-        )
-    }
-
     return (
         <Fragment>
             <div className="mt-3">
@@ -125,6 +117,11 @@ const MilestoneDetailsPage = () => {
                             className="font-weight-bold">Létrehozva:</span> {moment(milestone.createdAt).format('YYYY.MM.DD. HH:mm')}
                         </small>
                     </div>
+                    { milestoneErrorMessage && (
+                        <div className="mt-5 d-flex justify-content-center mx-auto">
+                            <Alert type="danger" message={milestoneErrorMessage} />
+                        </div>
+                    )}
                     <hr/>
                     <div className="row">
                         <div className="col-md-8 border-right p-2">

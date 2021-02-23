@@ -5,7 +5,7 @@ const MilestoneCommentFileUpload = ({ setFiles }) => {
     return (
         <div className="mt-2">
             <Form.Group>
-                <Form.Label>Csatolmányok <br /> <small>Elfogadott formátumok: png, jpg, pdf</small></Form.Label>
+                <Form.Label>Csatolmányok <br /> <small>Elfogadott formátumok: png, jpg, pdf, docx, xlsx</small></Form.Label>
                 <Form.Control
                     type="file"
                     id="commentFiles"

@@ -106,8 +106,11 @@ export const insertMilestoneComment = (milestoneId, comment) => {
             if(comment.files) {
                 let formData = new FormData();
                 let { files, ...commentBody } = comment;
-                formData.append('files', comment.files);
-                formData.append('body', commentBody);
+                formData.append('author', commentBody.author);
+                formData.append('body', commentBody.body);
+                for(let i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
+                }
                 const { data } = await api.post(`${API_ENDPOINT}/comments/${milestoneId}`, formData);
                 result = data;
             } else {
