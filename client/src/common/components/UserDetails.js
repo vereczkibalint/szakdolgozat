@@ -82,7 +82,7 @@ const UserDetails = ({ history, type, user }) => {
         }
     }
 
-    const canCreate = neptun.length === 6 && lastName.length >= 4 && firstName.length >= 4 && /([^\s]).+@([^\s])[^.]+(\..+)/g.test(email);
+    const canCreate = role === 'ADMIN' ? lastName.length >= 4 && firstName.length >= 4 && /([^\s]).+@([^\s])[^.]+(\..+)/g.test(email) : neptun.length === 6 && lastName.length >= 4 && firstName.length >= 4 && /([^\s]).+@([^\s])[^.]+(\..+)/g.test(email);
 
     return (
         <div className="mt-5">
@@ -167,32 +167,35 @@ const UserDetails = ({ history, type, user }) => {
                                     }
                                 </div>
                             </div>
-                        <hr />
-                            <div className="row">
-                                <div className="col-sm-3">
-                                    <h6 className="font-weight-bold"><Form.Label htmlFor="neptun">NEPTUN</Form.Label></h6>
+                        { role !== 'ADMIN' && (
+                            <Fragment>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-sm-3">
+                                        <h6 className="font-weight-bold"><Form.Label htmlFor="neptun">NEPTUN</Form.Label></h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        {editMode ?
+                                            <Fragment>
+                                            <Form.Control
+                                                required
+                                                type="text"
+                                                placeholder="NEPTUN"
+                                                id="neptun"
+                                                value={neptun}
+                                                onChange={(e) => setNeptun(e.target.value)}
+                                                isInvalid={!!getErrorMessage('neptun')}
+                                            />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {getErrorMessage('neptun')}
+                                                </Form.Control.Feedback>
+                                            </Fragment> :
+                                            neptun
+                                        }
+                                    </div>
                                 </div>
-                                <div className="col-sm-9 text-secondary">
-                                    {editMode ?
-                                        <Fragment>
-                                        <Form.Control
-                                            required
-                                            type="text"
-                                            placeholder="NEPTUN"
-                                            id="neptun"
-                                            value={neptun}
-                                            onChange={(e) => setNeptun(e.target.value)}
-                                            isInvalid={!!getErrorMessage('neptun')}
-                                        />
-                                            <Form.Control.Feedback type="invalid">
-                                                {getErrorMessage('neptun')}
-                                            </Form.Control.Feedback>
-                                        </Fragment> :
-                                        neptun
-                                    }
-                                </div>
-                            </div>
-                        <hr />
+                            </Fragment>)}
+                            <hr />
                             <div className="row">
                                 <div className="col-sm-3">
                                     <h6 className="font-weight-bold"><Form.Label htmlFor="email">Email</Form.Label></h6>

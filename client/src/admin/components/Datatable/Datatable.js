@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {faEye, faInfoCircle, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 import Alert from '../../../common/components/Alert';
 
@@ -74,7 +74,7 @@ const Datatable = ({ headers, body, history }) => {
                     onChange={(e) => setFilterInput(e.target.value)}
                 />
             </div>
-            <Table hover bordered responsive>
+            <Table hover responsive>
                 <thead>
                     <tr>
                         { headers.map((header, index) =>
@@ -91,12 +91,8 @@ const Datatable = ({ headers, body, history }) => {
                             )}
                             <td>{`${row.email}`}</td>
                             <td className='d-flex justify-content-around'>
-                                <Button variant='info' onClick={() => handleDetailsClick(row)}>
-                                    <FontAwesomeIcon icon={faInfoCircle}/>
-                                </Button>
-                                <Button variant='danger' onClick={() => handleDeleteClick(row)}>
-                                    <FontAwesomeIcon icon={faTrash}/>
-                                </Button>
+                                <FontAwesomeIcon icon={faEye} className="text-primary" style={{ fontSize: '18px'}} cursor="pointer" onClick={() => handleDetailsClick(row)}/>
+                                <FontAwesomeIcon icon={faTrash} className="text-danger" style={{ fontSize: '18px'}} cursor="pointer" onClick={() => handleDeleteClick(row)}/>
                             </td>
                         </tr>
                     ))}
