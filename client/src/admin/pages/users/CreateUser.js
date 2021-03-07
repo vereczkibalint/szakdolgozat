@@ -12,7 +12,7 @@ import { insertStudent, insertLecturer } from "../../services/userService";
 const CreateUser = ({ history }) => {
     const { type } = useParams();
 
-    if(!['student', 'lecturer'].includes(type)){
+    if(!['student', 'lecturer', 'admin'].includes(type)){
         history.push('/admin/dashboard/lecturers');
     }
 
@@ -66,20 +66,28 @@ const CreateUser = ({ history }) => {
             <Form className="w-auto mx-auto">
                 <FormGroup className="d-flex justify-content-around">
                     <Form.Check
-                        type={"radio"}
-                        id={"student"}
-                        name={"user"}
+                        type="radio"
+                        id="student"
+                        name="user"
                         checked={userType === 'student'}
                         onChange={() => setUserType('student')}
-                        label={"Hallgató létrehozása"}
+                        label="Hallgató létrehozása"
                     />
                     <Form.Check
-                        type={"radio"}
-                        id={"lecturer"}
-                        name={"user"}
+                        type="radio"
+                        id="lecturer"
+                        name="user"
                         checked={userType === 'lecturer'}
                         onChange={() => setUserType('lecturer')}
-                        label={"Oktató létrehozása"}
+                        label="Oktató létrehozása"
+                    />
+                    <Form.Check
+                        type="radio"
+                        id="admin"
+                        name="user"
+                        checked={userType === 'admin'}
+                        onChange={() => setUserType('admin')}
+                        label="Ügyintéző létrehozása"
                     />
                 </FormGroup>
                 <FormGroup>
