@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import moment from "moment";
 import { useHistory } from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -65,12 +65,12 @@ const ConsultationDatatable = ({ consultations }) => {
                             <OverlayTrigger
                                 placement="left"
                                 trigger="click"
-                                overlay={popover}>
+                                overlay={popover} rootClose={true}>
                                     <FontAwesomeIcon
                                         icon={faEye}
                                         className="text-primary"
                                         cursor="pointer"
-                                        onClick={() => togglePopover(consultation.description)}
+                                        onClick={(e) => togglePopover(consultation.description)}
                                     />
                             </OverlayTrigger>
                             : '-' }
