@@ -22,7 +22,7 @@ const MilestoneCommentBox = ({ editComment, milestoneId, comment}) => {
             let fileName = fileNameSplitBlocks[fileNameSplitBlocks.length - 1];
 
             return (
-                <ListGroup.Item><a href={`http://localhost:3001/${file}`} download target="_blank">{fileName}</a></ListGroup.Item>
+                <ListGroup.Item><a href={`http://localhost:3001/${file}`} download target="_blank" rel="noreferrer">{fileName}</a></ListGroup.Item>
             );
         });
 

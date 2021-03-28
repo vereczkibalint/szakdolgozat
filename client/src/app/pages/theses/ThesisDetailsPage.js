@@ -24,7 +24,6 @@ const ThesisDetailsPage = () => {
     let thesis = useSelector(state => state.theses.theses[0]);
     let isLoading = useSelector(state => state.theses.isLoading);
     let thesisErrorMessage = useSelector(state => state.theses.errors.message);
-    let thesisErrors = useSelector(state => state.theses.errors.errors);
 
     if(isLoading) {
         return (

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {useState} from "react";
 import moment from "moment";
 import { useHistory } from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

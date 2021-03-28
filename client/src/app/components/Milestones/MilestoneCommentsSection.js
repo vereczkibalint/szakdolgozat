@@ -49,7 +49,6 @@ const MilestoneCommentsSection = ({ milestoneId, comments }) => {
                 body: draftToHtml(convertToRaw(textEditorCommentState.getCurrentContent())),
             };
             if(selectedFiles) {
-                console.log(selectedFiles)
                 newComment.files = selectedFiles;
             }
             dispatch(insertMilestoneComment(milestoneId, newComment, history));
