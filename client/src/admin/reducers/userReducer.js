@@ -27,7 +27,17 @@ import {
     USER_IMPORT_SUCCESS,
     USER_IMPORT_FAILED,
     ADMIN_LOAD_REQUEST,
-    ADMIN_LOAD_SUCCESS, ADMIN_LOAD_FAILED
+    ADMIN_LOAD_SUCCESS,
+    ADMIN_LOAD_FAILED,
+    ADMIN_INSERT_REQUEST,
+    ADMIN_INSERT_SUCCESS,
+    ADMIN_INSERT_FAILED,
+    ADMIN_UPDATE_REQUEST,
+    ADMIN_DELETE_REQUEST,
+    ADMIN_UPDATE_SUCCESS,
+    ADMIN_DELETE_SUCCESS,
+    ADMIN_UPDATE_FAILED,
+    ADMIN_DELETE_FAILED
 } from '../constants/userConstants';
 
 const initialState = {
@@ -52,6 +62,9 @@ const userReducer = (state = initialState, action) => {
         case LECTURER_UPDATE_REQUEST:
         case LECTURER_DELETE_REQUEST:
         case ADMIN_LOAD_REQUEST:
+        case ADMIN_INSERT_REQUEST:
+        case ADMIN_UPDATE_REQUEST:
+        case ADMIN_DELETE_REQUEST:
             return {
                 ...state,
                 errors: [],
@@ -86,6 +99,13 @@ const userReducer = (state = initialState, action) => {
                 isLoading: false,
                 admins: payload.admins,
                 errors: []
+            }
+        case ADMIN_INSERT_SUCCESS:
+            return {
+                ...state,
+                admins: [...state.admins, payload.admin],
+                errors: [],
+                isLoading: false
             }
         case STUDENT_INSERT_SUCCESS:
             return {
@@ -127,11 +147,31 @@ const userReducer = (state = initialState, action) => {
                 isLoading: false,
                 errors: []
             }
+        case ADMIN_UPDATE_SUCCESS:
+            return {
+                ...state,
+                admins: state.admins.map(admin => {
+                    if(admin._id === payload.admin._id) {
+                        return payload.admin;
+                    }
+
+                    return admin;
+                }),
+                isLoading: false,
+                errors: []
+            }
         case LECTURER_DELETE_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 lecturers: state.lecturers.filter(lecturer => lecturer._id !== payload.lecturerId),
+                errors: []
+            }
+        case ADMIN_DELETE_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                admins: state.admins.filter(admin => admin._id !== payload.adminId),
                 errors: []
             }
         case STUDENT_DELETE_SUCCESS:
@@ -151,6 +191,9 @@ const userReducer = (state = initialState, action) => {
         case LECTURER_UPDATE_FAILED:
         case LECTURER_DELETE_FAILED:
         case ADMIN_LOAD_FAILED:
+        case ADMIN_INSERT_FAILED:
+        case ADMIN_UPDATE_FAILED:
+        case ADMIN_DELETE_FAILED:
             return {
                 ...state,
                 isLoading: false,

@@ -1,19 +1,19 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { deleteStudent, deleteLecturer } from '../../services/userService';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteStudent, deleteLecturer, deleteAdmin} from '../../services/userService';
 
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faEye, faInfoCircle, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faEye, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 import Alert from '../../../common/components/Alert';
 
 const Datatable = ({ headers, body, history }) => {
     const dispatch = useDispatch();
 
+    const user = useSelector(state => state.auth.user);
     const [filterBy, setFilterBy] = useState('name');
     const [filterInput, setFilterInput] = useState('');
     const [filteredData, setFilteredData] = useState([...body]);
@@ -43,10 +43,18 @@ const Datatable = ({ headers, body, history }) => {
 
     function handleDeleteClick(user) {
         if(window.confirm("Biztosan törli a felhasználót?")) {
-            if(user.role === 'STUDENT') {
-                dispatch(deleteStudent(user._id));
-            } else {
-                dispatch(deleteLecturer(user._id));
+            switch(user.role) {
+                case 'STUDENT':
+                    dispatch(deleteStudent(user._id));
+                    break;
+                case 'LECTURER':
+                    dispatch(deleteLecturer(user._id));
+                    break;
+                case 'ADMIN':
+                    dispatch(deleteAdmin(user._id));
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -92,7 +100,9 @@ const Datatable = ({ headers, body, history }) => {
                             <td>{`${row.email}`}</td>
                             <td className='d-flex justify-content-around'>
                                 <FontAwesomeIcon icon={faEye} className="text-primary" style={{ fontSize: '18px'}} cursor="pointer" onClick={() => handleDetailsClick(row)}/>
-                                <FontAwesomeIcon icon={faTrash} className="text-danger" style={{ fontSize: '18px'}} cursor="pointer" onClick={() => handleDeleteClick(row)}/>
+                                { row._id !== user._id && (
+                                    <FontAwesomeIcon icon={faTrash} className="text-danger" style={{ fontSize: '18px'}} cursor="pointer" onClick={() => handleDeleteClick(row)}/>
+                                ) }
                             </td>
                         </tr>
                     ))}

@@ -29,11 +29,17 @@ import {
     userImportFailed,
     adminLoadRequested,
     adminLoadSuccess,
-    adminLoadFailed
+    adminLoadFailed,
+    adminInsertRequested,
+    adminInsertSuccess,
+    adminInsertFailed,
+    adminUpdateRequested,
+    adminUpdateSuccess, adminUpdateFailed, adminDeleteRequested, adminDeleteSuccess, adminDeleteFailed
 } from '../actions/userActions';
 
 const STUDENTS_DASHBOARD_URL = "/admin/dashboard/students";
 const LECTURERS_DASHBOARD_URL = "/admin/dashboard/lecturers";
+const ADMINS_DASHBOARD_URL = "/admin/dashboard/admins";
 const API_ENDPOINT = '/users';
 
 export const fetchAllStudent = () => {
@@ -168,6 +174,47 @@ export const fetchAllAdmin = () => {
         } catch(error) {
             const { data } = error.response;
             dispatch(adminLoadFailed(data));
+        }
+    }
+}
+
+export const insertAdmin = (admin, history) => {
+    return async (dispatch) => {
+        try{
+            dispatch(adminInsertRequested());
+            const { data } = await api.post(`${API_ENDPOINT}`, admin);
+            dispatch(adminInsertSuccess(data));
+            history.push(ADMINS_DASHBOARD_URL);
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(adminInsertFailed(data));
+        }
+    }
+}
+
+export const updateAdmin = (admin, history) => {
+    return async (dispatch) => {
+        try {
+            dispatch(adminUpdateRequested());
+            const { data } = await api.put(`${API_ENDPOINT}/${admin._id}`, admin);
+            dispatch(adminUpdateSuccess(data));
+            history.push(ADMINS_DASHBOARD_URL);
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(adminUpdateFailed(data));
+        }
+    }
+}
+
+export const deleteAdmin = (adminId) => {
+    return async (dispatch) => {
+        try {
+            dispatch(adminDeleteRequested());
+            const { data } = await api.delete(`${API_ENDPOINT}/${adminId}`);
+            dispatch(adminDeleteSuccess(data._id));
+        } catch(error) {
+            const { data } = error.response;
+            dispatch(adminDeleteFailed(data));
         }
     }
 }

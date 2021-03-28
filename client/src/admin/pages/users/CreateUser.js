@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, withRouter } from 'react-router-dom';
 
-import { Button, Form, FormGroup } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 import Alert from "../../../common/components/Alert";
 import GoBackButton from "../../../common/components/GoBackButton";
 
-import { insertStudent, insertLecturer } from "../../services/userService";
+import {insertStudent, insertLecturer, insertAdmin} from "../../services/userService";
 
 const CreateUser = ({ history }) => {
     const { type } = useParams();
@@ -26,27 +26,38 @@ const CreateUser = ({ history }) => {
     const [lastName, setLastName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
+    let neptunRequired = userType !== 'admin';
 
-    const canCreate = neptun.length === 6 && lastName.length >= 4 && firstName.length >= 4 && /([^\s]).+@([^\s])[^.]+(\..+)/g.test(email);
+    const canCreate = neptunRequired ?
+        neptun.length === 6 && lastName.length >= 4 && firstName.length >= 4 && /([^\s]).+@([^\s])[^.]+(\..+)/g.test(email) :
+        lastName.length >= 4 && firstName.length >= 4 && /([^\s]).+@([^\s])[^.]+(\..+)/g.test(email);
 
     function handleUserCreate() {
         if(canCreate){
             const user = {
-                neptun,
+                neptun: neptunRequired ? neptun : "",
                 lastName,
                 firstName,
                 email,
-                password: `EKE_${neptun}`,
+                password: neptunRequired ? `EKE_${neptun}` : `EKE_${lastName}`,
                 role: userType.toUpperCase()
             };
 
-            if(userType === 'student'){
-                dispatch(insertStudent(user, history));
-            } else {
-                dispatch(insertLecturer(user, history));
+            switch(userType) {
+                case 'student':
+                    dispatch(insertStudent(user, history));
+                    break;
+                case 'lecturer':
+                    dispatch(insertLecturer(user, history));
+                    break;
+                case 'admin':
+                    dispatch(insertAdmin(user, history));
+                    break;
+                default:
+                    break;
             }
         }
-    }
+     }
 
     function checkErrorExists(path) {
         return errors && !!errors.find(err => err.path === path);
@@ -64,7 +75,7 @@ const CreateUser = ({ history }) => {
             <h1 className="text-center mb-4">Új felhasználó felvétele</h1>
             { errorMessage && <Alert type="danger" message={errorMessage} /> }
             <Form className="w-auto mx-auto">
-                <FormGroup className="d-flex justify-content-around">
+                <Form.Group className="d-flex justify-content-around">
                     <Form.Check
                         type="radio"
                         id="student"
@@ -89,8 +100,8 @@ const CreateUser = ({ history }) => {
                         onChange={() => setUserType('admin')}
                         label="Ügyintéző létrehozása"
                     />
-                </FormGroup>
-                <FormGroup>
+                </Form.Group>
+                <Form.Group className={neptunRequired ? "d-block" : "d-none" }>
                     <Form.Label htmlFor="neptun">NEPTUN azonosító</Form.Label>
                     <Form.Control
                         required
@@ -107,8 +118,8 @@ const CreateUser = ({ history }) => {
                     <Form.Text className="text-muted">
                         6 karakter, betűk és számok.
                     </Form.Text>
-                </FormGroup>
-                <FormGroup>
+                </Form.Group>
+                <Form.Group>
                     <Form.Label htmlFor="lastName">Vezetéknév</Form.Label>
                     <Form.Control
                         required
@@ -125,8 +136,8 @@ const CreateUser = ({ history }) => {
                     <Form.Text className="text-muted">
                         Legalább 4 karakter.
                     </Form.Text>
-                </FormGroup>
-                <FormGroup>
+                </Form.Group>
+                <Form.Group>
                     <Form.Label htmlFor="firstName">Keresztnév</Form.Label>
                     <Form.Control
                         required
@@ -143,8 +154,8 @@ const CreateUser = ({ history }) => {
                     <Form.Text className="text-muted">
                         Legalább 4 karakter.
                     </Form.Text>
-                </FormGroup>
-                <FormGroup>
+                </Form.Group>
+                <Form.Group>
                     <Form.Label htmlFor="email">Email cím</Form.Label>
                     <Form.Control
                         required
@@ -161,7 +172,7 @@ const CreateUser = ({ history }) => {
                     <Form.Text className="text-muted">
                         Érvényes email cím. (ajánlott: @gmail.com)
                     </Form.Text>
-                </FormGroup>
+                </Form.Group>
                 <Button
                     className="mb-3"
                     variant="primary"

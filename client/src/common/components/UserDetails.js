@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-import { updateStudent, updateLecturer } from '../../admin/services/userService';
+import {updateStudent, updateLecturer, updateAdmin} from '../../admin/services/userService';
 
 const UserDetails = ({ history, type, user }) => {
 
@@ -23,7 +23,7 @@ const UserDetails = ({ history, type, user }) => {
     const [lastName, setLastName] = useState(user.lastName);
     const [firstName, setFirstName] = useState(user.firstName);
     const [email, setEmail] = useState(user.email);
-
+    let neptunRequired = role !== 'ADMIN';
     const [editMode, setEditMode] = useState(false);
 
     const errorMessage = useSelector(state => state.users.errors.message);
@@ -36,13 +36,22 @@ const UserDetails = ({ history, type, user }) => {
                 lastName,
                 firstName,
                 email,
-                neptun,
+                neptun: neptunRequired ? neptun : "",
                 role
             };
-            if(type === 'student') {
-                dispatch(updateStudent(updatedUser, history));
-            } else {
-                dispatch(updateLecturer(updatedUser, history));
+
+            switch(type) {
+                case 'student':
+                    dispatch(updateStudent(updatedUser, history));
+                    break;
+                case 'lecturer':
+                    dispatch(updateLecturer(updatedUser, history));
+                    break;
+                case 'admin':
+                    dispatch(updateAdmin(updatedUser, history));
+                    break;
+                default:
+                    break;
             }
         }
     }

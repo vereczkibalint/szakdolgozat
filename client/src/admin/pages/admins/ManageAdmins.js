@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAllAdmin, fetchAllLecturer, importUsers} from "../../services/userService";
+import {fetchAllAdmin, importUsers} from "../../services/userService";
 import LoadingSpinner from "../../../common/components/Loading/LoadingSpinner";
 import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -25,7 +25,7 @@ const ManageAdmins = () => {
     let importInputRef = useRef(null);
 
     function redirectToCreateLecturerPage() {
-        history.push('/admin/dashboard/lecturer/create');
+        history.push('/admin/dashboard/admin/create');
     }
 
     const headers = [

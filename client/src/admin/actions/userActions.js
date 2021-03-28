@@ -27,7 +27,17 @@ import {
     USER_IMPORT_SUCCESS,
     USER_IMPORT_FAILED,
     ADMIN_LOAD_REQUEST,
-    ADMIN_LOAD_SUCCESS, ADMIN_LOAD_FAILED
+    ADMIN_LOAD_SUCCESS,
+    ADMIN_LOAD_FAILED,
+    ADMIN_INSERT_REQUEST,
+    ADMIN_INSERT_SUCCESS,
+    ADMIN_INSERT_FAILED,
+    ADMIN_UPDATE_REQUEST,
+    ADMIN_UPDATE_SUCCESS,
+    ADMIN_UPDATE_FAILED,
+    ADMIN_DELETE_REQUEST,
+    ADMIN_DELETE_SUCCESS,
+    ADMIN_DELETE_FAILED
 } from "../constants/userConstants";
 
 export const studentLoadRequested = () => {
@@ -265,6 +275,78 @@ export const adminLoadSuccess = (admins) => {
 export const adminLoadFailed = (errors) => {
     return {
         type: ADMIN_LOAD_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const adminInsertRequested = () => {
+    return {
+        type: ADMIN_INSERT_REQUEST
+    }
+}
+
+export const adminInsertSuccess = (admin) => {
+    return {
+        type: ADMIN_INSERT_SUCCESS,
+        payload: {
+            admin
+        }
+    }
+}
+
+export const adminInsertFailed = (errors) => {
+    return {
+        type: ADMIN_INSERT_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const adminUpdateRequested = () => {
+    return {
+        type: ADMIN_UPDATE_REQUEST
+    }
+}
+
+export const adminUpdateSuccess = (admin) => {
+    return {
+        type: ADMIN_UPDATE_SUCCESS,
+        payload: {
+            admin
+        }
+    }
+}
+
+export const adminUpdateFailed = (errors) => {
+    return {
+        type: ADMIN_UPDATE_FAILED,
+        payload: {
+            errors
+        }
+    }
+}
+
+export const adminDeleteRequested = () => {
+    return {
+        type: ADMIN_DELETE_REQUEST
+    }
+}
+
+export const adminDeleteSuccess = (adminId) => {
+    return {
+        type: ADMIN_DELETE_SUCCESS,
+        payload: {
+            adminId
+        }
+    }
+}
+
+export const adminDeleteFailed = (errors) => {
+    return {
+        type: ADMIN_DELETE_FAILED,
         payload: {
             errors
         }
