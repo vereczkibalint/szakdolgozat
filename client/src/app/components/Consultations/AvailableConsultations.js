@@ -178,7 +178,8 @@ const AvailableConsultations = () => {
                             <OverlayTrigger
                                 placement="left"
                                 trigger="click"
-                                overlay={descriptionPopover}>
+                                overlay={descriptionPopover}
+                                rootClose={true}>
                                 <FontAwesomeIcon
                                     icon={faEye}
                                     className="text-primary"
