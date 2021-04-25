@@ -51,7 +51,7 @@ const CreateConsultationForm = ({ history }) => {
                 startTime,
                 endTime,
                 location,
-                description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+                description: editorState.getCurrentContent().hasText() ? draftToHtml(convertToRaw(editorState.getCurrentContent())) : ''
             };
             dispatch(createConsultation(consultation, history));
         }
@@ -73,7 +73,7 @@ const CreateConsultationForm = ({ history }) => {
                         inputProps={{
                             onKeyDown: (e) => e.preventDefault()
                         }}
-                        onChange={(e) => setStartTime(e.toISOString())}
+                        onChange={(e) => setStartTime(e.format())}
                     />
                     { checkErrorExists('startTime') && (
                         <div className="invalid-feedback d-block">

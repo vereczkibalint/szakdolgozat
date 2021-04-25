@@ -37,7 +37,6 @@ const AvailableConsultations = () => {
         );
     }
 
-    // TODO!
     function sortConsultationsByAsc() {
         filteredConsultations.sort((prev, next) => {
             return new Date(next.startTime) - new Date(prev.startTime);
@@ -102,10 +101,10 @@ const AvailableConsultations = () => {
         let startTimeReservationTimeDiffInHours = 0;
 
         if (consultation.reservation) {
-            startTimeReservationTimeDiffInHours = moment(consultation.startTime).diff(moment(consultation.reservation.createdAt), 'h');
+            startTimeReservationTimeDiffInHours = moment(consultation.startTime).diff(moment(), 'h');
         }
 
-        if (!consultation.reservation && startTimeCurrentTimeDiffInHours > 24) {
+        if (!consultation.reservation && startTimeCurrentTimeDiffInHours >= 24) {
             return (
                 <Button variant="success" size="sm" onClick={() => handleConsultationReservation(consultation._id)}>
                     <FontAwesomeIcon icon={faCheck}/> Lefoglalás
@@ -117,7 +116,7 @@ const AvailableConsultations = () => {
                     <FontAwesomeIcon icon={faQuestion} cursor="pointer" />
                 </OverlayTrigger>
             );
-        } else if (consultation.reservation && consultation.reservation.student._id === user && startTimeReservationTimeDiffInHours < 24) {
+        } else if (consultation.reservation && consultation.reservation.student._id === user && startTimeReservationTimeDiffInHours <= 24) {
             return (
                 <OverlayTrigger trigger="click" placement="left" overlay={currentTimeCancelTimeDiffLessThan24HoursPopover}>
                     <FontAwesomeIcon icon={faQuestion} cursor="pointer"/>
@@ -174,7 +173,7 @@ const AvailableConsultations = () => {
                                 <FontAwesomeIcon icon={faTimesCircle} className="text-danger" title="Foglalt"/>}
                         </td>
                         <td>
-                        { consultation.description && consultation.description !== '' ?
+                        { consultation.description && consultation.description !== '' && consultation.description !== '<p></p>'  ?
                             <OverlayTrigger
                                 placement="left"
                                 trigger="click"
