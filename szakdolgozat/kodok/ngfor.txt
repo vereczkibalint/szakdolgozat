@@ -1,0 +1,6 @@
+<tr *ngFor="let kep of kepek; let i = index;">
+    <td>{{ i }}</td>
+    <td>{{ kep.megnevezes }}</td>
+    <td>{{ kep.keszito }}</td>
+    <td>{{ kep.url }}</td>
+</tr>

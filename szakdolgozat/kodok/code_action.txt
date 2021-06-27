@@ -1,0 +1,15 @@
+export const authRequested = () => {
+    return {
+        type: AUTH_REQUEST
+    }
+}
+
+export const successfulAuth = (token, user) => {
+    return {
+        type: AUTH_SUCCESS,
+        payload: {
+            token,
+            user
+        }
+    }
+}

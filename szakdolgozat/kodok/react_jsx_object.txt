@@ -1,0 +1,7 @@
+const element = {
+	type: 'h1',
+	props: {
+		className: 'cimsor',
+		children: 'Ez egy cimsor!'
+	}
+};

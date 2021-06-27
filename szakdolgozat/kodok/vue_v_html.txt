@@ -1,0 +1,2 @@
+<p>Mustache szintaxissal: {{ uzenet }}</p>
+<p>v-html directive: <span v-html="uzenet"></span></p>
