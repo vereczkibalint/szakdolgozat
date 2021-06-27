@@ -1,30 +1,89 @@
 {
-  "name": "server",
-  "version": "1.0.0",
+  "name": "szakdoga-backend",
+  "version": "0.0.1",
   "description": "",
-  "main": "server.js",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
   "scripts": {
-    "dev": "nodemon server.js",
-    "test": "mocha --recursive"
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
-  "author": "Vereczki Balint Zoltan",
-  "license": "ISC",
   "dependencies": {
+    "@nestjs/common": "^7.5.1",
+    "@nestjs/core": "^7.5.1",
+    "@nestjs/jwt": "^7.2.0",
+    "@nestjs/mongoose": "^7.2.0",
+    "@nestjs/passport": "^7.1.5",
+    "@nestjs/platform-express": "^7.5.1",
+    "@nestjs/swagger": "^4.7.8",
+    "@typegoose/typegoose": "^7.4.5",
     "bcryptjs": "^2.4.3",
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
-    "config": "^3.3.2",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.6.1",
-    "helmet": "^4.1.1",
+    "csvtojson": "^2.0.10",
+    "helmet": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mocha": "^8.2.1",
-    "mongoose": "^5.10.9",
-    "mongoose-unique-validator": "^2.0.3"
+    "mongoose": "^5.11.8",
+    "mongoose-autopopulate": "^0.12.3",
+    "mongoose-unique-validator": "^2.0.3",
+    "multer": "^1.4.2",
+    "nestjs-typegoose": "^7.1.38",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^6.6.3",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
-    "nodemon": "^2.0.5"
+    "@nestjs/cli": "^7.5.1",
+    "@nestjs/schematics": "^7.1.3",
+    "@nestjs/testing": "^7.5.1",
+    "@types/express": "^4.17.8",
+    "@types/jest": "^26.0.15",
+    "@types/mongoose": "^5.10.3",
+    "@types/node": "^14.14.6",
+    "@types/passport-jwt": "^3.0.3",
+    "@types/supertest": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "7.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.6.3",
+    "prettier": "^2.1.2",
+    "supertest": "^6.0.0",
+    "ts-jest": "^26.4.3",
+    "ts-loader": "^8.0.8",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.0.5"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
   }
 }
